@@ -10,6 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_235134) do
+ActiveRecord::Schema.define(version: 2020_04_20_002014) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
+  enable_extension "plpgsql"
+
+  create_table "sms_mobile_hubs", force: :cascade do |t|
+    t.uuid "api_key", default: -> { "gen_random_uuid()" }, null: false
+    t.string "device_name"
+    t.string "device_number"
+    t.text "firebase_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "sms_notifications", force: :cascade do |t|
+    t.uuid "unique_id", default: -> { "gen_random_uuid()" }, null: false
+    t.text "sms_content"
+    t.string "sms_number"
+    t.string "status"
+    t.integer "processed_by_sms_mobile_hub_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
 end

@@ -1,0 +1,2 @@
+class SmsMobileHub < ApplicationRecord
+end
