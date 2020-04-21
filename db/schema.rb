@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 2020_04_20_002014) do
 
   create_table "sms_mobile_hubs", force: :cascade do |t|
     t.uuid "api_key", default: -> { "gen_random_uuid()" }, null: false
-    t.string "device_name"
-    t.string "device_number"
+    t.string "device_name", null: false
+    t.string "temporal_password"
+    t.string "status", default: "pending_activation", null: false
+    t.string "device_number", null: false
     t.text "firebase_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
