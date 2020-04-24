@@ -33,5 +33,23 @@ module SmsparatodosApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # overrides Rails.application.credentials method
+    # so this way we support multiple production servers
+    # with different credentials
+    def credentials
+      if Rails.env.production?
+        credentials_file = ENV['APP_DOMAIN'].presence || 'production'
+        encrypted(
+          "config/credentials_#{credentials_file}.yml.enc",
+          env_key: ENV['RAILS_MASTER_KEY']
+        )
+      else
+        encrypted(
+          "config/credentials.yml.enc",
+          key_path: "config/master.key"
+        )
+      end
+    end
   end
 end
