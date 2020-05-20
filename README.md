@@ -2,14 +2,20 @@ Smsparatodos.com api
 ====================
 
 
-
 ### Managing encrypted env credentials
 
+```
 Rails.application.secrets.secret_key_base
+```
 
 ## Edit production and development environment credentials
 
-## Steps to update production environment values
+### How to edit development values
+```
+EDITOR=nvim rails credentials:edit
+```
+
+### Steps to update production environment values
 
 1. First, you need to rename the current development credentials in order to allow the edition of production files
 and adding new values
@@ -26,7 +32,7 @@ mv config/master_production.key config/master.key
 
 3. And you should be able to edit that information:
 ```
-EDITOR=vim rails credentials:edit
+EDITOR=nvim rails credentials:edit
 ```
 
 4. After you are done with the credentials edition move back the production key
@@ -58,6 +64,8 @@ Rails.application.secrets.secret_key_base
 So from now on, we will use always this one, as it is encrypted:
 ```
 Rails.application.credentials.secret_key_base
+# or using a hash key value
+Rails.application.credentials[:secret_key_base]
 ```
 
 If you want to check them using the current rails env
@@ -65,3 +73,55 @@ If you want to check them using the current rails env
 Rails.application.credentials.send(Rails.env)
 ```
 
+## Generators
+to generate Activejob classes:
+```
+bin/rails generate job sms_hubs_validation
+```
+
+For generating serializers:
+```
+rails g serializer Movie name year
+```
+
+## FCM and google cloud messaging in firebase
+There are some plain examples about using the service in the following document
+```
+working_with_firebase_cloud_messaging.md
+```
+
+## Using translations
+
+If you want to show a value based on a dynamic scope and value
+```
+I18n.t('dynamic_configuration', scope: 'page_size_configuration')
+```
+
+In the previous example, the locales in spanish look like this:
+```
+es:
+  page_size_configuration:
+    letter: 'carta'
+    half-letter: 'media Carta'
+```
+
+If you want to format a date
+```
+I18n.localize current_date, format: :history_details
+```
+
+Implements our own custom devise authentication
+
+- Setup serializers using fast_jsonapi
+- Implements new API endpoints for sms hub validation
+- Adds firebase cloud messaging gem.
+- Setups active_job for managing background jobs
+- Adds env variable for FCM token same for development and production
+- Includes information within README about generators
+- Setups translations for spanish only
+- Adds application controller render methods
+- Adds authorization controller based on token authentication
+- 
+
+
+- Implements authentication by using a custom

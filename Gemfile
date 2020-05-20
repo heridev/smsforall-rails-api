@@ -8,9 +8,13 @@ gem 'pg', '~>1.2.3'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'pry'
+gem 'pry-byebug'
+gem 'bcrypt-ruby', '~> 3.1.5', require: 'bcrypt'
+gem 'fast_jsonapi', '~> 1.7.1', git: 'https://github.com/fast-jsonapi/fast_jsonapi'
+gem 'sidekiq', '~> 6.0.7'
+gem 'fcm', '~> 1.0.1'
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rubocop', '~> 0.82.0', require: false
   gem 'rspec-rails', '~> 4.0.0'
   gem 'factory_bot', '~> 5.2.0'
