@@ -29,7 +29,7 @@ RSpec.describe SmsNotificationSenderService do
         service.deliver_notification!
         sms_notification.reload
         expect(sms_notification.status).to eq 'sent_to_firebase'
-        expect(sms_notification.sent_at).to be_present
+        expect(sms_notification.sent_to_firebase_at).to be_present
         expect(
           sms_notification.assigned_to_mobile_hub_id
         ).to eq sms_mobile_hub.id
