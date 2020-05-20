@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'home#index'
   constraints do
     namespace :v1, path: '/v1' do
       resources :user_registrations, only: :create

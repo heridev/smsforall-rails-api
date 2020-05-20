@@ -123,5 +123,10 @@ Implements our own custom devise authentication
 - Adds authorization controller based on token authentication
 - 
 
+{ "user": { "name": "heriberto perez", "email": "p@elh.mx", "password": "123qwe123" } }
+
+Content-Type
+application/json; charset=UTF-8
+
 
 - Implements authentication by using a custom
