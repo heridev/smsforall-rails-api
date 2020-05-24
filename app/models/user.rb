@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   validates_presence_of :name, :email, :password_salt, :password_hash
+  validates :email, uniqueness: true
+  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
   has_many :sms_mobile_hubs
 

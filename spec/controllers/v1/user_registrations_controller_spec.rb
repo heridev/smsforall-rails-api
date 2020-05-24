@@ -28,17 +28,41 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
     end
 
     context 'when the params are valid' do
-      it 'returns a valid user data created' do
-        params = {
-          user: {
-            email: 'email@example.com',
-            name: 'name goes here',
-            password: 'password1'
+      let(:user_email) { 'email@example.com' }
+
+      context 'when the email does not exist in the database' do
+        it 'creates a new user' do
+          params = {
+            user: {
+              email: user_email,
+              name: 'name goes here',
+              password: 'password1'
+            }
           }
-        }
-        process :create, method: :post, params: params
-        expect(response.status).to eq 200
-        expect(response_body[:data][:attributes].keys).to eq expected_keys
+          process :create, method: :post, params: params
+          expect(response.status).to eq 200
+          expect(response_body[:data][:attributes].keys).to eq expected_keys
+        end
+      end
+
+      context 'when the email already exists in the database' do
+        before do
+          create(:user, email: user_email)
+        end
+
+        it 'does not create a new user' do
+          params = {
+            user: {
+              email: user_email,
+              name: 'name goes here',
+              password: 'password1'
+            }
+          }
+          process :create, method: :post, params: params
+          expect(response.status).to eq 422
+          email_msg = response_body[:data][:errors][:email]
+          expect(email_msg.first).to include('Ya existe en')
+        end
       end
     end
   end

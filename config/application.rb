@@ -51,7 +51,7 @@ module SmsparatodosApi
       else
         encrypted(
           'config/credentials.yml.enc',
-          # in the case you want to set the value using an env variable
+          # In the case you want to set the value using an env variable
           # you need to export it before running the server or rails console
           # eg:
           #   export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
