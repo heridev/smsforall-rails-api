@@ -3,6 +3,7 @@
 class SmsMobileHub < ApplicationRecord
   # Validations
   validates_presence_of :device_name, :device_number, :user_id
+  validates :device_number, uniqueness: true
 
   # Callbacks
   after_create :set_temporal_password

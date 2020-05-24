@@ -31,17 +31,28 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
       let(:user_email) { 'email@example.com' }
 
       context 'when the email does not exist in the database' do
-        it 'creates a new user' do
-          params = {
+        let(:params) do
+          {
             user: {
               email: user_email,
               name: 'name goes here',
               password: 'password1'
             }
           }
+        end
+
+        it 'creates a new user' do
           process :create, method: :post, params: params
           expect(response.status).to eq 200
           expect(response_body[:data][:attributes].keys).to eq expected_keys
+        end
+
+        it 'includes the right token headers' do
+          process :create, method: :post, params: params
+          headers = response.headers
+          expect(headers.keys).to include 'Authorization-Client'
+          expect(headers.keys).to include 'Authorization-Token'
+          expect(response.status).to eq 200
         end
       end
 

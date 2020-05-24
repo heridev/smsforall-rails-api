@@ -6,6 +6,7 @@ module V1
       user = User.persist_values(user_params)
 
       if user.valid?
+        inject_token_headers(user)
         render_serialized(
           user,
           UserSerializer

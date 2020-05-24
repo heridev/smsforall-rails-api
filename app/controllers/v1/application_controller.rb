@@ -73,5 +73,19 @@ module V1
     def serialize_data(obj, serializer, options = {})
       serializer.new(obj, options).serializable_hash.to_json
     end
+
+    private
+
+    def inject_token_headers(user)
+      token_auth = JwtTokenService.encode_token(
+        { user_id: user.id },
+        user.jwt_salt
+      )
+      token_response = {
+        'Authorization-Token' => token_auth,
+        'Authorization-Client' => user.jwt_salt
+      }
+      response.headers.merge!(token_response)
+    end
   end
 end

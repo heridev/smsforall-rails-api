@@ -4,8 +4,12 @@ class JwtTokenService
   JWT_ENCRYPTION_ALG = 'HS256'.freeze
 
   class << self
-    def encode_token(payload, secret_key_base = nil)
+    def encode_token(payload, secret_key_base = nil, expiry = 1.hour.from_now)
+      # payload = arguments[:payload]
+      # secret_key_base = arguments[:secret_key_base] || nil
+      # expiry = arguments[:expiry] || 1.hour.from_now
       secre_key = get_secret_key(secret_key_base)
+      payload[:exp] = expiry.to_i
       JWT.encode payload, secre_key, JWT_ENCRYPTION_ALG
     end
 

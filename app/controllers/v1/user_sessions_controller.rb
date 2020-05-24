@@ -13,22 +13,10 @@ module V1
         inject_token_headers(user)
         render_serialized(user, UserSerializer)
       else
-        render_with_error('Las credenciales son incorrectas..')
+        render_unauthorized_resource(
+          error: 'Las credenciales son incorrectas..'
+        )
       end
-    end
-
-    private
-
-    def inject_token_headers(user)
-      token_auth = JwtTokenService.encode_token(
-        { user_id: user.id },
-        user.jwt_salt
-      )
-      token_response = {
-        'Authorization-Token' => token_auth,
-        'Authorization-Client' => user.jwt_salt
-      }
-      response.headers.merge!(token_response)
     end
   end
 end

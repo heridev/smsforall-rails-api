@@ -38,7 +38,7 @@ RSpec.describe V1::UserSessionsController, type: :controller do
           process :create, method: :post, params: valid_params
           error_msg = 'Las credenciales son incorrectas..'
           expect(response_body[:data][:error]).to eq error_msg
-          expect(response.status).to eq 422
+          expect(response.status).to eq 401
         end
       end
     end
@@ -56,7 +56,7 @@ RSpec.describe V1::UserSessionsController, type: :controller do
           process :create, method: :post, params: invalid_params
           error_msg = 'Las credenciales son incorrectas..'
           expect(response_body[:data][:error]).to eq error_msg
-          expect(response.status).to eq 422
+          expect(response.status).to eq 401
         end
       end
     end
