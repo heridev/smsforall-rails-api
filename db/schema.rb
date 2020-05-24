@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2020_05_16_235602) do
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "name"
-    t.text "jwt_token"
+    t.text "jwt_salt"
     t.string "password_hash"
     t.string "password_salt"
     t.datetime "created_at", precision: 6, null: false

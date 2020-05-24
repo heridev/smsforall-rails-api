@@ -11,7 +11,12 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
       }
     end
     let(:valid_user) { User.persist_values(user_params) }
-    let!(:valid_token) { User.encode_token(user_id: valid_user.id) }
+    let!(:valid_token) do
+      JwtTokenService.encode_token(
+        { user_id: valid_user.id },
+        valid_user.jwt_salt
+      )
+    end
 
     context 'when the params are valid' do
       let(:sms_mobile_params) do
@@ -25,7 +30,10 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
       context 'when the token authorization is valid' do
         it 'creates a new sms mobile hub record' do
-          headers = { 'Authorization' => "Bearer #{valid_token}" }
+          headers = {
+            'Authorization-Token' => "Bearer #{valid_token}",
+            'Authorization-Client' => valid_user.jwt_salt
+          }
           request.headers.merge! headers
           process :create, method: :post, params: sms_mobile_params
           keys = response_body[:data][:attributes].keys
@@ -54,7 +62,10 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
       context 'when the token authorization is valid' do
         it 'creates a new sms mobile hub record' do
-          headers = { 'Authorization' => "Bearer #{valid_token}" }
+          headers = {
+            'Authorization-Token' => "Bearer #{valid_token}",
+            'Authorization-Client' => valid_user.jwt_salt
+          }
           request.headers.merge! headers
           process :create, method: :post, params: sms_mobile_params
           expect(response.status).to eq 422

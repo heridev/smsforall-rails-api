@@ -121,9 +121,8 @@ I18n.localize current_date, format: :history_details
 { "user": { "name": "heriberto perez", "email": "p@elh.mx", "password": "123qwe123" } }
 ```
 
-user = 
+"token_auth": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.ArJ1yK_VcBsITp45C9RhAEBFcbvhHqb2GbkXl-uKrKU"
 
-for heroku staging
 ENV['RAILS_MASTER_KEY']
 
 for production
@@ -132,14 +131,10 @@ for production
 ```
 Rails.application.credentials[:secret_key_base]
 
-
-export RAILS_MASTER_KEY=612928079afc9957c0e4fbe7f797951c
-
-development
+test
 ```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+JWT.encode({id: 3}, "123", 'HS256')
 ```
 
-secret_key_base
-6ff2e0c84d197349c3abd418444884a186f8169d47af1bc52fea54554a250fe6073a13d934a4eb6a368f68761ec7dcfcf57388a8da1e3d6ef50dba4da75aacd7
+
 

@@ -24,12 +24,21 @@ class AuthorizeApiRequestService
   end
 
   def decoded_auth_token
-    @decoded_auth_token ||= JwtTokenService.decode_token(http_auth_header)
+    @decoded_auth_token ||= JwtTokenService.decode_token(
+      authorization_token_header,
+      authorization_client_header
+    )
   end
 
-  def http_auth_header
-    return nil if headers['Authorization'].blank?
+  def authorization_token_header
+    return nil if headers['Authorization-Token'].blank?
 
-    headers['Authorization'].split(' ').last
+    headers['Authorization-Token'].split(' ').last
+  end
+
+  def authorization_client_header
+    return nil if headers['Authorization-Client'].blank?
+
+    headers['Authorization-Client']
   end
 end

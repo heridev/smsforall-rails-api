@@ -71,20 +71,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '.encode_token.decode_token' do
-    let(:password_value) { 'passwordvalue' }
-    let(:password_salt) { BCrypt::Engine.generate_salt }
-    let(:password_hash) { { password: password_value } }
-
-    context 'when the decodes is valid' do
-      it 'encodes and decodes a valid token' do
-        token_encoded = User.encode_token(password_hash, password_salt)
-        decoded_token = User.decode_token(token_encoded, password_salt)
-        expect(decoded_token[:password]).to eq password_value
-      end
-    end
-  end
-
   describe '.valid_authentication?' do
     let!(:valid_user) { User.persist_values(valid_params) }
 

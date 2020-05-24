@@ -15,9 +15,19 @@ RSpec.describe V1::UserSessionsController, type: :controller do
       let!(:valid_user) { User.persist_values(valid_params) }
 
       context 'when the email and password are valid' do
-        it 'returns a valid JWT token based on the user.id' do
+        it 'returns some valid tokens included in headers' do
           process :create, method: :post, params: valid_params
-          expect(response_body[:data][:token_auth]).to be_present
+          headers = response.headers
+          expect(headers.keys).to include 'Authorization-Client'
+          expect(headers.keys).to include 'Authorization-Token'
+          expect(response.status).to eq 200
+        end
+
+        it 'returns a valid decoded token' do
+          process :create, method: :post, params: valid_params
+          data = response_body[:data][:attributes]
+          expect(data.keys).to include(:email)
+          expect(data.keys).to include(:name)
           expect(response.status).to eq 200
         end
       end
