@@ -1,6 +1,32 @@
 Smsparatodos.com api
 ====================
 
+### Setup this project for development
+1. clone the repository
+```
+git clone git@bitbucket.org:heridev/smsparatodos_api.git
+```
+
+2. Create your database
+```
+rails db:create
+rails db:migrate
+```
+
+3. Export some variables:
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+```
+4. Run the server in one tab:
+```
+rails s
+```
+
+5. Run sidekiq in a separate tab
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+bundle exec sidekiq
+```
 
 ### Managing encrypted env credentials
 
@@ -11,6 +37,11 @@ Rails.application.secrets.secret_key_base
 ## Edit production and development environment credentials
 
 ### How to edit development values
+1. Export the env variable:
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+```
+2. Open the file with your editor:
 ```
 EDITOR=nvim rails credentials:edit
 ```
@@ -117,6 +148,7 @@ I18n.localize current_date, format: :history_details
 
 
 ## When using POSTMAN for creating new users
+using raw
 ```
 { "user": { "name": "heriberto perez", "email": "p@elh.mx", "password": "123qwe123" } }
 ```
@@ -125,16 +157,5 @@ I18n.localize current_date, format: :history_details
 
 ENV['RAILS_MASTER_KEY']
 
-for production
-```
-6ff2e0c84d197349c3abd418444884a186f8169d47af1bc52fea54554a250fe6073a13d934a4eb6a368f68761ec7dcfcf57388a8da1e3d6ef50dba4da75aacd7
-```
 Rails.application.credentials[:secret_key_base]
-
-test
-```
-JWT.encode({id: 3}, "123", 'HS256')
-```
-
-
 

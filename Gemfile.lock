@@ -123,6 +123,8 @@ GEM
       pry (~> 0.13.0)
     puma (3.12.4)
     rack (2.2.2)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -230,6 +232,7 @@ DEPENDENCIES
   pry
   pry-byebug
   puma (~> 3.11)
+  rack-cors (~> 1.1.1)
   rails (~> 6.0.2.2)
   rspec-rails (~> 4.0.0)
   rubocop (~> 0.82.0)

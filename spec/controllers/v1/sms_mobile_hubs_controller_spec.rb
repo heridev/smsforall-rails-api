@@ -81,8 +81,10 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
     context 'when the information is valid' do
       let(:sms_mobile_params) do
         {
-          device_token_code: sms_mobile_hub.temporal_password,
-          firebase_token: 'xksdk939393933.29j23lkjlsdfds'
+          sms_mobile_hub: {
+            device_token_code: sms_mobile_hub.temporal_password,
+            firebase_token: 'xksdk939393933.29j23lkjlsdfds'
+          }
         }
       end
 
@@ -99,14 +101,16 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
     context 'when the information is invalid' do
       let(:sms_mobile_params) do
         {
-          device_token_code: sms_mobile_hub.temporal_password,
-          firebase_token: 'xksdk939393933.29j23lkjlsdfds'
+          sms_mobile_hub: {
+            device_token_code: sms_mobile_hub.temporal_password,
+            firebase_token: 'xksdk939393933.29j23lkjlsdfds'
+          }
         }
       end
 
       context 'when the sms_mobile_hub password is valid but the firebase token is not present' do
         before do
-          sms_mobile_params['firebase_token'] = nil
+          sms_mobile_params[:sms_mobile_hub][:firebase_token] = nil
         end
 
         it 'responds with a not found error' do
@@ -117,7 +121,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
       context 'when the sms_mobile_hub password is invalid' do
         before do
-          sms_mobile_params['device_token_code'] = 'invalidx'
+          sms_mobile_params[:sms_mobile_hub][:device_token_code] = nil
         end
 
         it 'responds with a not found error' do

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe V1::UserSessionsController, type: :controller do
-
   describe '#create' do
     context 'when the user exists' do
       let(:valid_params) do
@@ -23,7 +22,7 @@ RSpec.describe V1::UserSessionsController, type: :controller do
           expect(response.status).to eq 200
         end
 
-        it 'returns a valid decoded token' do
+        it 'returns the user information attributes' do
           process :create, method: :post, params: valid_params
           data = response_body[:data][:attributes]
           expect(data.keys).to include(:email)
@@ -61,5 +60,54 @@ RSpec.describe V1::UserSessionsController, type: :controller do
       end
     end
   end
-end
 
+  describe '#show' do
+    let(:user_params) do
+      {
+        email: 'p@elh.mx',
+        password: 'password1',
+        name: 'Heriberto Perez'
+      }
+    end
+    let(:valid_user) { User.persist_values(user_params) }
+    let!(:valid_token) do
+      JwtTokenService.encode_token(
+        { user_id: valid_user.id },
+        valid_user.jwt_salt
+      )
+    end
+
+    context 'when the authorization tokens are valid' do
+      before do
+        headers = {
+          'Authorization-Token' => "Bearer #{valid_token}",
+          'Authorization-Client' => valid_user.jwt_salt
+        }
+        request.headers.merge! headers
+      end
+
+      it 'responds with the user details' do
+        get :user_details_by_token, method: :get
+        data = response_body[:data][:attributes]
+        expect(data.keys).to include(:email)
+        expect(data.keys).to include(:name)
+        expect(response.status).to eq 200
+      end
+    end
+
+    context 'when the authorization tokens are NOT valid' do
+      before do
+        headers = {
+          'Authorization-Token' => 'Bearer xxxxx',
+          'Authorization-Client' => valid_user.jwt_salt
+        }
+        request.headers.merge! headers
+      end
+
+      it 'does not return any user details' do
+        get :user_details_by_token, method: :get
+        expect(response.status).to eq 401
+      end
+    end
+  end
+end

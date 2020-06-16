@@ -1,4 +1,6 @@
 class FirebaseMessagingService
+  SUCCESS_STATUS_CODE = 200
+
   attr_reader :sms_content,
               :sms_number,
               :device_token_firebase,
@@ -37,7 +39,17 @@ class FirebaseMessagingService
       }
     }
     response = fcm_service.send(devise_ids, options)
-    @firebase_response = JSON.parse(response[:body], symbolize_names: true)
+    if response[:status_code] == SUCCESS_STATUS_CODE
+      return @firebase_response = JSON.parse(
+        response[:body],
+        symbolize_names: true
+      )
+    end
+
+    @firebase_response = {
+      success: 0,
+      failure: 1
+    }
   end
 
   def valid_response?

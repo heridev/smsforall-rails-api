@@ -15,8 +15,9 @@ class AuthorizeApiRequestService
 
   def api_user
     if decoded_auth_token
-      @api_user ||= User.find(
-        decoded_auth_token[:user_id]
+      @api_user ||= User.find_by(
+        id: decoded_auth_token[:user_id],
+        jwt_salt: authorization_client_header
       )
     end
 

@@ -1,23 +1,14 @@
-
-My international number
-523121231517
-
-
-String phnNumber="+91"+editText.getText().toString();
-
-
-### tutorial perron listito para copy-paste y callbacks chingones
+### Tutorial perron listito para copy-paste y callbacks chingones
 https://mobiforge.com/design-development/sms-messaging-android
 
 ### listening to android firebase messages and intercept them
 remember to install the firebase-messaging dependency
 
-Using FCM - firebase cloud messaging
+### Using FCM - firebase cloud messaging
 https://www.youtube.com/watch?v=KTQ4d3ZUS8g
 
 fcm.googleapis.com/fcm/send
-with authorization key
-and
+with authorization key and
 - to
 - notification
 
@@ -33,36 +24,41 @@ https://github.com/spacialdb/fcm
 server_key = "AAAANAwvztM:APA91bFyxNj6nmPN9C28GVK8BuvNFea6vDpC5g86GnprIt8ukAUOzSHHz013vL6gQdiwl8rlVrxpu9192hh7In8OnKbrfIfxPQMxxZcCa56BaCmxMa0wQC21uyWClXGIZTLtMEsP1M_J"
 fcm_service = FCM.new(server_key, timeout: 3)
 
+```
 registration_ids= ["fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAeme"]
-
-
 invalid_ids= ["fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAemedds"]
+```
 
-
+### Some other options
+```
 options = {
   "data": {
     "cellphone_number": "+523121231517",
     "sms_content": "Hola Heriberto, gracias por registrarte en Pacientes Web en breve le enviamos los datos de acceso.."
   }
 }
+```
 
+```
 options = {
   "data": {
     "cellphone_number": "+523121770155",
     "sms_content": "que onda pair.."
   }
 }
+```
 
+```
 options = {
   "data": {
     "cellphone_number": "+523121698456",
     "sms_content": "Hola sms para todos solo probando para ver cuando aguanta esto de los mensajes y si me deja envia una carta interminable jajaja, doble texto goes here.."
   }
 }
+```
 
-
-Tablet para pacientes web demos y mas - sms para todos
-
+### Tablet para pacientes web demos y mas - sms para todos
+```
 100.times do |index|
   options = {
     "data": {
@@ -74,22 +70,38 @@ Tablet para pacientes web demos y mas - sms para todos
   body_response = JSON.parse(response[:body], symbolize_names: true)
   puts "valid #{index+1} "if body_response[:success] == 1
 end
+```
 
 Mi numero personal
-
+```
 40.times do |index|
+
+  registration_ids= ["eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5"]
+
+  def fcm_service
+    @fcm_service ||= begin
+    FCM.new(
+        Rails.application.credentials[:fcm_server_key],
+        timeout: ENV['FCM_SERVICE_TIMEOUT'] || 3
+        )
+    end
+  end
+
   options = {
     "data": {
       "cellphone_number": "+523121231517",
-      "sms_content": "Hola sms no A #{index + 1} - #{Time.zone.now.to_s}"
+      "sms_content": "Hola jose - #{Time.zone.now.to_s}"
     }
   }
   response = fcm_service.send(registration_ids, options)
   body_response = JSON.parse(response[:body], symbolize_names: true)
   puts "valid B #{index+1} "if body_response[:success] == 1
 end
+```
 
 Jose pablo peralta
+Sending 40 sms to this devise on the jose pablo peralta number
+```
 40.times do |index|
   options = {
     "data": {
@@ -101,9 +113,7 @@ Jose pablo peralta
   body_response = JSON.parse(response[:body], symbolize_names: true)
   puts "valid B #{index+1} "if body_response[:success] == 1
 end
-
-smsparatodos@gmail.com/$m$paratodo$2020
-
+```
 
 So 30 messages in 30 minutes, so that means we can send 29 messages in a span of 30 minutes to avoid that warning jaja
 
@@ -114,14 +124,14 @@ settings put global sms_outgoing_check_interval_ms 900000 # to check every 15 mi
 settings put global sms_outgoing_check_max_count 200 # we allowed a maximum of 40 emails every 15 minutes
 ```
 
-
+### Other firebase cli examples:
+```
 response = fcm_service.send(registration_ids, options)
-
 invalid_response = fcm_service.send(invalid_ids, options)
-
 JSON.parse(invalid_response, symbolize_names: true)
+```
 
-To format individual objects
+### To format individual objects
 ```
 body_response = JSON.parse(invalid_response[:body], symbolize_names: true)
 body_response = JSON.parse(response[:body], symbolize_names: true)
@@ -134,16 +144,14 @@ else
 end
 ```
 
+Sending a message
+```
 response = fcm.send(registration_ids, options)
-
 response = fcm.send(registration_ids, {data: {message: "message 1"}})
+```
 
-response = fcm.send(registration_ids, data: {message: "some message"})
+### New xiaomi token for firebase - as of May 25th, 2020
 
-
-### New xiaomi token for firebase
-
-Nuevo
 ```
 fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAeme
 ```
@@ -206,7 +214,6 @@ if total_from_cache > 1000
   return
 end
 
-
 count_from_cache = Rails.cache.fetch(*find_hour_between_array)
 if count_from_cache
   how_many_processed = count_from_cache
@@ -262,49 +269,32 @@ Back in 2019 We needed to implement SMS for our business, including sending remi
 
 And looking into the current 
 
-
-Que es Smsparatodos.com?
+#### Que es Smsparatodos.com?
 Hace unos meses atraz en nuestra plataforma para doctores Pacientes Web, necesitabamos implementar el envio de SMS para negocios, incluyendo, envio de confirmaciones de citas, recordatorios, authentication de usuarios, etc.
-
 Pero despues de revisar nuestras opciones, no pudimos encontrar una opcion economica, ya que todos los precios de los proveedores ronda entre los 0.40 - $0.90, siendo uno de los mas caro una de las plataformas mas populares para desarrolladores (Twilio, Amazon, etc).
-
 Pero despues de pensar y tratar de encontrar un proveedor que nos ofreciera un plan gratis para comenzar con el envio de SMS y alguna forma de validar nuestros negocios, nos dimos cuenta que esto no era posible con los proveedores actuales.
-
 Ejemplo de proveedores en Mexico y Colombia
 https://gist.github.com/heridev/ce49f2bf5bfa8753c1759bbe552b78cb
 
 Fui alli cuando despues de analizarlo de forma profunda, nos dimos cuenta que muchos de los proveedores actuales ofrecen SMS ilimitados, y siendo que nuestros mensajes son personales (Son clientes nuestros), nosotros podemos enviar recordatorios manualmente de forma ilimitada, pero para que hacerlo manualmente cuando podemos automatizar las tareas.
-
 Es alli donde nace smsparatodos.com, y empresas pequeñas de esta forma puede comenzar a utilizar el servicio de forma gratuita, con un envio de mensajes limitado de 40 sms por hora.
-
 En caso de que necesita el envio de mas sms, es necesario contar con el plan profesional y seguir nuestras instrucciones al respecto.
-
 De esta forma las pequeñas empresas puede comenzar al instante, solo es necesario contar con una dispositivo Android con conexion a internet todo el tiempo (o utilizando datos del mismo plan), y que se cuenta un con plan de SMS válido, asi como instalar nuestra aplicacion Android y registrar una cuenta en nuestra pagina web.
-
 Parece muy bueno? pues lo es, esperemos que les sea de utilidad, y esperamos que puedas aprovechar esos SMS en tus negocios.
-
-
 
 
 What is SMSforAll.org?
 
 Hey Guys my Name is Heriberto Perez, I'm a senior software engineer at Genoa Telepsyquiatry but I'm also an entrepenur, and here is my story.
-
 A few weeks ago, while working on a personal startup called pacientesweb.com(is kind of a EHR in MExico), I needed to send notifications via SMS text messages, which means sending appointment confirmations, reminders, sending some alerts to doctors, two factor authentication, etc, in other words sending SMS notifications just like any other bank application.
-
 But after doing some research, I was not able to find a cheap, affordable and economic option, since all the prices are kind of expensive and more in Latinamerica, for eg, here in Mexico:
-
 https://www.twilio.com/sms/pricing/mx
 Twilio: $1.01 MXN or 0.0490 USD per message
-
 And kind of the same from Amazon and other well known providers.
-
 Indeed, they don't offer any free plan, so this is not good for small startups that only send a few notifications during the day.
-
 Here is when I realized some interesting facts such as:
 
 All Carrier brands such as:
-
 In USA
 - AT&T
 - Sprint
@@ -315,36 +305,25 @@ In Mexico:
 - Telcel
 
 Offer "personal" unlimited SMS messages in their plans.
-
 USA and some latin american countries:
 https://gist.github.com/heridev/ce49f2bf5bfa8753c1759bbe552b78cb
 
 So, after that analysis, you can see that they mention that you have the ability to send UNLIMITED personal messages so, that means that anybody can send reminders, notifications and other kind of campaigns by sending them manually to all their customers, in my case would be to doctors and patients but then after doing that, you might have the following questions:
-
 - Why should I do it manually and how long would it take me to send an SMS reminder to all of my 50 patients everyday?
 - Can we automate this task?
 
 After making those questions, smsforall.org or in spanish smsparatodos.com were borned.
-
 My missing is to help small startups and offer to them a free plan to send SMS messages without little to no intervention, with only one restriction and this one is a limit allow sending only 40 SMS per hour or 20 SMS every 30 minutes.
-
 And in the case that you need to send more SMS messages, you will be required to upgrade to the paid plan and after following some technical instructions and videos you would be able to start sending unlimited SMS at a reeeealy low prices or fixed monthly fee.
-
 In this way, small companies can start sending SMS messages in their platforms right away with no initial cost.
-
 When is it going to be fully available?
 Good question my friend, that is where you as a patron can help me speeding this development, as in this moment I'm just working on this amazing project in my spare time (8 hours a week), but I have a plenty of work ahead.
 
 In my blog post, available to all my patreon, I'll be sharing the architecture and in the second one sharing the ROADMAP and my current progress on the entire architecture.
-
 I'll be sharing some videos to you as well.
-
 After that you will have a sense of when this can be finished, if you are excited just like the way I'm, you will become my patreon :)
-
 Should we make this an open source software in the future? Well, who knows, in the meantime.
-
 That's it, have a nice day and be happy.
-
 Heriberto
 
 ### Second blog post:
@@ -360,12 +339,4 @@ You basically need:
 Does it look great? Well, it is, hopefully it will be useful to you and we hope you can take advantage of those SMS in your business.
 
 Smsforall.org
-
-
-
-
-
-
-
-
 

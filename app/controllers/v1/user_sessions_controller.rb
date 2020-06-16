@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module V1
-  class UserSessionsController < ::V1::ApplicationController
+  class UserSessionsController < ::V1::AuthorizedController
+    skip_before_action :authenticate_request,
+                       only: :create
     def create
       user = User.auth_by_email_and_password(
         params[:email],
@@ -17,6 +19,10 @@ module V1
           error: 'Las credenciales son incorrectas..'
         )
       end
+    end
+
+    def user_details_by_token
+      render_serialized(@current_api_user, UserSerializer)
     end
   end
 end

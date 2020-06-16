@@ -34,7 +34,7 @@ module V1
             message: I18n.t('mobile_hub.controllers.successful_hub_validation')
           }
         )
-        SmsHubsValidationJob.perform_later validation_params
+        SmsHubsValidationJob.perform_later validation_params.to_h
       else
         activerecord_not_found(
           I18n.t('mobile_hub.controllers.failure_hub_validation')
@@ -88,7 +88,9 @@ module V1
 
 
     def validation_params
-      params.permit(
+      params.require(
+        :sms_mobile_hub
+      ).permit(
         :device_token_code,
         :firebase_token
       )
