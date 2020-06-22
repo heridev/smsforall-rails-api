@@ -28,6 +28,12 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 bundle exec sidekiq
 ```
 
+If you want to run the console remember to set first the ENV variable
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+rails console
+```
+
 ### Managing encrypted env credentials
 
 ```
@@ -158,4 +164,23 @@ using raw
 ENV['RAILS_MASTER_KEY']
 
 Rails.application.credentials[:secret_key_base]
+
+```
+sms_content = I18n.t(
+  'mobile_hub.content.welcome_msg',
+  user_name: 'heriberto'
+)
+sms_confirmation_params = {
+  sms_content: sms_content,
+  sms_number: mobile_hub.device_number,
+  sms_type: SmsNotification::STATUSES[:device_validation]
+}
+
+sms_notification = SmsNotification.create(sms_confirmation_params)
+
+device_number = '3121698456'
+sms_content = ""
+
+SmsNotificationSenderService
+```
 

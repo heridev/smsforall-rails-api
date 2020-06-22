@@ -22,7 +22,9 @@ module V1
       params.require(:user).permit(
         :name,
         :email,
-        :password
+        :password,
+        :country_international_code,
+        :mobile_number
       )
     end
   end

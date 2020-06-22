@@ -1,8 +1,11 @@
 class User < ApplicationRecord
+  ### Validations
   validates_presence_of :name, :email, :password_salt, :password_hash
   validates :email, uniqueness: true
+  validates :mobile_number, uniqueness: true
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
+  ## Associations
   has_many :sms_mobile_hubs
 
   def update_jwt_salt!
@@ -38,6 +41,8 @@ class User < ApplicationRecord
         user.password_hash,
         user.password_salt
       )
+      return false if decoded_token.blank?
+
       password_unencrypted = decoded_token[:password]
       return false if password != password_unencrypted
 
