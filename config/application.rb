@@ -34,6 +34,10 @@ module SmsparatodosApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.i18n.default_locale = :es
+
+    config.active_job.queue_adapter = :sidekiq
+
     # overrides Rails.application.credentials method
     # so this way we support multiple production servers
     # with different credentials
@@ -42,12 +46,17 @@ module SmsparatodosApi
         credentials_file = ENV['APP_DOMAIN'].presence || 'production'
         encrypted(
           "config/credentials_#{credentials_file}.yml.enc",
-          env_key: ENV['RAILS_MASTER_KEY']
+          env_key: 'RAILS_MASTER_KEY'
         )
       else
         encrypted(
-          "config/credentials.yml.enc",
-          key_path: "config/master.key"
+          'config/credentials.yml.enc',
+          # In the case you want to set the value using an env variable
+          # you need to export it before running the server or rails console
+          # eg:
+          #   export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+          env_key: 'RAILS_MASTER_KEY',
+          key_path: 'config/master.key'
         )
       end
     end

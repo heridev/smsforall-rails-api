@@ -28,3 +28,6 @@
 
 # Rspec
 /spec/examples.txt
+
+# Redis
+dump.rdb
