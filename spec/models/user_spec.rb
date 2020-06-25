@@ -42,10 +42,10 @@ RSpec.describe User, type: :model do
           user = build(:user, email: 'email@example.io')
           expect(user.valid?).to be_truthy
 
-          user = build(:user, email: 'email@example.mx')
+          user = build(:user, email: 'heriberto@example.com', mobile_number: '3121708999')
           expect(user.valid?).to be_truthy
 
-          user = build(:user, email: 'email@example.com')
+          user = build(:user, email: 'heriberto+2@example.com', mobile_number: '3121009089')
           expect(user.valid?).to be_truthy
         end
       end

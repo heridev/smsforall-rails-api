@@ -5,9 +5,16 @@ es:
   mobile_hub:
     content:
       welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"
+    statuses:
+      pending_activation: "Activación pendiente"
+      activated: "Activado"
+      activation_in_progress: "Activación en progreso"
+      pending_activation: "Activación pendiente"
     controllers:
       successful_hub_validation: 'En breve recibirás un sms confirmando el estado del dispositivo'
       successful_hub_activation: 'El dispositivo se activó correctamente, disfruta de smsparatodos.com'
+      successful_hub_deletion: 'El dispositivo se eliminó correctamente'
+      failure_hub_deletion: 'Ocurrió un error al momento de eliminar el dispositivo, intenta nuevamente..'
       failure_hub_validation: 'El codigo is inválido o el dispositivo ya fue activado anteriormente..'
       failure_hub_activation: 'Ocurrió un error al momento de activar el dispositivo, intenta nuevamente..'
 

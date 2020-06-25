@@ -28,7 +28,8 @@ class User < ApplicationRecord
       cleaned_params[:jwt_salt] = BCrypt::Engine.generate_salt
       cleaned_params[:password_hash] = JwtTokenService.encode_token(
         password_hash,
-        password_salt
+        password_salt,
+        nil
       )
       create(cleaned_params)
     end

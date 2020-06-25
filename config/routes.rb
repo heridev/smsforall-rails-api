@@ -18,7 +18,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :sms_mobile_hubs, only: :create do
+      resources :sms_mobile_hubs, only: %i[create show index destroy], param: :uuid do
         collection do
           post :validate
           post :activate

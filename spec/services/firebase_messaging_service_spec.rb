@@ -17,6 +17,7 @@ RSpec.describe FirebaseMessagingService do
     context 'when the cloud messaging is successfully sent' do
       let(:valid_firebase_response) do
         {
+          status_code: 200,
           body: {
             multicast_id: 8573675465357843813,
             success: 1,
