@@ -8,6 +8,7 @@ RSpec.describe SmsNotificationSenderService do
     context 'when the message is sent to Google firebase' do
       let(:valid_firebase_response) do
         {
+          status_code: 200,
           body: {
             multicast_id: 8573675465357843813,
             success: 1,

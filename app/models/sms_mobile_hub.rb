@@ -30,8 +30,13 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  def friendly_status_name
+    status_title = "mobile_hub.statuses.#{status}"
+    I18n.t(status_title)
+  end
+
   def mark_as_activated!
-    update_attributes(
+    update(
       status: STATUSES[:activated],
       activated_at: Time.zone.now
     )

@@ -5,6 +5,14 @@ module V1
     skip_before_action :authenticate_request,
                        only: %i[validate activate]
     before_action :find_mobile_hub_and_notification, only: :activate
+    before_action :find_mobile_hub, only: %i[show destroy]
+
+    def index
+      render_serialized(
+        @current_api_user.sms_mobile_hubs,
+        SmsMobileHubSerializer
+      )
+    end
 
     def create
       new_params = sms_mobile_hub_params.merge(
@@ -13,12 +21,32 @@ module V1
       sms_mobile = SmsMobileHub.create(new_params)
 
       if sms_mobile.valid?
+        sms_mobile.reload
         render_serialized(
           sms_mobile,
           SmsMobileHubSerializer
         )
       else
         render_error_object(sms_mobile.errors.messages)
+      end
+    end
+
+    def show
+      render_serialized(
+        @sms_mobile,
+        SmsMobileHubSerializer
+      )
+    end
+
+    def destroy
+      if @sms_mobile&.destroy
+        render_json_message(
+          {
+            message: I18n.t('mobile_hub.controllers.successful_hub_deletion')
+          }
+        )
+      else
+        render_with_error(I18n.t('mobile_hub.controllers.failure_hub_deletion'))
       end
     end
 
@@ -63,6 +91,14 @@ module V1
 
     private
 
+    def find_mobile_hub
+      @sms_mobile = SmsMobileHub.find_by(uuid: params[:uuid])
+
+      unless @sms_mobile
+        activerecord_not_found
+      end
+    end
+
     def find_mobile_hub_and_notification
       @mobile_hub = SmsMobileHub.find_by(
         firebase_token: activation_params[:firebase_token]
@@ -86,7 +122,6 @@ module V1
       )
     end
 
-
     def validation_params
       params.require(
         :sms_mobile_hub
@@ -101,7 +136,8 @@ module V1
         :sms_mobile_hub
       ).permit(
         :device_name,
-        :device_number
+        :device_number,
+        :country_international_code
       )
     end
   end

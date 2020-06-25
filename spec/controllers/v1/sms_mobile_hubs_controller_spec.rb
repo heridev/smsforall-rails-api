@@ -2,6 +2,39 @@ require 'rails_helper'
 
 RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
+  describe '#show' do
+    let(:firebase_token) { 'firebase-token' }
+    let(:sms_mobile_hub) do
+      create(:sms_mobile_hub, firebase_token: firebase_token)
+    end
+
+    context 'when the user has sms mobile hub records' do
+      before do
+        inject_user_headers_on_controller(sms_mobile_hub.user)
+      end
+
+      it 'includes only the ones that belong to that user' do
+        get :index, method: :get
+        expect(response.status).to eq 200
+        data = response_body[:data]
+        expect(data.size).to eq 1
+        expect(data.first[:attributes][:uuid]).to eq sms_mobile_hub.reload.uuid
+      end
+    end
+
+    context 'when the user does not have sms mobile hub records' do
+      before do
+        inject_user_headers_on_controller
+      end
+
+      it 'responds with zero records' do
+        get :index, method: :get
+        expect(response.status).to eq 200
+        expect(response_body[:data].size).to eq 0
+      end
+    end
+  end
+
   describe '#create' do
     let(:user_params) do
       {
@@ -139,6 +172,66 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
           process :validate, method: :post, params: sms_mobile_params
           expect(response.status).to eq 404
         end
+      end
+    end
+  end
+
+  describe '#show' do
+    let(:firebase_token) { 'firebase-token' }
+    let(:sms_mobile_hub) do
+      create(:sms_mobile_hub, firebase_token: firebase_token)
+    end
+
+    before do
+      inject_user_headers_on_controller
+    end
+
+    context 'when the sms mobile hub uuid is valid' do
+      it 'responds with the correct attributes' do
+        params = { uuid: sms_mobile_hub.reload.uuid }
+        get :show, method: :get, params: params
+        attrs = response_body[:data][:attributes]
+        expect(attrs[:device_name]).to eq 'Mi nueva tablet'
+        expect(attrs[:temporal_password]).to eq sms_mobile_hub.temporal_password
+        expect(response.status).to eq 200
+      end
+    end
+
+    context 'when the sms mobile hub uuid is not valid' do
+      it 'responds with a 404 status code' do
+        params = { uuid: 'xxxx-xxx' }
+        get :show, method: :get, params: params
+        expect(response_body[:data][:error]).to be_present
+        expect(response.status).to eq 404
+      end
+    end
+  end
+
+  describe '#destroy' do
+    let(:firebase_token) { 'firebase-token' }
+    let(:sms_mobile_hub) do
+      create(:sms_mobile_hub, firebase_token: firebase_token)
+    end
+
+    before do
+      inject_user_headers_on_controller
+    end
+
+    context 'when the sms mobile hub uuid is valid' do
+      it 'destroys the mobile device' do
+        params = { uuid: sms_mobile_hub.reload.uuid }
+        delete :destroy, method: :delete, params: params
+        data = response_body[:data]
+        expect(data[:message]).to be_present
+        expect(response.status).to eq 200
+      end
+    end
+
+    context 'when the sms mobile hub uuid is not valid' do
+      it 'responds with a 404 status code' do
+        params = { uuid: 'xxxx-xxx' }
+        delete :destroy, method: :delete, params: params
+        expect(response.status).to eq 404
       end
     end
   end

@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_054834) do
+ActiveRecord::Schema.define(version: 2020_06_24_024846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "sms_mobile_hubs", force: :cascade do |t|
-    t.uuid "api_key", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "device_name", null: false
     t.string "temporal_password"
     t.string "status", default: "pending_activation", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_054834) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.datetime "activated_at"
+    t.string "country_international_code", default: ""
   end
 
   create_table "sms_notifications", force: :cascade do |t|
