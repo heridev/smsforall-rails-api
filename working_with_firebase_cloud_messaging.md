@@ -21,99 +21,9 @@ https://www.youtube.com/watch?v=c66gQzNNHuA
 ### Ruby bindings for fcm
 https://github.com/spacialdb/fcm
 
-server_key = "AAAANAwvztM:APA91bFyxNj6nmPN9C28GVK8BuvNFea6vDpC5g86GnprIt8ukAUOzSHHz013vL6gQdiwl8rlVrxpu9192hh7In8OnKbrfIfxPQMxxZcCa56BaCmxMa0wQC21uyWClXGIZTLtMEsP1M_J"
-fcm_service = FCM.new(server_key, timeout: 3)
-
-```
-registration_ids= ["fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAeme"]
-invalid_ids= ["fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAemedds"]
-```
-
-### Some other options
-```
-options = {
-  "data": {
-    "cellphone_number": "+523121231517",
-    "sms_content": "Hola Heriberto, gracias por registrarte en Pacientes Web en breve le enviamos los datos de acceso.."
-  }
-}
-```
-
-```
-options = {
-  "data": {
-    "cellphone_number": "+523121770155",
-    "sms_content": "que onda pair.."
-  }
-}
-```
-
-```
-options = {
-  "data": {
-    "cellphone_number": "+523121698456",
-    "sms_content": "Hola sms para todos solo probando para ver cuando aguanta esto de los mensajes y si me deja envia una carta interminable jajaja, doble texto goes here.."
-  }
-}
-```
-
-### Tablet para pacientes web demos y mas - sms para todos
-```
-100.times do |index|
-  options = {
-    "data": {
-      "cellphone_number": "+523121698456",
-      "sms_content": "mensajes para tu tablet # #{index + 1} - #{Time.zone.now.to_s}"
-    }
-  }
-  response = fcm_service.send(registration_ids, options)
-  body_response = JSON.parse(response[:body], symbolize_names: true)
-  puts "valid #{index+1} "if body_response[:success] == 1
-end
-```
-
-Mi numero personal
-```
-40.times do |index|
-
-  registration_ids= ["eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5"]
-
-  def fcm_service
-    @fcm_service ||= begin
-    FCM.new(
-        Rails.application.credentials[:fcm_server_key],
-        timeout: ENV['FCM_SERVICE_TIMEOUT'] || 3
-        )
-    end
-  end
-
-  options = {
-    "data": {
-      "cellphone_number": "+523121231517",
-      "sms_content": "Hola jose - #{Time.zone.now.to_s}"
-    }
-  }
-  response = fcm_service.send(registration_ids, options)
-  body_response = JSON.parse(response[:body], symbolize_names: true)
-  puts "valid B #{index+1} "if body_response[:success] == 1
-end
-```
-
-Jose pablo peralta
-Sending 40 sms to this devise on the jose pablo peralta number
-```
-40.times do |index|
-  options = {
-    "data": {
-      "cellphone_number": "+523121708994",
-      "sms_content": "Sms para todos No. #{index + 1} - #{Time.zone.now.to_s}"
-    }
-  }
-  response = fcm_service.send(registration_ids, options)
-  body_response = JSON.parse(response[:body], symbolize_names: true)
-  puts "valid B #{index+1} "if body_response[:success] == 1
-end
-```
+### Numeros de celulares a hacer las pruebas correspondientes
+- Jose pablo peralta -> "+523121428022"
+- smsparatodos tablet -> +523121698456
 
 So 30 messages in 30 minutes, so that means we can send 29 messages in a span of 30 minutes to avoid that warning jaja
 
@@ -124,37 +34,64 @@ settings put global sms_outgoing_check_interval_ms 900000 # to check every 15 mi
 settings put global sms_outgoing_check_max_count 200 # we allowed a maximum of 40 emails every 15 minutes
 ```
 
-### Other firebase cli examples:
+### Mas reciente codigo tecnico
+for development you need the env variable
 ```
-response = fcm_service.send(registration_ids, options)
-invalid_response = fcm_service.send(invalid_ids, options)
-JSON.parse(invalid_response, symbolize_names: true)
-```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+rails console
+devise_firebase_token = "eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5"
+phone_recipient_number = "+523121428022"
+message_content = "Hola juan te confirmamos que tu cita fue agendada correctamente para el dia..."
 
-### To format individual objects
-```
-body_response = JSON.parse(invalid_response[:body], symbolize_names: true)
-body_response = JSON.parse(response[:body], symbolize_names: true)
+service = OnDemandSmsSenderService.new(devise_firebase_token, phone_recipient_number, message_content)
+service.send_now!
 
-if body_response[:success] == 1
-  # the value was sent correctly
-else
-  # the devise is not available in this moment
-  # maybe we need to send an alert for that.
+## many times the same
+29.times do
+  service.send_now!
+end
+
+class OnDemandSmsSenderService
+  def initialize(devise_firebase_token, phone_recipient_number, message_content)
+   @devise_firebase_token = devise_firebase_token;
+   @phone_recipient_number = phone_recipient_number
+   @message_content = take_only_128_characters_from(message_content)
+  end
+  
+  def take_only_128_characters_from(message_content)
+    if message_content.present?
+      message_content[0..127]
+    else
+      ''
+    end
+  end
+ 
+  # This one does not confirm the sms notification as received
+  # But that would be a different feature.
+  def send_now!
+    options = {
+      "data": {
+        "sms_number": @phone_recipient_number,
+        "sms_content": @message_content
+      }
+    }
+    response = fcm_service.send([@devise_firebase_token], options)
+    body_response = JSON.parse(response[:body], symbolize_names: true)
+    puts body_response
+  end
+  
+  private
+  def fcm_service
+    @fcm_service ||= begin
+    FCM.new(
+        Rails.application.credentials[:fcm_server_key],
+        timeout: ENV['FCM_SERVICE_TIMEOUT'] || 3
+        )
+    end
+  end
 end
 ```
-
-Sending a message
-```
-response = fcm.send(registration_ids, options)
-response = fcm.send(registration_ids, {data: {message: "message 1"}})
-```
-
-### New xiaomi token for firebase - as of May 25th, 2020
-
-```
-fAuo61x6Q7qRVc_30o4y5u:APA91bFcftyGzR713o_dknqbfdzPjLmLVwluejZGbFQNw9pEf6LawCn5vlfEVOv0KVAfWGaoJZYkNKVpXNITwUqzlqf09R8lfgh-Yqj5pbFezRYSFg2zxwshluPOZkV-ilRWrtgaAeme
-```
+## Mas recient en marketing
 
 ### Next validations endpoint to control how many messages to send on the free plan
 About this code there is a page in the PW notebook talking about this one
@@ -193,6 +130,7 @@ end
 
 ## First checks to see if this user has send more than 1,000 in a day, we do not save them in free accounts
 
+```
 start_time = Time.zone.now.beginning_of_day
 end_time = Time.zone.now.end_of_day
 
@@ -235,7 +173,9 @@ if how_many_processed > HALF_AN_HOUR_LIMIT_FOR_FREE_ACCOUNT
 else
   SmsNotificationProcessor.new(sms_notification).send_to_device
 end
+```
 
+```
 class SmsNotificationProcessor
   attr_reader :sms_notification
   def initialize(sms_notification)
@@ -251,7 +191,8 @@ class SmsNotificationProcessor
     end
   end
 end
-
+```
+```
 class SmsNotificationCleaner
   def initialize(sms_notification)
     @sms_notification = sms_notification
@@ -262,7 +203,8 @@ class SmsNotificationCleaner
 end
 ```
 
-### The history behind smsparatodos.com or smsforall.og
+The history behind smsparatodos.com or smsforall.og
+===================================================
 Heriberto y Francisco Cardenas
 
 Back in 2019 We needed to implement SMS for our business, including sending reminders, activation accounts, two factor authentication, etc

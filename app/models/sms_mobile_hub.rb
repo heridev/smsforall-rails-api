@@ -42,6 +42,10 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  def find_international_number
+    "+#{country_international_code}#{device_number}"
+  end
+
   private
 
   def set_temporal_password

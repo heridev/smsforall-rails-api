@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :sms_mobile_hub do
     device_name { 'Mi nueva tablet' }
-    device_number { '+523121231517' }
+    device_number { '3121231517' }
+    country_international_code { '52' }
     association :user, factory: :user
 
     trait :activated do
