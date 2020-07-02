@@ -43,52 +43,19 @@ devise_firebase_token = "eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ
 phone_recipient_number = "+523121428022"
 message_content = "Hola juan te confirmamos que tu cita fue agendada correctamente para el dia..."
 
-service = OnDemandSmsSenderService.new(devise_firebase_token, phone_recipient_number, message_content)
-service.send_now!
+params = {
+  sms_content: message_content,
+  sms_number: phone_recipient_number,
+  sms_type: 'standard_delivery',
+  sms_notification_id: sms_notification.unique_id || 'xxxxx-xxxx',
+  device_token_firebase: devise_firebase_token
+}
+service = FirebaseMessagingService.new(params)
+service.send_to_google!
 
 ## many times the same
 29.times do
-  service.send_now!
-end
-
-class OnDemandSmsSenderService
-  def initialize(devise_firebase_token, phone_recipient_number, message_content)
-   @devise_firebase_token = devise_firebase_token;
-   @phone_recipient_number = phone_recipient_number
-   @message_content = take_only_128_characters_from(message_content)
-  end
-  
-  def take_only_128_characters_from(message_content)
-    if message_content.present?
-      message_content[0..127]
-    else
-      ''
-    end
-  end
- 
-  # This one does not confirm the sms notification as received
-  # But that would be a different feature.
-  def send_now!
-    options = {
-      "data": {
-        "sms_number": @phone_recipient_number,
-        "sms_content": @message_content
-      }
-    }
-    response = fcm_service.send([@devise_firebase_token], options)
-    body_response = JSON.parse(response[:body], symbolize_names: true)
-    puts body_response
-  end
-  
-  private
-  def fcm_service
-    @fcm_service ||= begin
-    FCM.new(
-        Rails.application.credentials[:fcm_server_key],
-        timeout: ENV['FCM_SERVICE_TIMEOUT'] || 3
-        )
-    end
-  end
+  service.send_to_google!
 end
 ```
 ## Mas recient en marketing
