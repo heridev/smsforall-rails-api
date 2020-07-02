@@ -1,9 +1,62 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe FirebaseMessagingService do
+  let(:user) { create(:user, mobile_number: '3121899980') }
+
+  describe '#initialize' do
+    describe 'characters limits' do
+      context 'when the characters lenght is longer than 160 characters' do
+        let(:sms_notification) do
+          sms_content = 'x' * 180
+          create(:sms_notification, sms_content: sms_content, user: user)
+        end
+        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
+        let(:params) do
+          {
+            sms_content: sms_notification.sms_content,
+            sms_number: sms_mobile_hub.device_number,
+            sms_type: sms_notification.sms_type,
+            sms_notification_id: sms_notification.unique_id,
+            device_token_firebase: sms_mobile_hub.firebase_token
+          }
+        end
+        it 'limits the content to only 160 characters' do
+          service = described_class.new(params)
+          content = service.sms_content
+          expect(content.size).to eq 160
+        end
+      end
+
+      context 'when the characters length is sorter than 160 characters' do
+        let(:sms_notification) do
+          sms_content = 'x' * 100
+          create(:sms_notification, sms_content: sms_content, user: user)
+        end
+        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
+        let(:params) do
+          {
+            sms_content: sms_notification.sms_content,
+            sms_number: sms_mobile_hub.device_number,
+            sms_type: sms_notification.sms_type,
+            sms_notification_id: sms_notification.unique_id,
+            device_token_firebase: sms_mobile_hub.firebase_token
+          }
+        end
+
+        it 'returns all the original characters' do
+          service = described_class.new(params)
+          content = service.sms_content
+          expect(content.size).to eq 100
+        end
+      end
+    end
+  end
+
   describe '#send_to_google!' do
-    let(:sms_notification) { create(:sms_notification) }
-    let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
+    let(:sms_notification) { create(:sms_notification, user: user) }
+    let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
     let(:params) do
       {
         sms_content: sms_notification.sms_content,
@@ -19,7 +72,7 @@ RSpec.describe FirebaseMessagingService do
         {
           status_code: 200,
           body: {
-            multicast_id: 8573675465357843813,
+            multicast_id: 8_573_675_465_357_843_813,
             success: 1,
             failure: 0,
             canonical_ids: 0
@@ -44,7 +97,7 @@ RSpec.describe FirebaseMessagingService do
       let(:invalid_firebase_response) do
         {
           body: {
-            multicast_id: 8573675465357843813,
+            multicast_id: 8_573_675_465_357_843_813,
             success: 0,
             failure: 1,
             canonical_ids: 0,
@@ -69,4 +122,3 @@ RSpec.describe FirebaseMessagingService do
     end
   end
 end
-

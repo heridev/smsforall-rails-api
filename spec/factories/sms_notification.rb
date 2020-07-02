@@ -3,7 +3,8 @@ FactoryBot.define do
     sms_content { 'Welcome to smsparatodos.com' }
     sms_number { '+523121231517' }
     status { 'pending' }
-    sms_type { 'transactional' }
+    sms_type { 'standard_delivery' }
+    association :user, factory: :user
 
     trait :sent_to_firebase do
       status { 'sent_to_firebase' }

@@ -26,7 +26,7 @@ RSpec.describe MobileHubValidatorService do
           described_class.new(params).validate_hub!
         end.to change(SmsNotification, :count).by(1)
 
-        sms_notification = SmsNotification.find_by(sms_number: sms_mobile_hub.device_number)
+        sms_notification = SmsNotification.find_by(sms_number: sms_mobile_hub.find_international_number)
         expect(sms_notification.sms_type).to eq 'device_validation'
         expect(sms_notification.sms_content).to match('Hola')
       end

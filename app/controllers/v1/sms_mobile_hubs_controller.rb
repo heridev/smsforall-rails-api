@@ -7,9 +7,18 @@ module V1
     before_action :find_mobile_hub_and_notification, only: :activate
     before_action :find_mobile_hub, only: %i[show destroy]
 
+    # TODO: if there is a new need to start filtering by a new attribute
+    # we can combine the index and activated endpoints
     def index
       render_serialized(
         @current_api_user.sms_mobile_hubs,
+        SmsMobileHubSerializer
+      )
+    end
+
+    def activated
+      render_serialized(
+        @current_api_user.sms_mobile_hubs.active,
         SmsMobileHubSerializer
       )
     end
@@ -108,11 +117,11 @@ module V1
         unique_id: activation_params[:sms_notification_uid]
       )
 
-      if !@mobile_hub || !@sms_notification
-        activerecord_not_found(
-          I18n.t('mobile_hub.controllers.failure_hub_validation')
-        )
-      end
+      return if @mobile_hub && @sms_notification
+
+      activerecord_not_found(
+        I18n.t('mobile_hub.controllers.failure_hub_validation')
+      )
     end
 
     def activation_params

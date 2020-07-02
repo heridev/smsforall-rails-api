@@ -17,7 +17,7 @@ RSpec.describe SmsHubsValidationJob, type: :job do
   end
 
   it 'jobs is added to the default queue' do
-    expect(described_class.new.queue_name).to eq('default')
+    expect(described_class.new.queue_name).to eq('urgent_delivery')
   end
 
   it 'updates and marks the mobile hub as activation in progress' do

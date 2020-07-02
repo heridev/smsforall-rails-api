@@ -15,8 +15,9 @@ es:
       successful_hub_activation: 'El dispositivo se activó correctamente, disfruta de smsparatodos.com'
       successful_hub_deletion: 'El dispositivo se eliminó correctamente'
       failure_hub_deletion: 'Ocurrió un error al momento de eliminar el dispositivo, intenta nuevamente..'
-      failure_hub_validation: 'El codigo is inválido o el dispositivo ya fue activado anteriormente..'
+      failure_hub_validation: 'El codigo es inválido o el dispositivo ya fue activado anteriormente..'
       failure_hub_activation: 'Ocurrió un error al momento de activar el dispositivo, intenta nuevamente..'
+      hub_not_found: 'El dispositivo no existe'
 
   activerecord:
     models:

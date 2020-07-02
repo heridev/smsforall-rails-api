@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_024846) do
+ActiveRecord::Schema.define(version: 2020_06_26_223023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_024846) do
     t.datetime "sent_to_firebase_at"
     t.integer "assigned_to_mobile_hub_id"
     t.string "sms_type", default: "transactional"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

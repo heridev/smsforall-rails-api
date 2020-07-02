@@ -20,10 +20,13 @@ Rails.application.routes.draw do
 
       resources :sms_mobile_hubs, only: %i[create show index destroy], param: :uuid do
         collection do
+          get :activated
           post :validate
           post :activate
         end
       end
+
+      resources :sms_notifications, param: :unique_id
     end
   end
 end

@@ -10,11 +10,19 @@ class FirebaseMessagingService
 
   def initialize(params = {})
     params = params.with_indifferent_access
-    @sms_content = params[:sms_content]
     @sms_number = params[:sms_number]
     @sms_notification_id = params[:sms_notification_id]
     @device_token_firebase = params[:device_token_firebase]
-    @sms_type = params[:sms_type] || 'sms_notification'
+    @sms_content = take_only_160_characters_from(params[:sms_content])
+    @sms_type = params[:sms_type] || 'transactional'
+  end
+
+  def take_only_160_characters_from(message_content)
+    if message_content.present?
+      message_content[0..159]
+    else
+      ''
+    end
   end
 
   def valid_info?

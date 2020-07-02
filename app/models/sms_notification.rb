@@ -24,6 +24,8 @@ class SmsNotification < ApplicationRecord
              foreign_key: :assigned_to_mobile_hub_id,
              optional: true
 
+  belongs_to :user
+
   def mark_sent_to_firebase_as_success!(sms_mobile_hub_id)
     update_attributes(
       sent_to_firebase_at: Time.zone.now,
@@ -45,6 +47,20 @@ class SmsNotification < ApplicationRecord
       status: STATUSES[:delivered],
       processed_by_sms_mobile_hub_id: sms_mobile_hub_id,
       delivered_at: Time.zone.now
+    )
+  end
+
+  def start_delivery_process!
+    if sms_type == 'urgent_delivery'
+      return UrgentSmsNotificationSenderJob.perform_later(
+        id,
+        assigned_to_mobile_hub_id
+      )
+    end
+
+    SmsNotificationSenderJob.perform_later(
+      id,
+      assigned_to_mobile_hub_id
     )
   end
 end

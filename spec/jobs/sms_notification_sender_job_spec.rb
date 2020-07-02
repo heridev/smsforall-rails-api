@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe SmsNotificationSenderJob, type: :job do
+  let(:user) { create(:user, mobile_number: '3121899980') }
   let(:sms_mobile_hub) { create(:sms_mobile_hub) }
-  let(:sms_notification) { create(:sms_notification) }
+  let(:sms_notification) { create(:sms_notification, user: user) }
 
   it 'enqueues the job' do
     expect do
@@ -11,6 +12,6 @@ RSpec.describe SmsNotificationSenderJob, type: :job do
   end
 
   it 'jobs is added to the default queue' do
-    expect(described_class.new.queue_name).to eq('default')
+    expect(described_class.new.queue_name).to eq('standard_delivery')
   end
 end

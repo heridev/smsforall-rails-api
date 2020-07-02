@@ -6,7 +6,9 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
     let(:expected_keys) do
       [
         :email,
-        :name
+        :name,
+        :country_international_code,
+        :mobile_number
       ]
     end
 

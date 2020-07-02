@@ -1,16 +1,26 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SmsNotificationSenderService do
+  let(:user) { create(:user, mobile_number: '3121899980') }
+
   describe '#deliver_notification' do
-    let(:sms_notification) { create(:sms_notification) }
+    let(:sms_notification) { create(:sms_notification, user: user) }
+    let(:sms_notification_two) do
+      create(:sms_notification, sms_number: '+523121708994', user: user)
+    end
     let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
+    let(:sms_mobile_hub_two) do
+      create(:sms_mobile_hub, :activated, device_number: '3121708994', user: user)
+    end
 
     context 'when the message is sent to Google firebase' do
       let(:valid_firebase_response) do
         {
           status_code: 200,
           body: {
-            multicast_id: 8573675465357843813,
+            multicast_id: 8_573_675_465_357_843_813,
             success: 1,
             failure: 0,
             canonical_ids: 0
@@ -24,16 +34,16 @@ RSpec.describe SmsNotificationSenderService do
         ).and_return(valid_firebase_response)
 
         service = described_class.new(
-          sms_notification.id,
-          sms_mobile_hub.id
+          sms_notification_two.id,
+          sms_mobile_hub_two.id
         )
         service.deliver_notification!
-        sms_notification.reload
-        expect(sms_notification.status).to eq 'sent_to_firebase'
-        expect(sms_notification.sent_to_firebase_at).to be_present
+        sms_notification_two.reload
+        expect(sms_notification_two.status).to eq 'sent_to_firebase'
+        expect(sms_notification_two.sent_to_firebase_at).to be_present
         expect(
-          sms_notification.assigned_to_mobile_hub_id
-        ).to eq sms_mobile_hub.id
+          sms_notification_two.assigned_to_mobile_hub_id
+        ).to eq sms_mobile_hub_two.id
       end
     end
 
@@ -41,7 +51,7 @@ RSpec.describe SmsNotificationSenderService do
       let(:invalid_firebase_response) do
         {
           body: {
-            multicast_id: 8573675465357843813,
+            multicast_id: 8_573_675_465_357_843_813,
             success: 0,
             failure: 1,
             canonical_ids: 0,
@@ -68,41 +78,6 @@ RSpec.describe SmsNotificationSenderService do
         expect(
           sms_notification.assigned_to_mobile_hub_id
         ).to eq sms_mobile_hub.id
-      end
-    end
-  end
-
-  describe '#find_valid_sms_content' do
-    let(:sms_notification) do
-      sms_content = 'x' * 180
-      create(:sms_notification, sms_content: sms_content)
-    end
-    let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
-
-    context 'when the characters lenght is longer than 160 characters' do
-      it 'limits the content to only 160 characters' do
-        service = described_class.new(
-          sms_notification.id,
-          sms_mobile_hub.id
-        )
-        content = service.find_valid_sms_content
-        expect(content.size).to eq 160
-      end
-    end
-
-    context 'when the characters lenght is sorter than 160 characters' do
-      let(:sms_notification) do
-        sms_content = 'x' * 100
-        create(:sms_notification, sms_content: sms_content)
-      end
-
-      it 'returns all the original characters' do
-        service = described_class.new(
-          sms_notification.id,
-          sms_mobile_hub.id
-        )
-        content = service.find_valid_sms_content
-        expect(content.size).to eq 100
       end
     end
   end
