@@ -1,5 +1,5 @@
 class SmsHubsValidationJob < ApplicationJob
-  queue_as :default
+  queue_as :urgent_delivery
 
   def perform(args = {})
     MobileHubValidatorService.new(args).validate_hub!

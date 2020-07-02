@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class SmsNotificationSenderJob < ApplicationJob
-  queue_as :standard_delivery
+class UrgentSmsNotificationSenderJob < ApplicationJob
+  queue_as :urgent_delivery
 
   def perform(sms_notification_id, sms_hub_id)
     SmsNotificationSenderService.new(

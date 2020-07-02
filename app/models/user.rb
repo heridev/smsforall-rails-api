@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   ## Associations
   has_many :sms_mobile_hubs
+  has_many :sms_notifications
 
   def update_jwt_salt!
     password_salt = BCrypt::Engine.generate_salt

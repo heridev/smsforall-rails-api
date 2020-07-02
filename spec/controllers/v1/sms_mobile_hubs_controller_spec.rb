@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe V1::SmsMobileHubsController, type: :controller do
+  let(:user) do
+    create(:user, email: 'customer@example.com', mobile_number: '3121231617')
+  end
 
-  describe '#show' do
+  describe '#index' do
     let(:firebase_token) { 'firebase-token' }
     let(:sms_mobile_hub) do
       create(:sms_mobile_hub, firebase_token: firebase_token)
@@ -29,6 +32,57 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
       it 'responds with zero records' do
         get :index, method: :get
+        expect(response.status).to eq 200
+        expect(response_body[:data].size).to eq 0
+      end
+    end
+  end
+
+  describe '#activated' do
+    let(:firebase_token) { 'firebase-token' }
+    let(:sms_mobile_hub) do
+      create(:sms_mobile_hub, :activated, firebase_token: firebase_token)
+    end
+    let!(:sms_mobile_hub_two) do
+      create(
+        :sms_mobile_hub,
+        device_name: 'new device 1',
+        device_number: '3121708994',
+        firebase_token: 'y.283dj87dlk2838kljd.dkl3/389djkd',
+        user: sms_mobile_hub.user
+      )
+    end
+    let!(:sms_mobile_hub_three) do
+      create(
+        :sms_mobile_hub,
+        device_name: 'new device 2',
+        device_number: '3121231718',
+        firebase_token: 'y.283dj87dlk2',
+        user: sms_mobile_hub.user
+      )
+    end
+
+    context 'when the user has sms mobile hub records' do
+      before do
+        inject_user_headers_on_controller(sms_mobile_hub.user)
+      end
+
+      it 'includes only the ones that belong to that user and are activated' do
+        get :activated, method: :get
+        expect(response.status).to eq 200
+        data = response_body[:data]
+        expect(data.size).to eq 1
+        expect(data.first[:attributes][:uuid]).to eq sms_mobile_hub.reload.uuid
+      end
+    end
+
+    context 'when the user does not have sms mobile hub records' do
+      before do
+        inject_user_headers_on_controller
+      end
+
+      it 'responds with zero records' do
+        get :activated, method: :get
         expect(response.status).to eq 200
         expect(response_body[:data].size).to eq 0
       end
@@ -241,7 +295,9 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
     let(:sms_mobile_hub) do
       create(:sms_mobile_hub, firebase_token: firebase_token)
     end
-    let(:sms_notification) { create(:sms_notification) }
+    let(:sms_notification) do
+      create(:sms_notification, user: user)
+    end
 
     context 'when the information is valid' do
       let(:sms_mobile_params) do

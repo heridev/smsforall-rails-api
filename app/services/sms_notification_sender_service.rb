@@ -13,7 +13,7 @@ class SmsNotificationSenderService
     return unless mobile_hub
 
     params = {
-      sms_content: find_valid_sms_content,
+      sms_content: sms_notification.sms_content,
       sms_number: sms_notification.sms_number,
       sms_type: sms_notification.sms_type,
       sms_notification_id: sms_notification.unique_id,
@@ -27,10 +27,5 @@ class SmsNotificationSenderService
     else
       sms_notification.mark_sent_to_firebase_as_failure!(mobile_hub.id)
     end
-  end
-
-  # We allow only 160 characters because the limits of SMS text
-  def find_valid_sms_content
-    sms_notification.sms_content[0..159]
   end
 end
