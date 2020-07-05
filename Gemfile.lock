@@ -64,6 +64,7 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
     ast (2.4.0)
+    awesome_print (1.8.0)
     bcrypt (3.1.13)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
@@ -77,6 +78,8 @@ GEM
     erubi (1.9.0)
     factory_bot (5.2.0)
       activesupport (>= 4.2.0)
+    fakeredis (0.8.0)
+      redis (~> 4.1)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     fcm (1.0.1)
@@ -88,6 +91,18 @@ GEM
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
     jwt (2.2.1)
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -219,12 +234,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print (~> 1.8.0)
   bcrypt (~> 3.1.13)
   bootsnap (>= 1.4.2)
   factory_bot (~> 5.2.0)
+  fakeredis
   fast_jsonapi (~> 1.7.1)!
   fcm (~> 1.0.1)
   jwt (~> 2.2.1)
+  kaminari
   listen (>= 3.0.5, < 3.2)
   pg (~> 1.2.3)
   pry
@@ -232,6 +250,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors (~> 1.1.1)
   rails (~> 6.0.2.2)
+  redis (~> 4.1.4)
   rspec-rails (~> 4.0.0)
   rubocop (~> 0.82.0)
   sidekiq (~> 6.0.7)

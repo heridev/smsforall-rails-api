@@ -45,6 +45,13 @@ then you access the url
 localhost:3000/panel/sidekiq
 ```
 
+### Test suite
+As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+bundle exe rspec spec
+```
+
 ### Managing encrypted env credentials
 
 ```

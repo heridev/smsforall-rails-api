@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe V1::SmsMobileHubsController, type: :controller do
   let(:user) do
-    create(:user, email: 'customer@example.com', mobile_number: '3121231617')
+    create(:user, mobile_number: '3121231617')
   end
 
   describe '#index' do
     let(:firebase_token) { 'firebase-token' }
     let(:sms_mobile_hub) do
-      create(:sms_mobile_hub, firebase_token: firebase_token)
+      create(:sms_mobile_hub, firebase_token: firebase_token, user: user)
     end
 
     context 'when the user has sms mobile hub records' do
@@ -78,7 +78,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
 
     context 'when the user does not have sms mobile hub records' do
       before do
-        inject_user_headers_on_controller
+        inject_user_headers_on_controller(user)
       end
 
       it 'responds with zero records' do
@@ -237,7 +237,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
     end
 
     before do
-      inject_user_headers_on_controller
+      inject_user_headers_on_controller(sms_mobile_hub.user)
     end
 
     context 'when the sms mobile hub uuid is valid' do
@@ -268,7 +268,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
     end
 
     before do
-      inject_user_headers_on_controller
+      inject_user_headers_on_controller(sms_mobile_hub.user)
     end
 
     context 'when the sms mobile hub uuid is valid' do
@@ -296,7 +296,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
       create(:sms_mobile_hub, firebase_token: firebase_token)
     end
     let(:sms_notification) do
-      create(:sms_notification, user: user)
+      create(:sms_notification, user: user, assigned_to_mobile_hub: sms_mobile_hub)
     end
 
     context 'when the information is valid' do

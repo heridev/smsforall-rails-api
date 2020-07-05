@@ -3,16 +3,31 @@
 class SmsNotification < ApplicationRecord
   STATUSES = {
     default: 'pending',
-    device_validation: 'device_validation',
     delivered: 'delivered',
+    received: 'received',
     failed_sent_to_firebase: 'failed_sent_to_firebase',
     sent_to_firebase: 'sent_to_firebase'
+  }.freeze
+
+  SMS_TYPES = {
+    default: 'standard_delivery',
+    urgent_delivery: 'urgent_delivery',
+    device_validation: 'device_validation'
+  }.freeze
+
+  KIND_OF_NOTIFICATION = {
+    in: 'in',
+    out: 'out'
   }.freeze
 
   validates_presence_of :sms_content,
                         :sms_number,
                         :status,
-                        :sms_type
+                        :sms_type,
+                        :assigned_to_mobile_hub_id
+
+  validates_inclusion_of :sms_type, in: SMS_TYPES.values
+  validates_inclusion_of :kind_of_notification, in: KIND_OF_NOTIFICATION.values
 
   belongs_to :processed_by_mobile_hub,
              class_name: 'SmsMobileHub',
@@ -51,7 +66,7 @@ class SmsNotification < ApplicationRecord
   end
 
   def start_delivery_process!
-    if sms_type == 'urgent_delivery'
+    if sms_type == SMS_TYPES[:urgent_delivery]
       return UrgentSmsNotificationSenderJob.perform_later(
         id,
         assigned_to_mobile_hub_id

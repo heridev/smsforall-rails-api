@@ -18,6 +18,13 @@ es:
       failure_hub_validation: 'El codigo es inválido o el dispositivo ya fue activado anteriormente..'
       failure_hub_activation: 'Ocurrió un error al momento de activar el dispositivo, intenta nuevamente..'
       hub_not_found: 'El dispositivo no existe'
+  api:
+    v2:
+      sms_notifications:
+        failed:
+          limit_by_minute_reached: 'El limite de peticiones por minuto a sido alcanzado, intenta nuevamente en el siguiente minuto...'
+          daily_limit_reached: 'El limite de peticiones por día a sido alcanzado, intenta nuevamente en el siguiente día hábil...'
+          invalid_mobile_hub_id: 'El valor mobile_hub_id es inválido'
 
   activerecord:
     models:
@@ -29,6 +36,12 @@ es:
 
     errors:
       models:
+        sms_notification:
+          attributes:
+            user:
+              required: 'La notificación debe estar asociada a un usuario'
+            # assigned_to_mobile_hub_id:
+            #   blank:
         user:
           attributes:
             email:

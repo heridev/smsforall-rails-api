@@ -27,6 +27,8 @@ class User < ApplicationRecord
       password_hash = { password: password_selected }
       cleaned_params[:password_salt] = password_salt
       cleaned_params[:jwt_salt] = BCrypt::Engine.generate_salt
+      cleaned_params[:main_api_token_salt] = BCrypt::Engine.generate_salt
+      cleaned_params[:secondary_api_token_salt] = BCrypt::Engine.generate_salt
       cleaned_params[:password_hash] = JwtTokenService.encode_token(
         password_hash,
         password_salt,

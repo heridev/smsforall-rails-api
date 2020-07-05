@@ -3,9 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe MobileHubValidatorService do
+  let(:user) { create(:user, mobile_number: '3121231818') }
+
   describe '#validate_hub!' do
     context 'when the token code is valid' do
-      let(:sms_mobile_hub) { create(:sms_mobile_hub) }
+      let(:sms_mobile_hub) { create(:sms_mobile_hub, user: user) }
 
       let(:params) do
         {

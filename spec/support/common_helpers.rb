@@ -9,13 +9,7 @@ module CommonHelpers
   end
 
   def inject_user_headers_on_controller(user = nil)
-    user_params = {
-      email: 'user@example.com',
-      password: 'password1',
-      name: 'Heriberto Perez',
-      mobile_number: '3121708994'
-    }
-    valid_user = user || User.persist_values(user_params)
+    valid_user = user || create(:user)
     valid_token = JwtTokenService.encode_token(
       { user_id: valid_user.id },
       valid_user.jwt_salt
@@ -24,6 +18,20 @@ module CommonHelpers
     headers = {
       'Authorization-Token' => "Bearer #{valid_token}",
       'Authorization-Client' => valid_user.jwt_salt
+    }
+    request.headers.merge! headers
+  end
+
+  def inject_user_headers_on_v2_controller(user = nil)
+    valid_user = user || create(:user)
+    valid_token = JwtTokenService.encode_token(
+      { user_id: valid_user.id },
+      valid_user.main_api_token_salt
+    )
+
+    headers = {
+      'Authorization-Token' => "Bearer #{valid_token}",
+      'Authorization-Client' => valid_user.main_api_token_salt
     }
     request.headers.merge! headers
   end

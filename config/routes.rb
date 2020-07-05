@@ -28,5 +28,13 @@ Rails.application.routes.draw do
 
       resources :sms_notifications, param: :unique_id
     end
+
+    namespace :v2, path: '/v2' do
+      post '/sms/create',
+           to: 'sms_notifications#create',
+           defaults: { format: 'json' },
+           via: [:post]
+      # resources :sms_notifications
+    end
   end
 end

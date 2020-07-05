@@ -8,11 +8,16 @@ RSpec.describe FirebaseMessagingService do
   describe '#initialize' do
     describe 'characters limits' do
       context 'when the characters lenght is longer than 160 characters' do
+        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
         let(:sms_notification) do
           sms_content = 'x' * 180
-          create(:sms_notification, sms_content: sms_content, user: user)
+          create(
+            :sms_notification,
+            sms_content: sms_content,
+            user: user,
+            assigned_to_mobile_hub: sms_mobile_hub
+          )
         end
-        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
         let(:params) do
           {
             sms_content: sms_notification.sms_content,
@@ -30,11 +35,19 @@ RSpec.describe FirebaseMessagingService do
       end
 
       context 'when the characters length is sorter than 160 characters' do
+        let(:sms_mobile_hub) do
+          create(:sms_mobile_hub, :activated, user: user, device_number: '3121231518')
+        end
         let(:sms_notification) do
           sms_content = 'x' * 100
-          create(:sms_notification, sms_content: sms_content, user: user)
+          create(
+            :sms_notification,
+            sms_content: sms_content,
+            user: user,
+            assigned_to_mobile_hub: sms_mobile_hub
+          )
         end
-        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
+
         let(:params) do
           {
             sms_content: sms_notification.sms_content,
@@ -55,8 +68,10 @@ RSpec.describe FirebaseMessagingService do
   end
 
   describe '#send_to_google!' do
-    let(:sms_notification) { create(:sms_notification, user: user) }
     let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
+    let(:sms_notification) do
+      create(:sms_notification, user: user, assigned_to_mobile_hub: sms_mobile_hub)
+    end
     let(:params) do
       {
         sms_content: sms_notification.sms_content,

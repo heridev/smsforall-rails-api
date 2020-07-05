@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_26_223023) do
+ActiveRecord::Schema.define(version: 2020_07_03_211936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 2020_06_26_223023) do
     t.integer "assigned_to_mobile_hub_id"
     t.string "sms_type", default: "transactional"
     t.integer "user_id"
+    t.string "kind_of_notification", default: "in", null: false
+    t.string "sms_customer_reference_id", default: "", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,6 +60,8 @@ ActiveRecord::Schema.define(version: 2020_06_26_223023) do
     t.string "country_international_code", default: ""
     t.boolean "activation_in_progress", default: true
     t.string "mobile_number", default: ""
+    t.string "main_api_token_salt"
+    t.string "secondary_api_token_salt"
   end
 
 end

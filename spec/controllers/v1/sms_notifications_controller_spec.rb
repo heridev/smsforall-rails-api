@@ -1,6 +1,140 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe V1::SmsNotificationsController, type: :controller do
+  let(:user) { create(:user, mobile_number: '3121231818') }
+  let(:other_user) { create(:user, mobile_number: '3121231718') }
+
+  describe '#index' do
+    let(:sms_mobile_hub_two) do
+      create(
+        :sms_mobile_hub,
+        :activated,
+        device_number: '3121709090',
+        user: user
+      )
+    end
+    let(:sms_mobile_hub) do
+      create(
+        :sms_mobile_hub,
+        :activated,
+        device_number: '3121232030',
+        user: user
+      )
+    end
+    let!(:sms_notifications) do
+      create_list(
+        :sms_notification,
+        5,
+        user: user,
+        assigned_to_mobile_hub: sms_mobile_hub
+      )
+    end
+    let!(:sms_notifications_other_user) do
+      create_list(
+        :sms_notification,
+        5,
+        user: other_user,
+        assigned_to_mobile_hub: sms_mobile_hub_two
+      )
+    end
+    let!(:individual_sms_notification) do
+      create(
+        :sms_notification,
+        user: user,
+        sms_number: '3121701111',
+        assigned_to_mobile_hub: sms_mobile_hub
+      )
+    end
+
+    let(:expected_keys) do
+      %i[
+        sms_notifications
+        page_number
+        tot_notifications
+        tot_pages
+      ]
+    end
+
+    before do
+      inject_user_headers_on_controller(user)
+    end
+
+    context 'when no params are included in the request' do
+      it 'responds with a successful status code' do
+        get :index, method: :get
+        expect(response.status).to eq 200
+      end
+
+      it 'includes the pagination attributes' do
+        get :index, method: :get
+        expect(response_body[:data].keys).to eq expected_keys
+      end
+
+      it 'returns all sms notifications' do
+        get :index, method: :get
+        expect(response_body[:data][:sms_notifications].size).to eq 6
+      end
+    end
+
+    context 'when there are params/filters are included in the request' do
+      context 'when searching by sms number' do
+        let(:search_by_params) do
+          {
+            text_searched: '170111'
+          }
+        end
+
+        it 'returns only the one that matches with the sms_number' do
+          get :index, method: :get, params: search_by_params
+          expect(response_body[:data][:sms_notifications].size).to eq 1
+          expect(response_body[:data][:page_number]).to eq 1
+          expect(response_body[:data][:tot_pages]).to eq 1
+          expect(response_body[:data][:tot_notifications]).to eq 1
+        end
+      end
+
+      context 'when searching by kind of notification' do
+        let(:by_kind_out) do
+          {
+            kind_of_notification: 'out'
+          }
+        end
+        let(:by_kind_in) do
+          {
+            kind_of_notification: 'in'
+          }
+        end
+
+        it 'returns the ones that were received' do
+          get :index, method: :get, params: by_kind_in
+          expect(response_body[:data][:sms_notifications].size).to eq 6
+        end
+
+        it 'returns the ones that were delivered' do
+          get :index, method: :get, params: by_kind_out
+          expect(response_body[:data][:sms_notifications].size).to eq 0
+        end
+      end
+
+      it 'responds with a successful status code' do
+        get :index, method: :get
+        expect(response.status).to eq 200
+      end
+
+      it 'includes the pagination attributes' do
+        get :index, method: :get
+        expect(response_body[:data].keys).to eq expected_keys
+      end
+
+      it 'returns all sms notifications' do
+        get :index, method: :get
+        expect(response_body[:data][:sms_notifications].size).to eq 6
+      end
+    end
+  end
+
   describe '#create' do
     let(:firebase_token) { 'firebase-token' }
     let(:sms_mobile_hub) do

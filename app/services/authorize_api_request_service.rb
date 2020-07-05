@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class AuthorizeApiRequestService
-  def initialize(headers = {})
+  def initialize(headers = {}, secured_api_version = 'V1')
     @headers = headers
+    @secured_api_version = secured_api_version
   end
 
   def validate_user_token
@@ -14,7 +15,16 @@ class AuthorizeApiRequestService
   attr_reader :headers
 
   def api_user
-    if decoded_auth_token
+    return unless decoded_auth_token
+
+    if @secured_api_version == 'V2'
+      @api_user ||= User.find_by(
+        id: decoded_auth_token[:user_id],
+        main_api_token_salt: authorization_client_header
+      )
+    end
+
+    if @secured_api_version == 'V1'
       @api_user ||= User.find_by(
         id: decoded_auth_token[:user_id],
         jwt_salt: authorization_client_header

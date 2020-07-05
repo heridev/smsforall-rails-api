@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SmsNotificationSenderJob, type: :job do
   let(:user) { create(:user, mobile_number: '3121899980') }
   let(:sms_mobile_hub) { create(:sms_mobile_hub) }
-  let(:sms_notification) { create(:sms_notification, user: user) }
+  let(:sms_notification) do
+    create(:sms_notification, user: user, assigned_to_mobile_hub: sms_mobile_hub)
+  end
 
   it 'enqueues the job' do
     expect do

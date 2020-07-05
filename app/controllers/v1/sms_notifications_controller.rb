@@ -2,14 +2,32 @@
 
 module V1
   class SmsNotificationsController < ::V1::AuthorizedController
+    PER_PAGE_RECORDS = 100
     before_action :find_mobile_hub, only: :create
 
-    # def index
-    #   render_serialized(
-    #     @current_api_user.sms_notifications,
-    #     SmsNotificationSerializer
-    #   )
-    # end
+    def index
+      query_object = SmsNotificationsQuery.relation
+      responses = query_object.filter_by_params(params, @current_api_user.id)
+                              .page(page_number)
+                              .per(PER_PAGE_RECORDS)
+                              .order('id ASC')
+
+      serialized_data = serialize_hash(
+        responses,
+        SmsNotificationSerializer
+      )
+
+      data_response = {
+        data: {
+          sms_notifications: serialized_data[:data],
+          page_number: page_number,
+          tot_notifications: responses.total_count,
+          tot_pages: responses.total_pages
+        }
+      }
+
+      render_json_dump(data_response)
+    end
 
     def create
       new_params = sms_notification_params.merge(
@@ -32,6 +50,10 @@ module V1
     end
 
     private
+
+    def page_number
+      params[:page_number].try(:to_i) || 1
+    end
 
     def find_mobile_hub
       @find_mobile_hub ||= SmsMobileHub.find_by(

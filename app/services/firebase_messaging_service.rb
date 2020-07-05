@@ -18,11 +18,7 @@ class FirebaseMessagingService
   end
 
   def take_only_160_characters_from(message_content)
-    if message_content.present?
-      message_content[0..159]
-    else
-      ''
-    end
+    ValueConverterService.new(message_content).take_only_160_characters_from
   end
 
   def valid_info?

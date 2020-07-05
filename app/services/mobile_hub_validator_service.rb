@@ -36,7 +36,8 @@ class MobileHubValidatorService
       sms_content: sms_content,
       sms_number: mobile_hub.find_international_number,
       user_id: mobile_hub.user_id,
-      sms_type: SmsNotification::STATUSES[:device_validation]
+      assigned_to_mobile_hub_id: mobile_hub.id,
+      sms_type: SmsNotification::SMS_TYPES[:device_validation]
     }
 
     sms_notification = SmsNotification.create(sms_confirmation_params)

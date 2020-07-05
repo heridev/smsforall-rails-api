@@ -74,6 +74,12 @@ module V1
       serializer.new(obj, options).serializable_hash.to_json
     end
 
+    # Specially for those cases when we need to implement
+    # pagination results
+    def serialize_hash(obj, serializer, options = {})
+      serializer.new(obj, options).serializable_hash
+    end
+
     private
 
     def inject_token_headers(user)

@@ -14,11 +14,18 @@ gem 'fast_jsonapi', '~> 1.7.1', git: 'https://github.com/fast-jsonapi/fast_jsona
 gem 'sidekiq', '~> 6.0.7'
 gem 'fcm', '~> 1.0.1'
 gem 'rack-cors', '~> 1.1.1'
+gem 'kaminari'
+gem 'awesome_print', '~> 1.8.0'
+gem 'redis', '~> 4.1.4'
 
 group :development, :test do
   gem 'rubocop', '~> 0.82.0', require: false
+end
+
+group :test do
   gem 'rspec-rails', '~> 4.0.0'
   gem 'factory_bot', '~> 5.2.0'
+  gem 'fakeredis', require: 'fakeredis/rspec'
 end
 
 group :development do

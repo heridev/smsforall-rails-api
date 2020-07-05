@@ -5,10 +5,10 @@ FactoryBot.define do
     status { 'pending' }
     sms_type { 'standard_delivery' }
     association :user, factory: :user
+    association :assigned_to_mobile_hub, factory: :sms_mobile_hub
 
     trait :sent_to_firebase do
       status { 'sent_to_firebase' }
-      association :assigned_to_mobile_hub, factory: :sms_mobile_hub
       failed_delivery_at { nil }
       sent_to_firebase_at { Time.zone.now }
     end

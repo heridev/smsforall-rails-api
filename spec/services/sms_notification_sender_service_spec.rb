@@ -10,7 +10,9 @@ RSpec.describe SmsNotificationSenderService do
     let(:sms_notification_two) do
       create(:sms_notification, sms_number: '+523121708994', user: user)
     end
-    let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
+    let(:sms_mobile_hub) do
+      create(:sms_mobile_hub, :activated, device_number: '31211231718', user: user)
+    end
     let(:sms_mobile_hub_two) do
       create(:sms_mobile_hub, :activated, device_number: '3121708994', user: user)
     end
