@@ -72,7 +72,7 @@ RSpec.describe SmsNotificationCreatorService do
         }
         service = described_class.new(params)
         result = service.perform_creation!
-        expect(result[:status]).to eq 'success'
+        expect(result[:status]).to eq 'enqueued'
         expect(result[:api_version]).to eq 'V2'
         expect(service.valid_creation?).to be_truthy
         expect(result.keys).to eq expected_keys
@@ -92,7 +92,7 @@ RSpec.describe SmsNotificationCreatorService do
           }
           service = described_class.new(params)
           result = service.perform_creation!
-          expect(result[:status]).to eq 'success'
+          expect(result[:status]).to eq 'enqueued'
         end
       end
 

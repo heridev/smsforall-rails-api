@@ -122,7 +122,7 @@ class SmsNotificationCreatorService
       mobile_hub_id: notification_params[:mobile_hub_id],
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
-      status: 'success',
+      status: 'enqueued',
       error_message: nil,
       sms_number: sms_notification.sms_number
     }
