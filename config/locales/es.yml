@@ -22,6 +22,7 @@ es:
     v2:
       sms_notifications:
         failed:
+          there_are_errors: 'Existen algunos errores de validación:'
           limit_by_minute_reached: 'El limite de peticiones por minuto a sido alcanzado, intenta nuevamente en el siguiente minuto...'
           daily_limit_reached: 'El limite de peticiones por día a sido alcanzado, intenta nuevamente en el siguiente día hábil...'
           invalid_mobile_hub_id: 'El valor mobile_hub_id es inválido'

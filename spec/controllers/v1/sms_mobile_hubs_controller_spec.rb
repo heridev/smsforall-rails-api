@@ -156,7 +156,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
           request.headers.merge! headers
           process :create, method: :post, params: sms_mobile_params
           expect(response.status).to eq 422
-          expect(response_body[:data][:errors][:device_name]).to eq ["no puede estar en blanco"]
+          expect(response_body[:data][:errors][:device_name]).to eq ["can't be blank"]
         end
       end
     end

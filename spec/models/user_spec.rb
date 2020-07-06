@@ -17,13 +17,13 @@ RSpec.describe User, type: :model do
         it 'returns a format error when the domains is missing' do
           user = build(:user, email: 'email@example')
           expect(user.valid?).to be_falsey
-          expect(user.errors.messages[:email].first).to include('El formato es')
+          expect(user.errors.messages[:email].first).to include('is invalid')
         end
 
         it 'returns a format error when the @ is missing' do
           user = build(:user, email: 'email.example.com')
           expect(user.valid?).to be_falsey
-          expect(user.errors.messages[:email].first).to include('El formato es')
+          expect(user.errors.messages[:email].first).to include('is invalid')
         end
       end
 

@@ -222,7 +222,7 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
       it 'does not create a sms notification' do
         process :create, method: :post, params: sms_notification_params
         expect(response.status).to eq 422
-        expect(response_body[:data][:errors][:sms_number]).to eq ['no puede estar en blanco']
+        expect(response_body[:data][:errors][:sms_number]).to eq ["can't be blank"]
       end
     end
   end

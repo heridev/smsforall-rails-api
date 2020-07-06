@@ -74,7 +74,7 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
           process :create, method: :post, params: params
           expect(response.status).to eq 422
           email_msg = response_body[:data][:errors][:email]
-          expect(email_msg.first).to include('Ya existe en')
+          expect(email_msg.first).to include('has already been take')
         end
       end
     end

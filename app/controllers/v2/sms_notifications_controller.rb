@@ -8,7 +8,6 @@ module V2
         user_id: @current_api_user.id
       )
       sms_creator = SmsNotificationCreatorService.new(creation_params)
-
       result = sms_creator.perform_creation!
 
       if sms_creator.valid_creation?

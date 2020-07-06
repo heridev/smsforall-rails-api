@@ -92,7 +92,7 @@ RSpec.describe V2::SmsNotificationsController, type: :controller do
         it 'does not create the sms notification' do
           process :create, method: :post, params: sms_notification_params
           expect(response.status).to eq 422
-          expect(response_body[:error_message]).to match('valor mobile_hub_id')
+          expect(response_body[:error_message]).to match('The mobile_hub_id is invalid')
         end
       end
     end
@@ -110,7 +110,7 @@ RSpec.describe V2::SmsNotificationsController, type: :controller do
       it 'does not create a sms notification' do
         process :create, method: :post, params: sms_notification_params
         expect(response.status).to eq 422
-        expect(response_body[:error_message]).to match('sms_number - no puede estar')
+        expect(response_body[:error_message]).to match("sms_number - can't be blank")
       end
     end
   end

@@ -90,8 +90,8 @@ class SmsNotificationCreatorService
                 else
                   validation_error_message(sms_notification)
                 end
-
-    "Existen algunos errores de validación: #{error_msg}"
+    there_are_errors = I18n.t('api.v2.sms_notifications.failed.there_are_errors')
+    "#{there_are_errors} #{error_msg}"
   end
 
   def validation_error_message(sms_notification)

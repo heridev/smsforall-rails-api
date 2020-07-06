@@ -34,7 +34,7 @@ module SmsparatodosApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.i18n.default_locale = :es
+    config.i18n.default_locale = :en
 
     config.active_job.queue_adapter = :sidekiq
 
