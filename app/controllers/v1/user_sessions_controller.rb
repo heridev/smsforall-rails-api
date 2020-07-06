@@ -22,7 +22,7 @@ module V1
     end
 
     def user_details_by_token
-      render_serialized(@current_api_user, UserSerializer)
+      render_serialized(@current_api_user, UserWithCredentialsSerializer)
     end
   end
 end

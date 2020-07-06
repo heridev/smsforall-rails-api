@@ -61,7 +61,7 @@ RSpec.describe V1::UserSessionsController, type: :controller do
     end
   end
 
-  describe '#show' do
+  describe '#user_details_by_token' do
     let(:user_params) do
       {
         email: 'p@elh.mx',
