@@ -1,8 +1,8 @@
 class UserWithCredentialsSerializer < UserSerializer
   attribute :api_authorization_token do |object|
     JwtTokenService.encode_token(
-      object.id,
-      object.password_salt,
+      { user_id: object.id },
+      object.main_api_token_salt,
       nil
     )
   end

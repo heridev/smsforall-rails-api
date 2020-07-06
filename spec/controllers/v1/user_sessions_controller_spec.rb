@@ -93,6 +93,18 @@ RSpec.describe V1::UserSessionsController, type: :controller do
         expect(data.keys).to include(:name)
         expect(response.status).to eq 200
       end
+
+      it 'includes the API tokens for third party applications' do
+        get :user_details_by_token, method: :get
+        auth_token = response_body[:data][:attributes][:api_authorization_token]
+        auth_client = response_body[:data][:attributes][:api_authorization_client]
+
+        decoded_auth_token = JwtTokenService.decode_token(
+          auth_token,
+          auth_client
+        )
+        expect(decoded_auth_token[:user_id]).to eq valid_user.id
+      end
     end
 
     context 'when the authorization tokens are NOT valid' do
