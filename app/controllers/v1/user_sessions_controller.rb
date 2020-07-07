@@ -13,7 +13,7 @@ module V1
       if user
         user.update_jwt_salt!
         inject_token_headers(user)
-        render_serialized(user, UserSerializer)
+        render_serialized(user, ::V1::UserSerializer)
       else
         render_unauthorized_resource(
           error: 'Las credenciales son incorrectas..'
@@ -22,7 +22,7 @@ module V1
     end
 
     def user_details_by_token
-      render_serialized(@current_api_user, UserWithCredentialsSerializer)
+      render_serialized(@current_api_user, ::V1::UserWithCredentialsSerializer)
     end
   end
 end

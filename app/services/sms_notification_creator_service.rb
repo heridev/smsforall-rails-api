@@ -44,6 +44,7 @@ class SmsNotificationCreatorService
 
   def cleaned_and_safe_params
     {
+      kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
       assigned_to_mobile_hub_id: find_mobile_hub.try(:id),
       user_id: notification_params[:user_id],
       sms_number: valid_sms_number,
@@ -122,7 +123,7 @@ class SmsNotificationCreatorService
       mobile_hub_id: notification_params[:mobile_hub_id],
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
-      status: 'success',
+      status: 'enqueued',
       error_message: nil,
       sms_number: sms_notification.sms_number
     }

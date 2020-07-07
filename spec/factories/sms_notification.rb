@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :sms_notification do
     sms_content { 'Welcome to smsparatodos.com' }
     sms_number { '+523121231517' }
-    status { 'pending' }
+    status { SmsNotification::STATUSES[:default] }
     sms_type { 'standard_delivery' }
     association :user, factory: :user
     association :assigned_to_mobile_hub, factory: :sms_mobile_hub

@@ -8,19 +8,8 @@ class SmsNotificationsQuery < BaseQuery
   end
 
   def filter_by_params(params, user_id)
-    query_select = <<-SQL
-      sms_notifications.sms_content,
-      sms_notifications.sms_number,
-      sms_notifications.unique_id,
-      sms_notifications.sms_type,
-      sms_notifications.kind_of_notification,
-      sms_notifications.processed_by_sms_mobile_hub_id,
-      sms_notifications.assigned_to_mobile_hub_id,
-      sms_notifications.status
-    SQL
-
-    base_query = SmsNotification.select(query_select)
-                                .where(user_id: user_id)
+    puts "params #{params.inspect}"
+    base_query = SmsNotification.order(created_at: :asc).where(user_id: user_id)
 
     kind_of_notification = params[:kind_of_notification]
     if kind_of_notification.blank?
@@ -33,7 +22,10 @@ class SmsNotificationsQuery < BaseQuery
 
     text_searched = params[:text_searched]
     if text_searched.present?
-      base_query = base_query.where('sms_number ilike ?', "%#{text_searched}%")
+      base_query = base_query.where(
+        'sms_number ilike ? OR sms_content ilike ?',
+        "%#{text_searched}%", "%#{text_searched}%"
+      )
     end
 
     base_query

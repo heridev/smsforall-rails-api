@@ -1,5 +1,12 @@
----
 en:
+  sms_notification:
+    statuses:
+      pending: 'queued' # we can remove this one once we cleaned-up the database
+      queued: 'queued'
+      delivered: 'delivered'
+      received: 'received'
+      failed_sent_to_firebase: 'failed to be processed'
+      sent_to_firebase: 'sending'
   mobile_hub:
     content:
       welcome_msg: "Hello %{user_name}, bienvenido a smsparatodos.com"
