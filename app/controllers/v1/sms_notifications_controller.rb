@@ -10,7 +10,7 @@ module V1
       responses = query_object.filter_by_params(params, @current_api_user.id)
                               .page(page_number)
                               .per(PER_PAGE_RECORDS)
-                              .order('id ASC')
+                              .order('created_at DESC')
 
       serialized_data = serialize_hash(
         responses,

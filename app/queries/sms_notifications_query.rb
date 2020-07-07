@@ -9,7 +9,7 @@ class SmsNotificationsQuery < BaseQuery
 
   def filter_by_params(params, user_id)
     puts "params #{params.inspect}"
-    base_query = SmsNotification.order(created_at: :asc).where(user_id: user_id)
+    base_query = SmsNotification.where(user_id: user_id)
 
     kind_of_notification = params[:kind_of_notification]
     if kind_of_notification.blank?

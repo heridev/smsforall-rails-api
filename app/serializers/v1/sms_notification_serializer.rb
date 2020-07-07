@@ -11,6 +11,7 @@ module V1
                :processed_by_sms_mobile_hub_id,
                :sms_type,
                :decorated_status,
+               :created_at,
                :decorated_delivered_at
   end
 end
