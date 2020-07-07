@@ -8,6 +8,7 @@ module V1
                :temporal_password,
                :uuid,
                :country_international_code,
-               :friendly_status_name
+               :friendly_status_name,
+               :status
   end
 end
