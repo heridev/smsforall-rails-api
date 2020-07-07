@@ -109,12 +109,12 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
 
         it 'returns the ones that were received' do
           get :index, method: :get, params: by_kind_in
-          expect(response_body[:data][:sms_notifications].size).to eq 6
+          expect(response_body[:data][:sms_notifications].size).to eq 0
         end
 
         it 'returns the ones that were delivered' do
           get :index, method: :get, params: by_kind_out
-          expect(response_body[:data][:sms_notifications].size).to eq 0
+          expect(response_body[:data][:sms_notifications].size).to eq 6
         end
       end
 
