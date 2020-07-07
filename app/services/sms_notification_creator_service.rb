@@ -150,7 +150,6 @@ class SmsNotificationCreatorService
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
       status: 'failed',
-      error_message: 'limit_by_minute_reached',
       error_message: I18n.t('api.v2.sms_notifications.failed.limit_by_minute_reached'),
       sms_number: notification_params[:sms_number]
     }
