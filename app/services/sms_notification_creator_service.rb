@@ -44,6 +44,7 @@ class SmsNotificationCreatorService
 
   def cleaned_and_safe_params
     {
+      kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
       assigned_to_mobile_hub_id: find_mobile_hub.try(:id),
       user_id: notification_params[:user_id],
       sms_number: valid_sms_number,

@@ -2,6 +2,14 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 es:
+  sms_notification:
+    statuses:
+      pending: 'queued' # we can remove this one once we cleaned-up the database
+      queued: 'encolado'
+      delivered: 'entregado'
+      received: 'recibido'
+      failed_sent_to_firebase: 'falló al ser procesado'
+      sent_to_firebase: 'enviando'
   mobile_hub:
     content:
       welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"

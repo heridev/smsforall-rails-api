@@ -2,7 +2,7 @@
 
 class SmsNotification < ApplicationRecord
   STATUSES = {
-    default: 'pending',
+    default: 'queued',
     delivered: 'delivered',
     received: 'received',
     failed_sent_to_firebase: 'failed_sent_to_firebase',
@@ -55,6 +55,14 @@ class SmsNotification < ApplicationRecord
       assigned_to_mobile_hub_id: sms_mobile_hub_id,
       failed_sent_to_firebase_at: Time.zone.now
     )
+  end
+
+  def decorated_status
+    I18n.t(status.to_sym, scope: 'sms_notification.statuses')
+  end
+
+  def decorated_delivered_at
+    delivered_at.present? ? delivered_at : 'N/A'
   end
 
   def mark_as_delivered!(sms_mobile_hub_id)

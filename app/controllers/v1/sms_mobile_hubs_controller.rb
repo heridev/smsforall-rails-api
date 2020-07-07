@@ -12,14 +12,14 @@ module V1
     def index
       render_serialized(
         @current_api_user.sms_mobile_hubs,
-        SmsMobileHubSerializer
+        ::V1::SmsMobileHubSerializer
       )
     end
 
     def activated
       render_serialized(
         @current_api_user.sms_mobile_hubs.active,
-        SmsMobileHubSerializer
+        ::V1::SmsMobileHubSerializer
       )
     end
 
@@ -33,7 +33,7 @@ module V1
         sms_mobile.reload
         render_serialized(
           sms_mobile,
-          SmsMobileHubSerializer
+          ::V1::SmsMobileHubSerializer
         )
       else
         render_error_object(sms_mobile.errors.messages)
@@ -43,7 +43,7 @@ module V1
     def show
       render_serialized(
         @sms_mobile,
-        SmsMobileHubSerializer
+        ::V1::SmsMobileHubSerializer
       )
     end
 

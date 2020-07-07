@@ -14,7 +14,7 @@ module V1
 
       serialized_data = serialize_hash(
         responses,
-        SmsNotificationSerializer
+        ::V1::SmsNotificationSerializer
       )
 
       data_response = {
@@ -32,6 +32,7 @@ module V1
     def create
       new_params = sms_notification_params.merge(
         user_id: @current_api_user.id,
+        kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
         assigned_to_mobile_hub_id: @find_mobile_hub.id
       )
       sms_notification = SmsNotification.create(new_params)
@@ -42,7 +43,7 @@ module V1
 
         render_serialized(
           sms_notification,
-          SmsNotificationSerializer
+          ::V1::SmsNotificationSerializer
         )
       else
         render_error_object(sms_notification.errors.messages)

@@ -9,7 +9,7 @@ module V1
         inject_token_headers(user)
         render_serialized(
           user,
-          UserSerializer
+          ::V1::UserSerializer
         )
       else
         render_error_object(user.errors.messages)
