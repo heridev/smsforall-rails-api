@@ -3,7 +3,9 @@
 module V1
   class SmsNotificationsController < ::V1::AuthorizedController
     PER_PAGE_RECORDS = 100
+    skip_before_action :authenticate_request, only: :update_status
     before_action :find_mobile_hub, only: :create
+    before_action :find_sms_notification, only: :update_status
 
     def index
       query_object = SmsNotificationsQuery.relation
@@ -50,7 +52,32 @@ module V1
       end
     end
 
+    def update_status
+      cleaned_params = {
+        status: params[:status],
+        additional_update_info: params[:additional_update_info]
+      }
+      if @find_sms_notification.update_status(cleaned_params)
+        render_serialized(
+          @find_sms_notification,
+          ::V1::SmsNotificationSerializer
+        )
+      else
+        render_error_object(@find_sms_notification.errors.messages)
+      end
+    end
+
     private
+
+    def find_sms_notification
+      @find_sms_notification ||= SmsNotification.find_by(
+        unique_id: params[:sms_notification_uid]
+      )
+
+      return if @find_sms_notification
+
+      activerecord_not_found I18n.t('sms_notification.controllers.sms_notification_not_found')
+    end
 
     def page_number
       params[:page_number].try(:to_i) || 1

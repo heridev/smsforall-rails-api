@@ -6,7 +6,9 @@ class SmsNotification < ApplicationRecord
     delivered: 'delivered',
     received: 'received',
     failed_sent_to_firebase: 'failed_sent_to_firebase',
-    sent_to_firebase: 'sent_to_firebase'
+    sent_to_firebase: 'sent_to_firebase',
+    failed: 'failed',
+    undelivered: 'undelivered'
   }.freeze
 
   SMS_TYPES = {
@@ -46,6 +48,13 @@ class SmsNotification < ApplicationRecord
       sent_to_firebase_at: Time.zone.now,
       assigned_to_mobile_hub_id: sms_mobile_hub_id,
       status: STATUSES[:sent_to_firebase]
+    )
+  end
+
+  def update_status(params = {})
+    params[:status_updated_by_hub_at] = Time.zone.now
+    update_columns(
+      params
     )
   end
 

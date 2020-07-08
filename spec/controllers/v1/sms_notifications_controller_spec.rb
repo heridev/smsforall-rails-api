@@ -6,6 +6,64 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
   let(:user) { create(:user, mobile_number: '3121231818') }
   let(:other_user) { create(:user, mobile_number: '3121231718') }
 
+  describe '#update_status' do
+    let(:sms_mobile_hub) do
+      create(
+        :sms_mobile_hub,
+        :activated,
+        device_number: '3121232030',
+        user: user
+      )
+    end
+    let!(:individual_sms_notification) do
+      create(
+        :sms_notification,
+        user: user,
+        sms_number: '3121701111',
+        assigned_to_mobile_hub: sms_mobile_hub
+      )
+    end
+
+    let(:expected_keys) do
+      %i[
+        sms_notifications
+        page_number
+        tot_notifications
+        tot_pages
+      ]
+    end
+
+    # before do
+    #   inject_user_headers_on_controller(user)
+    # end
+
+    context 'when the sms notification ui is not valid' do
+      it 'xxxxx' do
+        params = {
+          'sms_notification_uid': 'xxx-xxxxx-xxxxxx-xx',
+          'status': 'delivered',
+          'additional_update_info': 'generic failure'
+        }
+        put :update_status, method: :put, params: params
+        expect(response.status).to eq 404
+        expect(response_body[:data].keys.size).to eq 1
+      end
+    end
+
+    context 'when params are valid' do
+      it 'xxxxx' do
+        params = {
+          'sms_notification_uid': individual_sms_notification.reload.unique_id,
+          'status': 'delivered',
+          'additional_update_info': 'generic failure'
+        }
+        put :update_status, method: :put, params: params
+        # binding.pry
+        expect(response.status).to eq 200
+      end
+    end
+  end
+
   describe '#index' do
     let(:sms_mobile_hub_two) do
       create(
