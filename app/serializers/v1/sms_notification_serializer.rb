@@ -8,10 +8,21 @@ module V1
                :kind_of_notification,
                :status,
                :unique_id,
-               :processed_by_sms_mobile_hub_id,
                :sms_type,
                :decorated_status,
                :created_at,
                :decorated_delivered_at
+
+    attribute :processed_by_sms_mobile_hub do |sms_notification|
+      ::V1::SmsMobileHubSerializer.new(
+        sms_notification.processed_by_sms_mobile_hub
+      )
+    end
+
+    attribute :assigned_to_mobile_hub do |sms_notification|
+      ::V1::SmsMobileHubSerializer.new(
+        sms_notification.assigned_to_mobile_hub
+      )
+    end
   end
 end

@@ -35,4 +35,30 @@ module CommonHelpers
     }
     request.headers.merge! headers
   end
+
+  def print_queries_generated_for &block
+    counter_f = ->(name, started, finished, unique_id, payload) {
+      unless payload[:name].in? %w[ CACHE SCHEMA ]
+        puts "====================================="
+        puts payload
+        puts "====================================="
+      end
+    }
+
+    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
+  end
+
+  def count_queries_for &block
+    count = 0
+
+    counter_f = ->(name, started, finished, unique_id, payload) {
+      unless payload[:name].in? %w[ CACHE SCHEMA ]
+        count += 1
+      end
+    }
+
+    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
+
+    count
+  end
 end

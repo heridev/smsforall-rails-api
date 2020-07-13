@@ -28,6 +28,12 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  def self.find_by_firebase_token(token)
+    find_by(
+      firebase_token: token
+    )
+  end
+
   def mark_as_activation_in_progress!
     update_column(
       :status, STATUSES[:activation_in_progress]
