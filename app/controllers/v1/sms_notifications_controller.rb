@@ -84,7 +84,7 @@ module V1
 
       return if @find_sms_notification
 
-      activerecord_not_found I18n.t('sms_notification.controllers.sms_notification_not_found')
+      activerecord_not_found I18n.t('sms_notification.controllers.sms_notification_update_status_not_found')
     end
 
     def page_number
