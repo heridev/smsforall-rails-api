@@ -79,8 +79,7 @@ module V1
 
     def find_sms_notification
       @find_sms_notification ||= SmsNotification.find_by(
-        unique_id: params[:sms_notification_uid],
-        status_updated_by_hub_at: nil
+        unique_id: params[:sms_notification_uid]
       )
 
       return if @find_sms_notification
