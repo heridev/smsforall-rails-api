@@ -7,9 +7,12 @@ es:
       pending: 'queued' # we can remove this one once we cleaned-up the database
       queued: 'encolado'
       delivered: 'entregado'
+      undelivered: 'No entregado'
       received: 'recibido'
       failed_sent_to_firebase: 'falló al ser procesado'
       sent_to_firebase: 'enviando'
+    controllers:
+      sms_notification_update_status_not_found: 'La notificación no existe o ya fué actualizada anteriormente'
   mobile_hub:
     content:
       welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"

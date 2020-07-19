@@ -6,6 +6,94 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
   let(:user) { create(:user, mobile_number: '3121231818') }
   let(:other_user) { create(:user, mobile_number: '3121231718') }
 
+  describe '#update_status' do
+    let(:sms_mobile_hub) do
+      create(
+        :sms_mobile_hub,
+        :activated,
+        device_number: '3121232030',
+        user: user
+      )
+    end
+    let!(:individual_sms_notification) do
+      create(
+        :sms_notification,
+        user: user,
+        sms_number: '3121701111',
+        assigned_to_mobile_hub: sms_mobile_hub
+      )
+    end
+
+    let(:expected_keys) do
+      %i[
+        sms_notifications
+        page_number
+        tot_notifications
+        tot_pages
+      ]
+    end
+
+    context 'when the sms notification uid is not valid' do
+      it 'returns 404 not found status code' do
+        params = {
+          'sms_notification_uid': 'xxx-xxxxx-xxxxxx-xx',
+          'status': 'delivered',
+          'additional_update_info': 'generic failure'
+        }
+        process :update_status, method: :put, params: params
+        expect(response.status).to eq 404
+      end
+    end
+
+    context 'when the params are valid' do
+      context 'when the notification is marked as delivered' do
+        before do
+          params = {
+            'sms_notification_uid': individual_sms_notification.reload.unique_id,
+            'status': 'delivered',
+            firebase_token: sms_mobile_hub.firebase_token
+          }
+          process :update_status, method: :put, params: params
+        end
+
+        it 'responds with a 200 success status code' do
+          expect(response.status).to eq 200
+        end
+
+        it 'responds with the right status and information' do
+          data = response_body[:data][:attributes]
+          processed_by = data[:processed_by_sms_mobile_hub][:data][:attributes]
+          expect(processed_by[:uuid]).to eq sms_mobile_hub.reload.uuid
+          expect(data[:decorated_status]).to eq 'delivered'
+          expect(data[:decorated_delivered_at]).to_not eq 'N/A'
+        end
+      end
+
+      context 'when the notification is marked as undelivered' do
+        before do
+          params = {
+            'sms_notification_uid': individual_sms_notification.reload.unique_id,
+            'status': 'undelivered',
+            firebase_token: sms_mobile_hub.firebase_token
+          }
+          process :update_status, method: :put, params: params
+        end
+
+        it 'responds with a 200 success status code' do
+          expect(response.status).to eq 200
+        end
+
+        it 'responds with the right status and information' do
+          data = response_body[:data][:attributes]
+          processed_by = data[:processed_by_sms_mobile_hub][:data][:attributes]
+          expect(processed_by[:uuid]).to eq sms_mobile_hub.reload.uuid
+          expect(data[:decorated_status]).to eq 'undelivered'
+          expect(data[:decorated_delivered_at]).to eq 'N/A'
+        end
+      end
+    end
+  end
+
   describe '#index' do
     let(:sms_mobile_hub_two) do
       create(
@@ -57,24 +145,55 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
       ]
     end
 
+    let(:expected_individual_keys) do
+      %i[
+        sms_content
+        sms_number
+        kind_of_notification
+        status
+        unique_id
+        sms_type
+        decorated_status
+        created_at
+        decorated_delivered_at
+        processed_by_sms_mobile_hub
+        assigned_to_mobile_hub
+      ]
+    end
+
     before do
       inject_user_headers_on_controller(user)
     end
 
     context 'when no params are included in the request' do
       it 'responds with a successful status code' do
-        get :index, method: :get
+        process :index, method: :get
         expect(response.status).to eq 200
       end
 
       it 'includes the pagination attributes' do
-        get :index, method: :get
+        process :index, method: :get
         expect(response_body[:data].keys).to eq expected_keys
       end
 
       it 'returns all sms notifications' do
-        get :index, method: :get
+        process :index, method: :get
         expect(response_body[:data][:sms_notifications].size).to eq 6
+      end
+
+      it 'includes the right key names and fields for individual notifications' do
+        process :index, method: :get
+        data_attributes = response_body[:data][:sms_notifications].first[:attributes]
+        expect(data_attributes.keys).to eq expected_individual_keys
+        a_hub = data_attributes[:assigned_to_mobile_hub][:data][:attributes]
+        expect(a_hub.keys.size).to eq 7
+      end
+
+      it 'executes only 3 queries' do
+        result = count_queries_for do
+          process :index, method: :get
+        end
+        expect(result).to eq 3
       end
     end
 
@@ -87,11 +206,18 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
         end
 
         it 'returns only the one that matches with the sms_number' do
-          get :index, method: :get, params: search_by_params
+          process :index, method: :get, params: search_by_params
           expect(response_body[:data][:sms_notifications].size).to eq 1
           expect(response_body[:data][:page_number]).to eq 1
           expect(response_body[:data][:tot_pages]).to eq 1
           expect(response_body[:data][:tot_notifications]).to eq 1
+        end
+
+        it 'executes only 3 queries' do
+          result = count_queries_for do
+            process :index, method: :get, params: search_by_params
+          end
+          expect(result).to eq 3
         end
       end
 
@@ -115,6 +241,13 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
         it 'returns the ones that were delivered' do
           get :index, method: :get, params: by_kind_out
           expect(response_body[:data][:sms_notifications].size).to eq 6
+        end
+
+        it 'executes only 3 queries' do
+          result = count_queries_for do
+            process :index, method: :get, params: by_kind_out
+          end
+          expect(result).to eq 3
         end
       end
 
@@ -169,7 +302,7 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
           expect(keys).to include(:sms_content)
           expect(keys).to include(:sms_number)
           expect(keys).to include(:status)
-          expect(keys).to include(:processed_by_sms_mobile_hub_id)
+           expect(keys).to include(:processed_by_sms_mobile_hub)
           expect(keys).to include(:sms_type)
         end
 

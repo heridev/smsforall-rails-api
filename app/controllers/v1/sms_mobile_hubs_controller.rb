@@ -109,8 +109,8 @@ module V1
     end
 
     def find_mobile_hub_and_notification
-      @mobile_hub = SmsMobileHub.find_by(
-        firebase_token: activation_params[:firebase_token]
+      @mobile_hub = SmsMobileHub.find_by_firebase_token(
+        activation_params[:firebase_token]
       )
 
       @sms_notification = SmsNotification.find_by(

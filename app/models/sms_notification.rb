@@ -6,7 +6,9 @@ class SmsNotification < ApplicationRecord
     delivered: 'delivered',
     received: 'received',
     failed_sent_to_firebase: 'failed_sent_to_firebase',
-    sent_to_firebase: 'sent_to_firebase'
+    sent_to_firebase: 'sent_to_firebase',
+    failed: 'failed',
+    undelivered: 'undelivered'
   }.freeze
 
   SMS_TYPES = {
@@ -29,7 +31,7 @@ class SmsNotification < ApplicationRecord
   validates_inclusion_of :sms_type, in: SMS_TYPES.values
   validates_inclusion_of :kind_of_notification, in: KIND_OF_NOTIFICATION.values
 
-  belongs_to :processed_by_mobile_hub,
+  belongs_to :processed_by_sms_mobile_hub,
              class_name: 'SmsMobileHub',
              foreign_key: :processed_by_sms_mobile_hub_id,
              optional: true
@@ -46,6 +48,21 @@ class SmsNotification < ApplicationRecord
       sent_to_firebase_at: Time.zone.now,
       assigned_to_mobile_hub_id: sms_mobile_hub_id,
       status: STATUSES[:sent_to_firebase]
+    )
+  end
+
+  def update_status(params = {})
+    now = Time.zone.now
+
+    if params[:status] == STATUSES[:delivered]
+      params[:delivered_at] = now
+    else
+      params[:failed_delivery_at] = now
+    end
+
+    params[:status_updated_by_hub_at] = now
+    update_columns(
+      params
     )
   end
 

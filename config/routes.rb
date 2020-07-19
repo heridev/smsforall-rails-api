@@ -26,7 +26,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :sms_notifications, param: :unique_id
+      resources :sms_notifications, param: :unique_id do
+        collection do
+          put :update_status
+        end
+      end
     end
 
     namespace :v2, path: '/v2' do

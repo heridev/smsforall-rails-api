@@ -8,8 +8,10 @@ class SmsNotificationsQuery < BaseQuery
   end
 
   def filter_by_params(params, user_id)
-    puts "params #{params.inspect}"
-    base_query = SmsNotification.where(user_id: user_id)
+    base_query = SmsNotification.includes(
+      :processed_by_sms_mobile_hub,
+      :assigned_to_mobile_hub
+    ).where(user_id: user_id)
 
     kind_of_notification = params[:kind_of_notification]
     if kind_of_notification.blank?
