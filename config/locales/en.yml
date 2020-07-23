@@ -10,6 +10,7 @@ en:
       sent_to_firebase: 'sending'
     controllers:
       sms_notification_update_status_not_found: 'The sms notification does not exist or was already updated'
+      succcess_update: 'The sms notification was updated successfully'
   mobile_hub:
     content:
       welcome_msg: "Hello %{user_name}, bienvenido a smsparatodos.com"
@@ -23,7 +24,7 @@ en:
       successful_hub_activation: 'Your device was activated successfully, enjoy smsparatodos.com'
       successful_hub_deletion: 'Your device was deleted successfully'
       failure_hub_deletion: 'There was an error when trying to delete your device, try again in a minute...'
-      failure_hub_validation: 'Your pin number is invalid or the device was already activated'
+      failure_hub_validation: 'Your pin number is invalid or the device was already validated'
       failure_hub_activation: 'There was an error when trying to activate your device, try again in a few'
       hub_not_found: 'The device does not exist'
   api:

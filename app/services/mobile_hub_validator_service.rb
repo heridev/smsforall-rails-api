@@ -6,8 +6,20 @@ class MobileHubValidatorService
   def initialize(args = {})
     args = args.with_indifferent_access
     @device_token_code = args[:device_token_code]
-    @firebase_token = args[:firebase_token]
+
+    # TODO: deprecate the firebase_token value once we migrate to
+    # use the new android/ namespace endpoints
+    @firebase_token = find_device_token_value(args)
     @mobile_hub = SmsMobileHub.find_by_code(device_token_code)
+  end
+
+  # TODO: deprecate the firebase_token value once we migrate to
+  # use the new android/ namespace endpoints in the Android app
+  def find_device_token_value(args)
+    return args[:firebase_token] if args[:firebase_token].present?
+
+    # declared in the android endpoints
+    args[:mobile_hub_token]
   end
 
   def validate_hub!
