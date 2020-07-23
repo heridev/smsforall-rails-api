@@ -45,6 +45,38 @@ then you access the url
 localhost:3000/panel/sidekiq
 ```
 
+### Connecting Android, app.smsparatodos in local
+1. First of all you will need to make sure that you have the following in your `config/environments/development.rb`
+```
+config.hosts << 'smsparatodosapi.ngrok.io'
+```
+
+2. Run your server following the previous section
+3. Run ngrok with the right subdomain
+```
+./ngrok http -subdomain=smsparatodosapi 3000
+```
+
+4. Run your app.smsparatodos yarn project and specify to use the right API backend url in this case:
+```
+export REACT_APP_API_URL=https://smsparatodosapi.ngrok.io
+// and
+yarn start
+```
+
+5. In your Android project before generating the version and install it, make sure you have the right URL, for that
+a. Open the file `grade.properties` 
+b. replace the value
+```
+BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
+```
+with 
+```
+https://smsparatodosapi.ngrok.io
+```
+c. Select the build variantes as `debug
+d. Run the app and install it in your device again.
+
 ### Test suite
 As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
 ```
