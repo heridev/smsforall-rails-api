@@ -36,12 +36,24 @@ module CommonHelpers
     request.headers.merge! headers
   end
 
-  def print_queries_generated_for &block
+  def print_all_queries(&block)
     counter_f = ->(name, started, finished, unique_id, payload) {
       unless payload[:name].in? %w[ CACHE SCHEMA ]
-        puts "====================================="
+        puts '='*100
         puts payload
-        puts "====================================="
+        puts '='*100
+      end
+    }
+
+    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
+  end
+
+  def print_queries(&block)
+    counter_f = ->(name, started, finished, unique_id, payload) {
+      unless payload[:name].in? %w[CACHE SCHEMA]
+        puts '='*100
+        puts "name: #{payload[:name]} sql: #{payload[:sql]}"
+        puts '='*100
       end
     }
 
@@ -52,7 +64,7 @@ module CommonHelpers
     count = 0
 
     counter_f = ->(name, started, finished, unique_id, payload) {
-      unless payload[:name].in? %w[ CACHE SCHEMA ]
+      unless payload[:name].in? %w[CACHE SCHEMA]
         count += 1
       end
     }
