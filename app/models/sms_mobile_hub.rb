@@ -6,7 +6,7 @@ class SmsMobileHub < ApplicationRecord
   validates :device_number, uniqueness: true
 
   # Callbacks
-  after_create :set_temporal_password
+  after_create :generate_password_and_token_hub
 
   # Associations
   belongs_to :user
@@ -28,10 +28,17 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  # TODO: once we migrate the app in Android we
+  # can deprecate the serarch by firebase token
+  # and rename this method
+  # once we migrate from firebase into
+  # pusher.com
   def self.find_by_firebase_token(token)
-    find_by(
-      firebase_token: token
-    )
+    where(
+      'firebase_token = ? OR mobile_hub_token = ?',
+      token,
+      token
+    ).first
   end
 
   def mark_as_activation_in_progress!
@@ -57,6 +64,23 @@ class SmsMobileHub < ApplicationRecord
   end
 
   private
+
+  def generate_password_and_token_hub
+    set_temporal_password
+    generate_and_set_mobile_hub_token
+  end
+
+  def generate_and_set_mobile_hub_token
+    mobile_hub_token = JwtTokenService.encode_token(
+      id,
+      nil,
+      nil
+    )
+    update_column(
+      :mobile_hub_token,
+      mobile_hub_token
+    )
+  end
 
   def set_temporal_password
     return if temporal_password.present?

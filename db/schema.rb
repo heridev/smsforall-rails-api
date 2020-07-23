@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_003218) do
+ActiveRecord::Schema.define(version: 2020_07_19_223424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_003218) do
     t.integer "user_id"
     t.datetime "activated_at"
     t.string "country_international_code", default: ""
+    t.text "mobile_hub_token"
   end
 
   create_table "sms_notifications", force: :cascade do |t|
