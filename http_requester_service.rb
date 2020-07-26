@@ -31,18 +31,23 @@ headers = {
   'Content-Type': 'application/json'
 }
 
-10.times do |number|
+tablecast_number = '+523121698456'
+xiaomi_rosa_number = '+523121231639'
+personal_number = '+523121231517'
+
+50.times do |number|
   values = %i(juan pepe chuy heriberto andrea pako fabian roberto irvin chuy mary maria juanit alberto roberto luis eduardo eddie kevin cone alex rafa)
   body = {
-    'sms_number': '+523121698456',
-    'sms_content': "hola #{values.sample} como te va? - #{number} - #{Time.now.to_i}",
+    'sms_number': tablecast_number,
+    # invalid number
+    # 'sms_number': '+5231212315',
+    'sms_content': "hola #{values.sample} andas por alli? - #{number} - #{Time.now.to_i}",
     'sms_customer_reference_id': "#{number} - #{Time.now.to_i}",
-    'mobile_hub_id': '477989dc-b431-4e95-856c-7b616aaffef8',
+    'mobile_hub_id': '31b819ef-37bd-4ecc-bae4-bc2dd52dfb58',
     'sms_type': 'standard_delivery'
   }
 
   response = HttpRequesterService.make('https://smsparatodosapi.ngrok.io/v2/sms/create', 'Post', headers, body)
+  puts response.code
   puts response.read_body
 end
-
-
