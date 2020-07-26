@@ -904,13 +904,19 @@ cluster = "us2"
 
 
 require 'pusher'
-
 pusher = Pusher::Client.new(
   app_id: '1039167',
   key: '74446a2bd87031fa62ea',
   secret: '469e452f82ce46e4b8eb',
   cluster: 'us2'
 )
+
+10.times do |index|
+  data = { "value": "hola como estas #{(index + 1) * 10}" }
+  puts pusher.trigger('smsparatodos-channel', 'superdupperdevice', data)
+end
+
+
 
 data = { "mobile_hub_id": "6d5be464-5f7d-4bfe-8592-90c7242c70d7", "sms_number": "+523121231517", "sms_type": "standard_delivery", "sms_customer_reference_id": "99999", "sms_content": "esta es una prueba" }
 
@@ -933,47 +939,54 @@ https://gist.github.com/heridev/7ebddd13d322877d3cad7f6ca8c2b805#work-in-progres
 
 1. Irvin esta revisando eso de los updates para ver que esta pasando que siguen sin querer actualizarse.
 
-2.
+2. Pasar nuevas especificaciones a Irvin una vez termine
 Terminar de habilitar el endpoint para mobile para de esta forma dejarlo solo para el mobile y será sin uso de tokens y asi
 por que no se ocupa, entonces es mejor habilitarlo totalmente para ese, igual y revisas como la hiciste en invesmark para ver si quedo igual sin authenticacion de token mayormente o que onda y si evoluciona entonces despues te encargas de eso.
 
 Antes
+```
 https://gist.github.com/heridev/4401dbc6634a0282d9da5fcef8631068
+```
 
 Despues
+```
 https://gist.github.com/heridev/1762c399f280183d616a60cce8cba16b
+```
 
-
-for the update_status
-
-https://api.smsparatodos.com/v1/sms_notifications/update_status
-
-sql=>"UPDATE \"sms_notifications\" SET \"status\" = $1, \"processed_by_sms_mobile_hub_id\" = $2, \"delivered_at\" = $3, \"status_updated_by_hub_at\" = $4, \"updated_at\" = $5 WHERE \"sms_notifications\".\"id\" = $6", :name=>"SmsNotification Update"
-
+Aqui los cambios para el `update_status` en el nuevo endpoint de `android`
+```
+https://gist.github.com/heridev/6548812ee3005c8f381267fa5594dc58
+```
 
 
 
-a. De esa forma podemos ver que ya en el #validate no necesitamos enviar el firebase token y nos retornará de hecho el nuevo token del dispositivo que guardaremos en nuestro dispositiv
-b. Tambien cuando enviemos un nuevo sms_notification necesitamos enviar el token custom y el firebase ya no aplica más y de esa forma en ese mismo update podemos ya hacer la implementacion del codigo pusher.com
+BroadcastReceiver smsDeliveryBroadcastReceiver = SmsDeliveryReceiver()
 
+unregisterReceiver(smsDeliveryBroadcastReceiver)
+
+registerReceiver(smsDeliveryBroadcastReceiver, IntentFilter(DELIVERED))
+
+
+
+Makes the update of the sms notification directly from the Firebase Service
+
+- We run directly the corouting on the broadcast receiver
+- We use the sms notification uid as a filter name so we make sure we do not
+  trigger the same receiver multiple times
+- We unregister the dynamically created broadcast receiver.
+
+
+
+registerReceiver(smsDeliveryBroadcastReceiver, IntentFilter(DELIVERED));
+SmsManager sms = SmsManager.getDefault();
+sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+      
+
+
+In progress
 3. Trabajar en los endpoint the sms mobile hub checks every 2 minutos y ademas implementa lo de los alarm manager y para ese entonces tambien pusher ya esta dandole duro y jalando al chingadazo.
 
 4. Retomar lo de que puedas recibir el endpoint de #receive y viene en la libreta.
-
-Nuevos updates
-```
-        "mobile_hub_token": "eyJhbGciOiJIUzI1NiJ9.NDE.Xry8NdhFxKq8r7QvKxClQYGuGhDNFx5pgar8uANOtPo"
-
-c2ed90f6-d558-490c-884f-99b733eef525
-```
-
-
-print_memory_usage do
-  print_time_spent do
-
-    SmsNotification.last.update(status: 'delivered')
-  end
-end
 
 ### Andrea cosas
 

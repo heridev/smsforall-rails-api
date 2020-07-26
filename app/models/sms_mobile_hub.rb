@@ -24,7 +24,7 @@ class SmsMobileHub < ApplicationRecord
   def self.find_by_code(pass_code)
     find_by(
       temporal_password: pass_code,
-      status: STATUSES[:default]
+      status: [STATUSES[:default], STATUSES[:activation_in_progress]]
     )
   end
 
