@@ -47,7 +47,7 @@ RSpec.describe V2::SmsNotificationsController, type: :controller do
 
       context 'when the minute limit is reached' do
         before do
-          12.times do
+          25.times do
             process :create, method: :post, params: sms_notification_params
             expect(response.status).to eq 200
           end
