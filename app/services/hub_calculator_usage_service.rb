@@ -5,12 +5,12 @@ class HubCalculatorUsageService
   EXPIRATION_TIME_IN_SECONDS = 1810
   # 24 hours and 10 seconds
   DAILY_EXPIRATION_TIME_IN_SECONDS = 86410
-  TOTAL_ALLOWED_PER_DAY = 500
+  TOTAL_ALLOWED_PER_DAY = 2000
   TOTAL_ALLOWED_PER_HALF_HOUR = 30
   # 1 minute and 20 seconds
   EVERY_MINUTE_EXPIRATION_TIME_IN_SECONDS = 80
-  # That is 12 per minute and 720 per hour
-  TOTAL_REQUESTS_ALLOWED_PER_MINUTE = 12
+  # That is 25 per minute and 1500 per hour
+  TOTAL_REQUESTS_ALLOWED_PER_MINUTE = 25
 
   attr_accessor :total_usage
 
