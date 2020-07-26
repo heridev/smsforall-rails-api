@@ -226,9 +226,20 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
         end
       end
 
-      context 'when the sms_mobile_hub password is valid but the mobile hub was already validated' do
+      context 'when the sms_mobile_hub password is valid and already started the activation processs' do
         before do
           sms_mobile_hub.mark_as_activation_in_progress!
+        end
+
+        it 'responds with a not found error' do
+          process :validate, method: :post, params: sms_mobile_params
+          expect(response.status).to eq 200
+        end
+      end
+
+      context 'when the sms_mobile_hub password is valid but the mobile hub was already activated' do
+        before do
+          sms_mobile_hub.mark_as_activated!
         end
 
         it 'responds with a not found error' do
