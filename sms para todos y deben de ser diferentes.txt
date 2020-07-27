@@ -880,21 +880,6 @@ Let's say that Irvin fixes the problema and now the app always runs, so let's be
 sms_type: 'sms_device_checker_status'
 ```
 
-This one won't send a SMS only will check the internet connection so whenever we got this sms_type we will make a new http request to a new endpoint called:
-```
-CREATE: v1/sms_mobile_hub_checks#create
-{
-  firebase_token: 'y.kwid./mkiek9k93kpjdeu9jf.d,d9(3d;.',
-  sms_mobile_hub_token: 'xxxx-xxxx-xxxx-xxxxx'
-}
-```
-
-So we can create this new model called
-- Status can be online, offline
-SmsMobileHubCheck firebase_token:text confirmed_status_at:datetime status:string
-
-
-
 
 
 app_id = "1039167"
@@ -937,7 +922,7 @@ curl -X POST \
 https://gist.github.com/heridev/7ebddd13d322877d3cad7f6ca8c2b805#work-in-progress
 
 
-1. Irvin esta revisando eso de los updates para ver que esta pasando que siguen sin querer actualizarse.
+1. Irvin esta revisando eso de los updates para ver que esta pasando que siguen sin querer actualizarse -  posiblemente fixed
 
 2. Pasar nuevas especificaciones a Irvin una vez termine
 Terminar de habilitar el endpoint para mobile para de esta forma dejarlo solo para el mobile y será sin uso de tokens y asi
@@ -959,32 +944,29 @@ https://gist.github.com/heridev/6548812ee3005c8f381267fa5594dc58
 ```
 
 
+### In progress
+3. Trabajar en los endpoint the sms mobile hub checks every 2 minutos and using the alarm manager for that:
 
-BroadcastReceiver smsDeliveryBroadcastReceiver = SmsDeliveryReceiver()
+we will make a new http request to a new endpoint called:
+```
+CREATE: v1/sms_mobile_hub_checks#create
+{
+  sms_mobile_hub_token: 'xxxx-xxxx-xxxx-xxxxx'
+}
+```
 
-unregisterReceiver(smsDeliveryBroadcastReceiver)
+final for that can be
+#POST `/mobile/sms_mobile_hub_checks`
 
-registerReceiver(smsDeliveryBroadcastReceiver, IntentFilter(DELIVERED))
-
-
-
-Makes the update of the sms notification directly from the Firebase Service
-
-- We run directly the corouting on the broadcast receiver
-- We use the sms notification uid as a filter name so we make sure we do not
-  trigger the same receiver multiple times
-- We unregister the dynamically created broadcast receiver.
-
-
-
-registerReceiver(smsDeliveryBroadcastReceiver, IntentFilter(DELIVERED));
-SmsManager sms = SmsManager.getDefault();
-sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
-      
+So we can create this new model called
+- Status can be online, offline
+SmsMobileHubCheck sms_mobile_hub_token:text confirmed_status_at:datetime status:string
 
 
-In progress
-3. Trabajar en los endpoint the sms mobile hub checks every 2 minutos y ademas implementa lo de los alarm manager y para ese entonces tambien pusher ya esta dandole duro y jalando al chingadazo.
+3.5 Fix the logging time for credentials as they are not loaded in the app.smsparatodos.com
+
+
+ y ademas implementa lo de los alarm manager y para ese entonces tambien pusher ya esta dandole duro y jalando al chingadazo.
 
 4. Retomar lo de que puedas recibir el endpoint de #receive y viene en la libreta.
 
