@@ -3,7 +3,7 @@
 module ReadCache
   class << self
     def redis
-      @redis ||= Redis.new(url: Rails.application.credentials[:redis_url])
+      @redis ||= Redis.new(url: ENV.fetch('REDIS_URL'))
     end
   end
 end
