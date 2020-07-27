@@ -48,7 +48,7 @@ class HubCalculatorUsageService
       'TOTAL_REQUESTS_ALLOWED_PER_MINUTE',
       TOTAL_REQUESTS_ALLOWED_PER_MINUTE
     )
-    find_total_usage_counter_within_minute > limit_allowed
+    find_total_usage_counter_within_minute > limit_allowed.to_i
   end
 
   def find_daily_counter_key_name
@@ -81,7 +81,7 @@ class HubCalculatorUsageService
       'TOTAL_ALLOWED_PER_DAY',
       TOTAL_ALLOWED_PER_DAY
     )
-    find_total_usage_counter_within_today > limit_allowed
+    find_total_usage_counter_within_today > limit_allowed.to_i
   end
 
   def update_and_return_usage_counter_within_half_hour(selected_date = nil)
