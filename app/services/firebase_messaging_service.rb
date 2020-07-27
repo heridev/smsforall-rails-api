@@ -35,6 +35,10 @@ class FirebaseMessagingService
       device_token_firebase
     ]
     options = {
+      priority: 10,
+      android: {
+        priority: 'high'
+      },
       data: {
         sms_number: sms_number,
         sms_content: sms_content,
