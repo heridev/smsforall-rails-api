@@ -22,6 +22,8 @@ module Android
       end
     end
 
+    private
+
     def find_sms_notification
       @find_sms_notification ||= SmsNotification.find_by(
         unique_id: params[:sms_notification_uid]
@@ -36,7 +38,13 @@ module Android
 
     def find_mobile_hub_by_firebase_token
       @find_mobile_hub_by_firebase_token ||= SmsMobileHub.find_by_firebase_token(
-        params[:mobile_hub_token]
+        params[:firebase_token]
+      )
+
+      return if @find_mobile_hub_by_firebase_token
+
+      activerecord_not_found(
+        I18n.t('sms_notification.controllers.invalid_firebase_token')
       )
     end
   end

@@ -8,12 +8,11 @@ module Android
     def validate
       render_json_message(
         {
-          message: I18n.t('mobile_hub.controllers.successful_hub_validation'),
-          mobile_hub_token: @sms_mobile_hub.mobile_hub_token
+          message: I18n.t('mobile_hub.controllers.successful_hub_validation')
         }
       )
       job_validation_params = {
-        mobile_hub_token: @sms_mobile_hub.mobile_hub_token,
+        firebase_token: validation_params[:firebase_token],
         device_token_code: validation_params[:device_token_code]
       }
       SmsHubsValidationJob.perform_later job_validation_params
@@ -51,14 +50,17 @@ module Android
         validation_params[:device_token_code]
       )
 
+      firebase_token_present = validation_params[:firebase_token].present?
+      return if @sms_mobile_hub && firebase_token_present
+
       activerecord_not_found(
         I18n.t('mobile_hub.controllers.failure_hub_validation')
-      ) unless @sms_mobile_hub
+      )
     end
 
     def find_mobile_hub_and_notification
       @mobile_hub = SmsMobileHub.find_by_firebase_token(
-        activation_params[:mobile_hub_token]
+        activation_params[:firebase_token]
       )
 
       @sms_notification = SmsNotification.find_by(
@@ -68,18 +70,18 @@ module Android
       return if @mobile_hub && @sms_notification
 
       activerecord_not_found(
-        I18n.t('mobile_hub.controllers.failure_hub_validation')
+        I18n.t('mobile_hub.controllers.hub_activation_not_found')
       )
     end
 
     def validation_params
-      params.permit(:device_token_code)
+      params.permit(:device_token_code, :firebase_token)
     end
 
     def activation_params
       params.permit(
         :sms_notification_uid,
-        :mobile_hub_token
+        :firebase_token
       )
     end
   end
