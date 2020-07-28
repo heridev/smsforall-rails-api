@@ -896,6 +896,9 @@ pusher = Pusher::Client.new(
   cluster: 'us2'
 )
 
+pusher.authenticate('private-smsparatodos_notifications_android', params[:socket_id])
+
+
 10.times do |index|
   data = { "value": "hola como estas #{(index + 1) * 10}" }
   puts pusher.trigger('smsparatodos-channel', 'superdupperdevice', data)
@@ -922,12 +925,18 @@ curl -X POST \
 https://gist.github.com/heridev/7ebddd13d322877d3cad7f6ca8c2b805#work-in-progress
 
 
-1. Irvin esta revisando eso de los updates para ver que esta pasando que siguen sin querer actualizarse -  posiblemente fixed
+1. Irvin esta revisando eso de los updates para ver que esta pasando que siguen sin querer actualizarse -  posiblemente fixed fingercrossed, virgencita please jaja.
 
-2. Pasar nuevas especificaciones a Irvin una vez termine
+2. Pasar nuevas especificaciones a Irvin una vez termine.
 Terminar de habilitar el endpoint para mobile para de esta forma dejarlo solo para el mobile y será sin uso de tokens y asi
 por que no se ocupa, entonces es mejor habilitarlo totalmente para ese, igual y revisas como la hiciste en invesmark para ver si quedo igual sin authenticacion de token mayormente o que onda y si evoluciona entonces despues te encargas de eso.
 
+
+Hola Irvin, 
+
+Aqui te dejo la nueva tarea, basicamente es actualizar los endpoints en un nuevo namespace llamado "android" (antes "v1") para empezar a separar la parte de "Android" y de la web, y allí estaré trabajando otros dos nuevos endpoints para hacer checks de los dispositivos cada minuto y para poder subir los mensajes recibidos en ese número.
+
+Para la parte de validacion y activacion de los dispositivos te dejo el antes(como esta actualmente) y el despues, donde veras que cambian las rutas y en algunos casos los parametros o respuestas, pero son pequeños cambios
 Antes
 ```
 https://gist.github.com/heridev/4401dbc6634a0282d9da5fcef8631068
@@ -938,10 +947,14 @@ Despues
 https://gist.github.com/heridev/1762c399f280183d616a60cce8cba16b
 ```
 
-Aqui los cambios para el `update_status` en el nuevo endpoint de `android`
+Sobre la actualización de los mensajes y su estado este es el nuevo endpoint y sus detalles de datos y respuesta
 ```
 https://gist.github.com/heridev/6548812ee3005c8f381267fa5594dc58
 ```
+
+Cualquier duda me lo comentas
+
+Gracias.
 
 
 ### In progress
@@ -965,6 +978,8 @@ SmsMobileHubCheck sms_mobile_hub_token:text confirmed_status_at:datetime status:
 
 3.5 Fix the logging time for credentials as they are not loaded in the app.smsparatodos.com
 
+That will help our availability and perfomance in general
+
 
  y ademas implementa lo de los alarm manager y para ese entonces tambien pusher ya esta dandole duro y jalando al chingadazo.
 
@@ -981,6 +996,11 @@ Se facturaría en RIF con el RFC de público general del EXTRANJERO XEXX01010100
 Se envió un correo al conta preguntando si podemos proceder con el cambio de titularidad
 
 ###
+
+IMss
+no se puede para alla
+en cualquier otro
+hojita cuantas unidades
 
 
 - Configurar pagina para que utilize https coneccion segura.

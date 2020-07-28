@@ -1,6 +1,7 @@
 require 'uri'
 require 'net/http'
 require 'json'
+require 'active_support/all'
 
 class HttpRequesterService
   class << self
@@ -44,20 +45,27 @@ xiaomi_rosa_number = '+523121231639'
 personal_number = '+523121231517'
 
 200.times do |number|
-  sleep 0.5
+  # every 5 minutes
+  sleep 60
+
+  # sleep 10
   values = %i(juan pepe chuy heriberto andrea pako fabian roberto irvin chuy mary maria juanit alberto roberto luis eduardo eddie kevin cone alex rafa)
+  current_time = Time.now.in_time_zone('America/Mexico_City').strftime("%a, %b %e %I:%M:%S %P")
   body = {
-    # 'sms_number': tablecast_number,
+    'sms_number': tablecast_number,
     # 'sms_number': xiaomi_rosa_number,
-    'sms_number': personal_number,
+    # 'sms_number': personal_number,
     # invalid number
     # 'sms_number': '+5231212315',
-    'sms_content': "hola #{values.sample} andas por alli? - #{number} - #{Time.now.to_i}",
+    'sms_content': "Bienvenido #{values.sample} ##{number} el dia #{current_time}",
     'sms_customer_reference_id': "#{number} - #{Time.now.to_i}",
     # locahost
     # 'mobile_hub_id': '31b819ef-37bd-4ecc-bae4-bc2dd52dfb58',
     # api.smsparatodos.com
-    'mobile_hub_id': '49b04bad-30f7-4dd5-a9b1-ab90939e0f93',
+    #   tablecast
+    # 'mobile_hub_id': '49b04bad-30f7-4dd5-a9b1-ab90939e0f93',
+    #   my personal cel
+    'mobile_hub_id': '3b0c7198-1a34-4bf7-99e7-0164937c5c6d',
     'sms_type': 'standard_delivery'
   }
 

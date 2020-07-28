@@ -7,10 +7,12 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
 
   describe '#validate' do
     let(:sms_mobile_hub) { create(:sms_mobile_hub) }
+    let(:firebase_token) { 'y.8j9ik$d8dl4mnesw9l(733.nd' }
 
     context 'when the information is valid' do
       let(:sms_mobile_params) do
         {
+          firebase_token: firebase_token,
           device_token_code: sms_mobile_hub.temporal_password
         }
       end
@@ -20,16 +22,7 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
           process :validate, method: :post, params: sms_mobile_params
           job = find_enqueued_job_by(SmsHubsValidationJob)
           expect(job[:args].first.keys).to include 'device_token_code'
-          expect(job[:args].first.keys).to include 'mobile_hub_token'
-        end
-
-        it 'responds with the mobile_hub_token' do
-          process :validate, method: :post, params: sms_mobile_params
-          data = response_body[:data]
-          expect(data.keys).to include :message
-          expect(data.keys).to include :mobile_hub_token
-          expect(data[:mobile_hub_token]).to be_present
-          expect(response.status).to eq 200
+          expect(job[:args].first.keys).to include 'firebase_token'
         end
       end
     end
@@ -37,7 +30,7 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
     context 'when the information is invalid' do
       let(:sms_mobile_params) do
         {
-          device_token_code: 'xxxx',
+          device_token_code: 'xxxx'
         }
       end
 
@@ -49,8 +42,15 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
       end
 
       context 'when the sms_mobile_hub password is valid but the mobile hub was already validated' do
+        let(:sms_mobile_params) do
+          {
+            device_token_code: sms_mobile_hub.temporal_password,
+            firebase_token: firebase_token
+          }
+        end
+
         before do
-          sms_mobile_hub.mark_as_activation_in_progress!
+          sms_mobile_hub.mark_as_activated!
         end
 
         it 'responds with a not found error' do
@@ -70,11 +70,11 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
       create(:sms_notification, user: user, assigned_to_mobile_hub: sms_mobile_hub)
     end
 
-    context 'when the sms mobile hub is searched by mobile hub token' do
+    context 'when the sms mobile hub is searched by firebase token' do
       let(:sms_mobile_params) do
         {
           sms_notification_uid: sms_notification.reload.unique_id,
-          mobile_hub_token: sms_mobile_hub.mobile_hub_token
+          firebase_token: firebase_token
         }
       end
 
@@ -104,7 +104,7 @@ RSpec.describe Android::SmsMobileHubsController, type: :controller do
       let(:sms_mobile_params) do
         {
           sms_notification_uid: sms_notification.unique_id,
-          mobile_hub_token: 'invalid'
+          firebase_token: 'invalid'
         }
       end
 
