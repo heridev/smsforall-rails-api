@@ -53,7 +53,7 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
           params = {
             'sms_notification_uid': individual_sms_notification.reload.unique_id,
             'status': 'delivered',
-            'mobile_hub_token': sms_mobile_hub.firebase_token
+            'firebase_token': sms_mobile_hub.firebase_token
           }
           result = count_queries_for do
             process :update_status, method: :put, params: params
@@ -67,7 +67,7 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
           params = {
             'sms_notification_uid': individual_sms_notification.reload.unique_id,
             'status': 'delivered',
-            'mobile_hub_token': sms_mobile_hub.firebase_token
+            'firebase_token': sms_mobile_hub.firebase_token
           }
           process :update_status, method: :put, params: params
         end
@@ -87,7 +87,7 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
           params = {
             'sms_notification_uid': individual_sms_notification.reload.unique_id,
             'status': 'undelivered',
-            'mobile_hub_token': sms_mobile_hub.firebase_token
+            'firebase_token': sms_mobile_hub.firebase_token
           }
           process :update_status, method: :put, params: params
         end
