@@ -19,7 +19,7 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 ```
 4. Run the server in one tab:
 ```
-rails s
+rails s -p 3030
 ```
 
 5. Run sidekiq in a separate tab
