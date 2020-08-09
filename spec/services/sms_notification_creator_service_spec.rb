@@ -81,7 +81,7 @@ RSpec.describe SmsNotificationCreatorService do
 
     context 'when the user already reached the minute limit' do
       before do
-        12.times do
+        25.times do
           params = {
             mobile_hub_id: sms_mobile_hub.reload.uuid,
             sms_number: sms_number,

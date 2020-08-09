@@ -71,9 +71,16 @@ module V1
 
     private
 
+    # TODO: once we migrate the app in Android we
+    # can deprecate the firebase_token param
     def find_mobile_hub_by_firebase_token
+      token_hub = if params[:firebase_token].present?
+                    params[:firebase_token]
+                  else
+                    params[:mobile_hub_token]
+                  end
       @find_mobile_hub_by_firebase_token ||= SmsMobileHub.find_by_firebase_token(
-        params[:firebase_token]
+        token_hub
       )
     end
 

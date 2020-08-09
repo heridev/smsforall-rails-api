@@ -182,6 +182,15 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
           expect(job[:args].first.keys).to include 'device_token_code'
           expect(job[:args].first.keys).to include 'firebase_token'
         end
+
+        it 'responds with the mobile_hub_token' do
+          process :validate, method: :post, params: sms_mobile_params
+          data = response_body[:data]
+          expect(data.keys).to include :message
+          expect(data.keys).to include :mobile_hub_token
+          expect(data[:mobile_hub_token]).to be_present
+          expect(response.status).to eq 200
+        end
       end
     end
 
@@ -217,9 +226,20 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
         end
       end
 
-      context 'when the sms_mobile_hub password is valid but the mobile hub was already validated' do
+      context 'when the sms_mobile_hub password is valid and already started the activation processs' do
         before do
           sms_mobile_hub.mark_as_activation_in_progress!
+        end
+
+        it 'responds with a not found error' do
+          process :validate, method: :post, params: sms_mobile_params
+          expect(response.status).to eq 200
+        end
+      end
+
+      context 'when the sms_mobile_hub password is valid but the mobile hub was already activated' do
+        before do
+          sms_mobile_hub.mark_as_activated!
         end
 
         it 'responds with a not found error' do
@@ -299,7 +319,37 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
       create(:sms_notification, user: user, assigned_to_mobile_hub: sms_mobile_hub)
     end
 
-    context 'when the information is valid' do
+    context 'when the sms mobile hub is searched by mobile hub token' do
+      let(:sms_mobile_params) do
+        {
+          sms_notification_uid: sms_notification.reload.unique_id,
+          mobile_hub_token: sms_mobile_hub.mobile_hub_token
+        }
+      end
+
+      before do
+        process :activate, method: :post, params: sms_mobile_params
+        sms_mobile_hub.reload
+        sms_notification.reload
+      end
+
+      it 'marks sms notification as delivered' do
+        expect(response.status).to eq 200
+        expect(
+          sms_notification.processed_by_sms_mobile_hub_id
+        ).to eq sms_mobile_hub.id
+        expect(sms_notification.status).to eq 'delivered'
+        expect(sms_notification.delivered_at).to be_present
+      end
+
+      it 'marks the mobile hub as activated' do
+        expect(response.status).to eq 200
+        expect(sms_mobile_hub.status).to eq 'activated'
+        expect(sms_mobile_hub.activated_at).to be_present
+      end
+    end
+
+    context 'when the sms mobile hub is searched by firebase token' do
       let(:sms_mobile_params) do
         {
           sms_notification_uid: sms_notification.reload.unique_id,

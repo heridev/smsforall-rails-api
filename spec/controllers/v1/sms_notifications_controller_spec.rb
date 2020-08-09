@@ -186,7 +186,7 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
         data_attributes = response_body[:data][:sms_notifications].first[:attributes]
         expect(data_attributes.keys).to eq expected_individual_keys
         a_hub = data_attributes[:assigned_to_mobile_hub][:data][:attributes]
-        expect(a_hub.keys.size).to eq 7
+        expect(a_hub.keys.size).to eq 8
       end
 
       it 'executes only 3 queries' do
