@@ -40,5 +40,22 @@ Rails.application.routes.draw do
            via: [:post]
       # resources :sms_notifications
     end
+
+    namespace :android, path: '/android' do
+      post '/sms_mobile_hubs/validate',
+           to: 'sms_mobile_hubs#validate',
+           defaults: { format: 'json' },
+           via: [:post]
+
+      post '/sms_mobile_hubs/activate',
+           to: 'sms_mobile_hubs#activate',
+           defaults: { format: 'json' },
+           via: [:post]
+
+      put '/sms_notifications/update_status',
+           to: 'sms_notifications#update_status',
+           defaults: { format: 'json' },
+           via: [:put]
+    end
   end
 end

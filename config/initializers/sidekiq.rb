@@ -10,7 +10,7 @@ if Rails.env.production? || Rails.env.staging?
     # in the config above to handle rare cases where one of
     # the connection hangs and at least the client has a backup to use.
     redis_client_size = Integer(ENV['REDIS_CLIENT_SIZE'] || 2)
-    config.redis = { url: ENV['REDISTOGO_URL'], size: redis_client_size }
+    config.redis = { url: ENV['REDIS_URL'], size: redis_client_size }
   end
 
   Sidekiq.configure_server do |config|
@@ -21,7 +21,7 @@ if Rails.env.production? || Rails.env.staging?
     # Your Redis connection pool is too small for Sidekiq to work,
     # your pool has 10 connections but really needs to have at least 27
     redis_server_connection_number = Integer(ENV['REDIS_SERVER_SIZE'] || 30)
-    config.redis = { url: ENV['REDISTOGO_URL'], size: redis_server_connection_number }
+    config.redis = { url: ENV['REDIS_URL'], size: redis_server_connection_number }
 
     # Number of concurrent workers pulling jobs and processing them
     # every one will use a database connection(postgresql) and a redis

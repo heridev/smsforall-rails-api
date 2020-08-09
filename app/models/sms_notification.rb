@@ -41,7 +41,8 @@ class SmsNotification < ApplicationRecord
              foreign_key: :assigned_to_mobile_hub_id,
              optional: true
 
-  belongs_to :user
+  belongs_to :user,
+             optional: true
 
   def mark_sent_to_firebase_as_success!(sms_mobile_hub_id)
     update_attributes(
@@ -61,7 +62,7 @@ class SmsNotification < ApplicationRecord
     end
 
     params[:status_updated_by_hub_at] = now
-    update_columns(
+    update(
       params
     )
   end
