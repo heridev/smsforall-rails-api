@@ -16,6 +16,7 @@ rails db:migrate
 3. Export some variables:
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+export REDIS_URL="redis://localhost:6379/1"
 ```
 4. Run the server in one tab:
 ```
@@ -25,6 +26,7 @@ rails s -p 3030
 5. Run sidekiq in a separate tab
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+export REDIS_URL="redis://localhost:6379/1"
 bundle exec sidekiq -q urgent_delivery,2 -q standard_delivery,1
 ```
 
