@@ -17,6 +17,7 @@ gem 'rack-cors', '~> 1.1.1'
 gem 'kaminari'
 gem 'awesome_print', '~> 1.8.0'
 gem 'redis', '~> 4.1.4'
+gem 'pusher', '~> 1.3.3'
 
 group :development, :test do
   gem 'rubocop', '~> 0.82.0', require: false

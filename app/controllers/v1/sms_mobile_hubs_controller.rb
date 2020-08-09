@@ -63,12 +63,16 @@ module V1
       mobile_hub = SmsMobileHub.find_by_code(
         validation_params[:device_token_code]
       )
+
+      # TODO: once we migrate the app in Android we
+      # can deprecate the firebase_token param
       firebase_token_present = validation_params[:firebase_token].present?
 
       if mobile_hub && firebase_token_present
         render_json_message(
           {
-            message: I18n.t('mobile_hub.controllers.successful_hub_validation')
+            message: I18n.t('mobile_hub.controllers.successful_hub_validation'),
+            mobile_hub_token: mobile_hub.mobile_hub_token
           }
         )
         SmsHubsValidationJob.perform_later validation_params.to_h
@@ -108,9 +112,17 @@ module V1
       end
     end
 
+    # TODO: once we migrate the app in Android we
+    # can deprecate the firebase_token param
     def find_mobile_hub_and_notification
+      token_hub = if activation_params[:firebase_token].present?
+                    activation_params[:firebase_token]
+                  else
+                    activation_params[:mobile_hub_token]
+                  end
+
       @mobile_hub = SmsMobileHub.find_by_firebase_token(
-        activation_params[:firebase_token]
+        token_hub
       )
 
       @sms_notification = SmsNotification.find_by(
@@ -124,10 +136,13 @@ module V1
       )
     end
 
+    # TODO: once we migrate the app in Android we
+    # can deprecate the firebase_token param
     def activation_params
       params.permit(
         :sms_notification_uid,
-        :firebase_token
+        :firebase_token,
+        :mobile_hub_token
       )
     end
 
