@@ -326,20 +326,7 @@ end
 
 
 
-
-api.smsparatodos.com
-
-3600
-
-glacial-whitefish-i51xd3r5sy973q4ptihwusku.herokudns.com
-
-
-
-react-app-smsparatodos.netlify.app
-
-
-
-Anuncio de Adsense
+#### Anuncio de Adsense
 
 https://smsparatodos.com
 
@@ -350,137 +337,10 @@ comunicación y más
 Transforma tu celular en un sistema de envío de mensajes grátis
 Y obtén mas clientes gestionándolo todo desde internet
 
-
-
-
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
-    <Autocomplete
-      id="combo-box-demo"
-      options={top100Films}
-      getOptionLabel={(option) => option.title}
-      style={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Combo box" variant="outlined" />}
-    />
-
-+523121231517
-+591????????
-
-
-(?:[0-9] ?){6,11}[0-9]$
-
-[0-9]{6,11}
-
-
-^\([0-9]){6,11}
-
-var cadena = "hello world!";
-var result = /^hello/.test(cadena);
-console.log(result);
-
-
-
-  wrapper: {
-    margin: theme.spacing(1),
-    position: 'relative',
-  },
-  buttonProgress: {
-    position: 'absolute',
-    top: '40%',
-    left: '35%'
-  },
-
-
-
-import axios from 'axios';
-
- componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
-      .then(res => {
-        const persons = res.data;
-        this.setState({ persons });
-      })
-  }
-
-  render() {
-    return (
-      <ul>
-        { this.state.persons.map(person => <li>{person.name}</li>)}
-      </ul>
-    )
-  }
-
-
-
-I like this one
-
-declaring the file:
-```
-import axios from 'axios';
-
-export default axios.create({
-  baseURL: `http://jsonplaceholder.typicode.com/`
-});
-```
-
-
-Using it
-```
-import API from '../api';
-
-export default class PersonList extends React.Component {
-  handleSubmit = event => {
-    event.preventDefault();
-
-    API.delete(`users/${this.state.id}`)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-  }
-}
-```
-
-
 ### Development accounts
 ```
 joseheribertoperezmagana@gmail.com/123qwe123/3121231517
 ```
-
-
-
-https://drive.google.com/file/d/1R38C-IIfs83BSBXaDltepumwFz8Nk5R_/view?usp=sharing
-
-
-
-
-
-
-MAX_DISPLAYED_LOG
-
-
-
-1,000
-
-
-
-{
-  "device_token_code"=>"gLhiAA",
-"firebase_token"=>"eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5", "_aj_hash_with_indifferent_access"=>true}
-
-
-
-Hi Viola,
-
-I just want to know what is the current status of our orders, can you share that with us? :)
-
-Heriberto
-
-
-0420109L202228028229
-
 
 ### Credentials on production (app.smsparatodos.com)
 ```
@@ -488,327 +348,7 @@ joseheribertoperezmagana@gmail.com/$m$paratodo$1766
 ```
 
 
-
-Para la parte de plataformas estamos pensando en utilizar mi cuenta personal para la venta e irnos por la venta de menos de $300 mil y en caso de que supere ese monto, ya podemos hablar para que
-Vas a dar de alta mi cuenta y en ella sera para venta en plataformas (todo lo que quiera)
-- papeleria
-- limpieza
-- y lo que se deje
-
-en cuanto pase la contabilidad pues ya se da de alta la cuenta por fuera.
-
-jarras y empaques - RIF
-
-
-(10%) COMERCIO AL POR MENOR DE CRISTALERIA Y SUS PIEZAS SUELTAS, LOZA Y UTENSILIOS DE COCINA DE CERAMICA Y PLASTICO (RIF)
-
-(50%) COMERCIO AL POR MENOR DE ARTICULOS DE PAPELERIA (RIF)
-
-(20%) COMERCIO AL POR MENOR DE ARTICULOS PARA LIMPIEZA (RIF)
-
-(20%) - PROCESAMIENTO ELECTRONICO DE INFORMACION, HOSPEDAJE DE PAGINAS WEB Y OTROS SERVICIOS RELACIONADOS (RIF)
-
-country_international_code
-mobile_number
-
-hola Dania
-
-        it 'creates a new sms notification' do
-          process :create, method: :post, params: sms_notification_params
-          expect(response.status).to eq 200
-          keys = response_body[:data][:attributes].keys
-          expect(keys).to include(:sms_content)
-
-
-  { name: 'my personal number', number: '+523121231517', f_token: 'eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5' },
-
-Twitter1766$$
-
-
-  const [values, setValues] = React.useState({
-    name: "Hello"
-  });
-
-     const CHARACTER_LIMIT = 160;
-
-
-              helperText={showValidationErrorMessage('sms_content')}
-              helperText={`${values.name.length}/${CHARACTER_LIMIT}`}
-
-
-Nuevo device xiaomi red mi con el numero 3121231639 (movistar)
-```
-redmi_token = 'f1UFkTNtSuOYIxSweGU4P6:APA91bFA8T6gx856AwMeH9c58NKeX4BtcG_h6Rxk2WoESJAWpusBs93uzlE2x4NX-kLReoKPguu_UWaaLni1LZ7Ht2obfmFunERudH9TU7rEEge2ziPd6EyzAdifZoV-6OHJn7CZleX3'
-```
-
-Nuevo device teclast 3121698456 (telcel)
-```
-teclast_token = 'e8Wl5y16RDGyQ1W-0QslV4:APA91bH6aShfnYvCJEsgRgwX8HfMNsn2UO9DKP7P9tEF2N_Fj7e2xlq0LvREbdXkZjddauOz0bbDcaglf66P4TGCJLsOQkno6dZeWkxWLKtunBbmkASo9y2dsQ-kA0uGcRF_jrHCoJ03'
-```
-
-sending a bunch of those messages again.
-
-```
-params = {
-  sms_content: 'Hola joven',
-  sms_number: '+523121231639',
-  assigned_to_mobile_hub_id: SmsMobileHub.last.id,
-  user_id: User.last.id,
-  sms_type: 'transactional'
-}
-sms_notification = SmsNotification.create params
-
-# sms_notification = SmsNotification.last
-
-firebase_params = {
-  sms_number: sms_notification.sms_number,
-  sms_notification_id: sms_notification.id,
-  device_token_firebase: teclast_token,
-  # device_token_firebase: 'eYzo1P8EQlSRJ3U6Y76OSR:APA91bHs0a9msnJFbh5uD1W1d2AZ1TZJ3GRPtIw4Ou0pxIAgdJ1BkyKjwqOA5j_Jv8sJEqnV_cqu_MGlvKI3g5r7zr815hQERAFmcJXRSCEfigH9ugSFDE8lXaoJJu3zTiDmLeKjxNS5',
-  sms_content: sms_notification.sms_content,
-  sms_type: sms_notification.sms_type
-}
-
-s = FirebaseMessagingService.new(firebase_params)
-s.send_to_google!
-```
-
-Aqui el contenido mas actualizado
-```
-https://gist.github.com/heridev/7b21aaac071f771145e293fc67ce9dde
-```
-
-Empieza la cosa interesante jaja
-
-
-first_paragraph = "primera prueba"
-
-
-first_paragraph = 'Desde luego, «los pensamientos son cosas», cosas muy poderosas cuando se combinan con la exactitud del propósito, la perseverancia y un imperioso deseo de convertirlos en riqueza, o en otros objetos materiales. Hace algunos años, Edwin C. Barnes descubrió lo cierto que es que los hombres realmente piensan y se hacen ricos. Su descubrimiento no surgió de pronto, sino que fue apareciendo poco a poco, empezando por un ferviente deseo de llegar a ser socio del gran Edison. Una de las características principales del deseo de Barnes es que tenía total determinación. Quería trabajar con Edison, no para él. Observe con detenimiento la descripción de cómo fue convirtiendo su deseo en realidad, y tendrá una mejor comprensión de los principios que conducen a la riqueza. Cuando apareció por primera vez en su mente, Barnes no estaba FIN'
-
-phones = [
-    { name: 'xiaomi blanco rosa', number: '+523121231639', f_token: 'f1UFkTNtSuOYIxSweGU4P6:APA91bFA8T6gx856AwMeH9c58NKeX4BtcG_h6Rxk2WoESJAWpusBs93uzlE2x4NX-kLReoKPguu_UWaaLni1LZ7Ht2obfmFunERudH9TU7rEEge2ziPd6EyzAdifZoV-6OHJn7CZleX3' },
-  { name: 'teclast', number: '+523121698456', f_token: 'e8Wl5y16RDGyQ1W-0QslV4:APA91bH6aShfnYvCJEsgRgwX8HfMNsn2UO9DKP7P9tEF2N_Fj7e2xlq0LvREbdXkZjddauOz0bbDcaglf66P4TGCJLsOQkno6dZeWkxWLKtunBbmkASo9y2dsQ-kA0uGcRF_jrHCoJ03' }
-]
-
-[phones[1]].each do |mobile_hash|
-  phones.each do |internal_mobile|
-    next unless internal_mobile[:name] != mobile_hash[:name]
-
-    first_paragraph.split.each do |current_word|
-      send_message(current_word, internal_mobile[:number], mobile_hash[:f_token])
-    end
-  end
-end
-
-
-
-
-https://www.twilio.com/console/project/settings
-
-working example:
-```
-curl -X POST \
-  http://localhost:3000/v2/sms/create \
-  -H "Content-Type: application/json" \
-  -H 'Authorization-Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxM30.1KX29F-3h6gJYsnntAQH08NWlEAD91utxoMh8J_sfaw' \
-  -H 'Authorization-Client: $2a$12$ZL6.AGqVM7QWZa80Olm/m.' \
-  -d '{"sms_number":"+523121231517","sms_content":"smsparatodos.com es increible","sms_type":"standard_delivery","sms_customer_reference_id":"123456789","mobile_hub_id":"6d5be464-5f7d-4bfe-8592-90c7242c70d7"}'
-```
-
-### Developing new API v2 for developers integrations
-
-The smsparatodos.com API allows you to manage your text messages(SMS) using any programming languages and we include a few examples for:
-- PHP
-- JAVA
-- C#
-- C
-- Python
-- Ruby
-- Javascript
-- NodeJS
-
-
-Authorization Keys
-
-smsparatodos.com expects two authorization keys to be included in all API requests to the server as a headers the for POST requests.
-Get Your Authorization keys from the API credentials section which you need to add in each API request as following:
-
-HEADERS
-```
-Authorization-Token: YOUR_AUTHORIZATION_TOKEN
-Authorization-Client: YOUR_AUTHORIZATION_CLIENT
-```
-
-NOTE: You must replace YOUR_AUTHORIZATION_TOKEN and YOUR_AUTHORIZATION_CLIENT with your account API Authorization keys which look like this:
-```
-YOUR_AUTHORIZATION_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ8.eyJ1c3VyX2lkIjoxM30.1KX29F-3h6gJYsnntAQH08NWlEAD91utxoMh7J_9jdu"
-YOUR_AUTHORIZATION_CLIENT = "$2a$13$BL6.AGtVM7QWZa80O9m/m."
-```
-
-POST request to create a new SMS
-```
-https://api.smsparatodos.com/v2/sms/create
-```
-
-  const authorizationToken = userData.api_authorization_token;
-  const authorizationClient = userData.api_authorization_client;
-
-
-#### Body params
-```
-{
-  mobile_hub_id: 'xxxxx-xxxxxx-xxxxxx-xxxxxx',
-  sms_number: '+523121231517',
-  sms_type: 'standard_delivery', # o urgent_delivery
-  sms_content: 'Hola Juan, estamos muy contentos de informarte que tu orden a sido enviada por DHL con el sig num de guia xxxxxxxxxxxxx',
-  sms_customer_reference_id: 'xxxxx' # opcional - un valor de referencia de hasta 128 caracteres, con el cual puedes consultar despues el estado actual de dicho mensaje de texto
-}
-```
-
-Explanation:
-- mobile_hub_id - This is the unique identifier from your device that needs to be activated, you can find this information once you access the details within the SMS devices main menu.
-- sms_number - it is the international number, including the right international code plus the phone number including the local area code
-- sms_type - there are two possible values for this field: standard_delivery and urgent_delivery, we give more priority to urgent delivery SMS, so if you need to ensure that this message is delivered as soon as possible just like a one time token, set the urgent_delivery type for that request.
-- sms_content - it is the content message that has a limit of 160 characters, in the case you send a longer message, we will take only the first 160 characters from your request.
-- sms_customer_reference_id - You can use this value to associate your messages to our system, so you can track and access in the future any specific text message details and it is optional.
-
-
-Headers
-````
-Content-Type: application/json
-Authorization-Token: Bearer ya29.ElqKBGN2Ri_Uz...HnS_uNreA
-Authorization-Client: ya29.ElqKBGN2Ri_UzS_uNreA
-```
-
-
-#### How a Successful request looks like:
-Status code
-```
-200
-```
-
-Response body
-```
-{
-    "sms_customer_reference_id": "99999",
-    "sms_content": "esta es una prueba",
-    "mobile_hub_id": "6d5be464-xxxx-xxxx-xxxx-x0c7242c70d7",
-    "api_version": "V2",
-    "date_created": "2020-07-07T20:14:02Z",
-    "status": "enqueued",
-    "error_message": null,
-    "sms_number": "+523121231517"
-}
-```
-
-
-### Here are the possibles values you can get from a successful request:
-- queued
-- sending
-- sent
-- delivered
-- receiving
-- received
-
-
-#### How a failed request looks like:
-Status code
-```
-422
-```
-
-The "status" field will include one of the following values:
-- failed
-- undelivered
-
-And the field
-```
-error_message
-```
-
-Will include one of the following responses:
-
-- There are some validation errors: xxx
-- The number of requests per minute was reached, please try again the next minute
-- The number of requests per day was reached, please try again the next day
-- The mobile_hub_id is invalid
-- You account has been suspended, please contact our support team
-- Your account has been blocked, please contact our support team
-
-import { Link } from 'react-router-dom';
-
-
-- queued
-- sending
-- sent
-- delivered
-- receiving
-- received
-
-
-- failed
-- undelivered
-
-
-
-rails g migration AddUpdateStatusFieldsToSmsNotifications additional_update_info status_updated_by_hub_at:datetime
-
-si fallo este sera el status
-
-
-Tipo request: PUT
-URL: https://api.smsparatodos.com/v2/sms/update_status
-Content-Type: app
-
-body params:
-```
-{
-  "sms_notification_uid": '54d57304-db0a-4575-b202-11d0d9071a8f',
-  "status": "delivered",
-  "additional_update_info": ''
-}
-```
-
-
-Tipo request: POST -> https://{URL}/v1/sms_mobile_hubs/activate
-
-HSBC
-Razon social: DESARROLLADORA DE SISTEMAS TECNOLÓGICOS DE GUERRERO SA DE CV
-Clabe: 021680040568831015
-Cuenta: 4056883101
-
-Scotiabank
-Razón social: DESARROLLADORA DE SISTEMAS TECNOLÓGICOS DE GUERRERO SA DE CV
-Clabe: 044680256012993704
-Cuenta: 25601299370
-Tarjeta: 5579225041365795
-
-
-curl -X POST \
-  https://api.smsparatodos.com/v2/sms/create \
-  -H "Content-Type: application/json" \
-  -H 'Authorization-Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.S7-mMxhL76vwmDEHiBoC25b6OKWCGFfROZvUeaUHFoo' \
-  -H 'Authorization-Client: $2a$12$Spip/ZntEXFlgcjlB3Y4Ge' \
-  -d '{"sms_number":"+523121698456","sms_content":"Siguiente 1","sms_type":"standard_delivery","sms_customer_reference_id":"123456789","mobile_hub_id":"85ba8734-53e2-47d5-bf94-fa17eca32307"}'
-
-curl -X POST \
-  https://api.smsparatodos.com/v2/sms/create \
-  -H "Content-Type: application/json" \
-  -H 'Authorization-Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.S7-mMxhL76vwmDEHiBoC25b6OKWCGFfROZvUeaUHFoo' \
-  -H 'Authorization-Client: $2a$12$Spip/ZntEXFlgcjlB3Y4Ge' \
-  -d '{"sms_number":"+523121698456","sms_content":"Siguiente 2","sms_type":"standard_delivery","sms_customer_reference_id":"123456789","mobile_hub_id":"85ba8734-53e2-47d5-bf94-fa17eca32307"}'
-
-curl -X POST \
-  https://api.smsparatodos.com/v2/sms/create \
-  -H "Content-Type: application/json" \
-  -H 'Authorization-Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.S7-mMxhL76vwmDEHiBoC25b6OKWCGFfROZvUeaUHFoo' \
-  -H 'Authorization-Client: $2a$12$Spip/ZntEXFlgcjlB3Y4Ge' \
-  -d '{"sms_number":"+523121698456","sms_content":"numero valido","sms_type":"standard_delivery","sms_customer_reference_id":"123456789","mobile_hub_id":"85ba8734-53e2-47d5-bf94-fa17eca32307"}'
-
-
-config.include Common::Helpers
-
+### Rspec tests to control n + 1 queries
 result = count_queries_for do
 
   result = count_queries_for do
@@ -819,11 +359,10 @@ result = count_queries_for do
 
 print_queries_generated_for do
 end
+===============================================
 
 
 ### Analisis acerca de envios y controles y mantenerlo simplle
-
-
 
 About the control to not overload how many sms messages you send, well we need to confirm how many sms messages we support, and doing those experiments, then based on that we can say that:
 
@@ -881,6 +420,7 @@ sms_type: 'sms_device_checker_status'
 ```
 
 
+### Pusher example codes ##################
 
 app_id = "1039167"
 key = "74446a2bd87031fa62ea"
@@ -904,21 +444,10 @@ pusher.authenticate('private-smsparatodos_notifications_android', params[:socket
   puts pusher.trigger('smsparatodos-channel', 'superdupperdevice', data)
 end
 
-
-
 data = { "mobile_hub_id": "6d5be464-5f7d-4bfe-8592-90c7242c70d7", "sms_number": "+523121231517", "sms_type": "standard_delivery", "sms_customer_reference_id": "99999", "sms_content": "esta es una prueba" }
 
-
 pusher.trigger('smsparatodos-channel', 'superdupperdevice', data)
-
-
-
-curl -X POST \
-  https://smsparatodosapi.ngrok.io/v2/sms/create \
-  -H "Content-Type: application/json" \
-  -H 'Authorization-Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxM30.1KX29F-3h6gJYsnntAQH08NWlEAD91utxoMh8J_sfaw' \
-  -H 'Authorization-Client: $2a$12$ZL6.AGqVM7QWZa80Olm/m.' \
-  -d '{"sms_number":"+523121698456","sms_content":"otr mas","sms_type":"standard_delivery","sms_customer_reference_id":"123456789","mobile_hub_id":"477989dc-b431-4e95-856c-7b616aaffef8"}'
+====================================================================================
 
 
 ### Last updates, current work in progress
@@ -930,31 +459,6 @@ https://gist.github.com/heridev/7ebddd13d322877d3cad7f6ca8c2b805#work-in-progres
 2. Pasar nuevas especificaciones a Irvin una vez termine.
 Terminar de habilitar el endpoint para mobile para de esta forma dejarlo solo para el mobile y será sin uso de tokens y asi
 por que no se ocupa, entonces es mejor habilitarlo totalmente para ese, igual y revisas como la hiciste en invesmark para ver si quedo igual sin authenticacion de token mayormente o que onda y si evoluciona entonces despues te encargas de eso.
-
-
-Hola Irvin, 
-
-Aqui te dejo la nueva tarea, basicamente es actualizar los endpoints en un nuevo namespace llamado "android" (antes "v1") para empezar a separar la parte de "Android" y de la web, y allí estaré trabajando otros dos nuevos endpoints para hacer checks de los dispositivos cada minuto y para poder subir los mensajes recibidos en ese número.
-
-Para la parte de validacion y activacion de los dispositivos te dejo el antes(como esta actualmente) y el despues, donde veras que cambian las rutas y en algunos casos los parametros o respuestas, pero son pequeños cambios
-Antes
-```
-https://gist.github.com/heridev/4401dbc6634a0282d9da5fcef8631068
-```
-
-Despues
-```
-https://gist.github.com/heridev/1762c399f280183d616a60cce8cba16b
-```
-
-Sobre la actualización de los mensajes y su estado este es el nuevo endpoint y sus detalles de datos y respuesta
-```
-https://gist.github.com/heridev/6548812ee3005c8f381267fa5594dc58
-```
-
-Cualquier duda me lo comentas
-
-Gracias.
 
 
 ### In progress
@@ -985,69 +489,57 @@ That will help our availability and perfomance in general
 
 4. Retomar lo de que puedas recibir el endpoint de #receive y viene en la libreta.
 
-### Andrea cosas
 
-### Payoneer
-confirmado por conta - sáb., 27 jun. 14:46
+### Android app information
+### Create new keys password for Android app google play store - para bundle
+/Users/heridev/AndroidStudioProjects/SmsMobileHub/SmsparatodosKey
 
-Se facturaría en RIF con el RFC de público general del EXTRANJERO XEXX010101000 sin IVA, se puede facturar en DOLARES pero el sistema solicita el TIPO DE CAMBIO de la transacción o facturarlo en PESOS. Pásame las Fechas y montos depositados. saludos
+password: BundledSmsParatodos2020#
 
-### Cambio de titularidad - plataformas digitales
-Se envió un correo al conta preguntando si podemos proceder con el cambio de titularidad
+Alias key: AliasSmsParatodos2020#
 
-###
+confirm: BundledSmsParatodos2020#
 
-IMss
-no se puede para alla
-en cualquier otro
-hojita cuantas unidades
+#### para apk generacion distinta al bundle aab
 
-
-- Configurar pagina para que utilize https coneccion segura.
-
-- Implementar metodos de pago por medio de:
- - Paypal (tarjeta de credito, debito y cuenta paypal)
- - Transferencia  (poner tus datos)
- - Mercadopago.
- - OpenPay
-
-- Configurar google analytics
-
-- Revisar intregacion con mienvio.mx
-
-Despues de esto hacer una compra por la cantidad de $10.00 pesos
-
-- Ver metodos de envío y calculo de los mismos en woomerce.
+key store path: ApkStore
+password: Apk2020$ confirm_password:Apk2020$
+------------------
+Alias: key0
+password_key: 'ApkPassword2020$'
+-------------------------------
 
 
-- Investigar un coste de envio base preguntar a la logistica y zonas o grupo de codigos postales
-
-### Instalar el plugin woocommerce apg weight and postcode luego entra en ajustes del plugin
-https://wordpress.org/plugins/woocommerce-apg-weight-and-postcodestatecountry-shipping/
-Estos son algunas de las configuraciones que veras en dicho plugin.
-
-- Coste de envio es la base a todos los envios
-Digamos que son $100 como base para todos los envios.
-
-tarifa de envio es para añadir costes basado en medidas y pesos por ejemplo
-```
-1000|50
-3000|100
+### Cuentas para google para que puedan registrar un nuevo device
+````
+smsparatodos@mailinator.com
+Google2020!
 ```
 
-- Significa que un producto de hasta mil gramos tendrá un coste total de $150
-- Significa que un producto de entre 1 kilo y 3 kilos tendrá un coste total de $200
 
-Tener cuidado en la configuracion por producto para que no se haga el calculo individual, si no al total de la orden.
+## Subir la app a la playstore #############################################
+### Titulo/Nombre de la aplicación:
+Sms para todos
 
+### Descripción corta, máximo 80 caracteres:
+Sms es una plataforma de gestión de mensajes de texto (SMS)
 
-- En teoria puedes calcular envios basado en codigos postales entre rangos
-- Puedes cobrar basado en pesos y medidas.
-- Tambien se ofrece envio gratis despues de cierto precio
+### Descripción larga
+Smsparatodos.com nace con la visión de ofrecer el envío de mensajes de texto grátis para pequeñas empresas y emprendedores y revolucionar el concepto del SMS para las empresas, No enviamos SMS masivos ni SPAM, solo mensajes importantes y relevantes para el usuario final.
 
+pacientesweb.com una de nuestras filiales ofrecerá recordatorios, confirmaciones de citas y más sin cobrar un costo extra por toda esa comunicación con el paciente.
 
-Si es más de $450 es GRATIS
+A diferencia de las integraciones actuales, nuestros números remitentes aceptarán respuestas con lo cual propiciará una interacción por este medio sin la necesidad de instalar una aplicación móvil.
 
+URL con la política de privacidad
+https://smsparatodos.com/politicas-de-privacidad-de-datos
+
+Icono de alta resolución  512 x 512 - done
+
+Imagen destacada 1024 x 500 - ready
+
+Capturas de pantalla Longitud mínima: 320 píxeles, Longitud máxima: 3840 píxeles -  ready
+====================================================================================================
 
 
 

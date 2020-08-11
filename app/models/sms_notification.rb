@@ -3,6 +3,7 @@
 class SmsNotification < ApplicationRecord
   STATUSES = {
     default: 'queued',
+    pending: 'pending',
     delivered: 'delivered',
     received: 'received',
     failed_sent_to_firebase: 'failed_sent_to_firebase',
