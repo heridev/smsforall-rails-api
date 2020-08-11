@@ -23,9 +23,6 @@ class SmsNotificationSenderService
     firebase_service.send_to_google!
 
     if firebase_service.valid_response?
-      # HubCalculatorUsageService.new(
-      #   mobile_hub.uuid
-      # ).update_and_return_usage_counter_within_half_hour
       sms_notification.mark_sent_to_firebase_as_success!(mobile_hub.id)
     else
       sms_notification.mark_sent_to_firebase_as_failure!(mobile_hub.id)
