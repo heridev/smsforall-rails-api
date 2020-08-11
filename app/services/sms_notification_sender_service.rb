@@ -9,10 +9,8 @@ class SmsNotificationSenderService
   end
 
   def deliver_notification!
-    puts "deliver_notification"
     return unless sms_notification
     return unless mobile_hub
-    puts "after checking sms_notification and mobile_hub"
 
     params = {
       sms_content: sms_notification.sms_content,
