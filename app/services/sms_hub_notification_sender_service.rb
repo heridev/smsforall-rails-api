@@ -6,15 +6,17 @@ class SmsHubNotificationSenderService
   end
 
   def create_and_enque_sms!
+    binding.pry
     return unless @mobile_hub
 
     current_time = Time.now.in_time_zone(
       'America/Mexico_City'
-    ).strftime('%a, %b%e %I:%M:%S %P')
+    ).strftime('%a, %b %e %I:%M:%S %P')
 
     sms_content = I18n.t(
       'mobile_hub.content.sms_interval_checker_msg',
-      current_time: current_time
+      current_time: current_time,
+      hub_id: @mobile_hub.id
     )
     sms_confirmation_params = {
       sms_content: sms_content,
