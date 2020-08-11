@@ -1,0 +1,7 @@
+:schedule:
+  sms_hub_interval_sender_notification_checker:
+    # cron: '0 */5 * * * *' # Runs once every 5 minutes
+    # every: '5m'
+    every: '1m'
+    # every: '30s'
+    class: SmsHubIntervalSenderNotificationJob

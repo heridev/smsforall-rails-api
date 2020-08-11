@@ -4,6 +4,11 @@ require 'sidekiq/web'
 
 if Rails.env.production? || Rails.env.staging?
 
+  max_work_threads = Integer(ENV['MAX_WORK_THREADS_RUFUS'] || 1)
+  SidekiqScheduler::Scheduler.instance.rufus_scheduler_options = {
+    max_work_threads: max_work_threads
+  }
+
   Sidekiq.configure_client do |config|
     # As a rule of thumb, the Sidekiq client, which is usually a
     # rails app will only need 1 connection to redis. I used 2
