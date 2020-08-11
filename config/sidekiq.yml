@@ -4,4 +4,5 @@
     # every: '5m'
     # every: '1m'
     every: '30s'
+    queue: standard_delivery
     class: SmsHubIntervalSenderNotificationJob
