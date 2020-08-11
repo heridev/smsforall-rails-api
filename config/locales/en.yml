@@ -15,7 +15,7 @@ en:
   mobile_hub:
     content:
       welcome_msg: "Hello %{user_name}, bienvenido a smsparatodos.com"
-      sms_interval_checker_msg: "This is an automated SMS checke sent at %{current_time} Mexico Time"
+      sms_interval_checker_msg: "This is an automated SMS check sent at %{current_time} Mexico Time from %{hub_id}"
     statuses:
       pending_activation: "Pending activation"
       activated: "Activated"
