@@ -1,6 +1,7 @@
 :schedule:
   sms_hub_interval_sender_notification_checker:
-    # cron: '0 */5 * * * *' # Runs once every 5 minutes
+    # this is the one we need to put
+    # every: '5m'
     every: '20m'
     # every: '30s'
     queue: standard_delivery

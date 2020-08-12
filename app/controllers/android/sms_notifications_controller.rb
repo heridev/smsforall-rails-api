@@ -3,7 +3,31 @@
 module Android
   class SmsNotificationsController < ::V1::ApplicationController
     before_action :find_sms_notification, only: :update_status
-    before_action :find_mobile_hub_by_firebase_token, only: :update_status
+    before_action :find_mobile_hub_by_firebase_token, only: %i[update_status receive]
+
+    def receive
+      hub_id = @find_mobile_hub_by_firebase_token&.id
+      user_id = @find_mobile_hub_by_firebase_token&.user_id
+      cleaned_params = {
+        sms_number: params[:sms_number],
+        sms_content: params[:sms_content],
+        hub_id: hub_id,
+        user_id: user_id
+      }
+      sms_notification = SmsNotification.create_received_notification(
+        cleaned_params
+      )
+
+      if sms_notification.persisted?
+        render_json_message(
+          message: I18n.t(
+            'sms_notification.controllers.succcess_received_message'
+          )
+        )
+      else
+        render_error_object(sms_notification.errors.messages)
+      end
+    end
 
     def update_status
       cleaned_params = {
@@ -13,9 +37,9 @@ module Android
       }
       if @find_sms_notification.update_status(cleaned_params)
         render_json_message(
-          {
-            message: I18n.t('sms_notification.controllers.succcess_update')
-          }
+          message: I18n.t(
+            'sms_notification.controllers.succcess_update'
+          )
         )
       else
         render_error_object(@find_sms_notification.errors.messages)

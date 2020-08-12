@@ -6,7 +6,6 @@ class SmsHubNotificationSenderService
   end
 
   def create_and_enque_sms!
-    binding.pry
     return unless @mobile_hub
 
     current_time = Time.now.in_time_zone(
