@@ -21,7 +21,10 @@ class SmsHubIntervalSenderNotificationJob < ApplicationJob
     invalid_time = current_mexico_time > night_time ||
                    current_mexico_time < morning_time
 
-    disabled_control = ENV.fetch('DISABLED_OFFICE_HOURS_SMS_CHECKER', false)
+    disabled_control = ENV.fetch(
+      'ENABLED_OFFICE_HOURS_SMS_CHECKER_CONTROL',
+      false
+    )
 
     return if invalid_time && disabled_control
 
