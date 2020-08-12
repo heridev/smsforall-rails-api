@@ -57,6 +57,11 @@ Rails.application.routes.draw do
            to: 'sms_notifications#update_status',
            defaults: { format: 'json' },
            via: [:put]
+
+      post '/sms_notifications/receive',
+           to: 'sms_notifications#receive',
+           defaults: { format: 'json' },
+           via: [:post]
     end
   end
 end

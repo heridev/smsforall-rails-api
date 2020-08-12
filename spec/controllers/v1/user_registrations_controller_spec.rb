@@ -8,7 +8,9 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
         :email,
         :name,
         :country_international_code,
-        :mobile_number
+        :mobile_number,
+        :api_authorization_token,
+        :api_authorization_client
       ]
     end
 
