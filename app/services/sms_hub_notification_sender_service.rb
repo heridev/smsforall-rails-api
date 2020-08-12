@@ -10,11 +10,12 @@ class SmsHubNotificationSenderService
 
     current_time = Time.now.in_time_zone(
       'America/Mexico_City'
-    ).strftime('%a, %b %e %I:%M:%S %P')
+    ).strftime('%a, %b %e %I:%M:%S%P')
 
     sms_content = I18n.t(
       'mobile_hub.content.sms_interval_checker_msg',
       current_time: current_time,
+      device_short_name: @mobile_hub.short_device_name,
       hub_id: @mobile_hub.id
     )
     sms_confirmation_params = {
