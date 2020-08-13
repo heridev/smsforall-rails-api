@@ -78,13 +78,13 @@ RSpec.describe SmsHubIntervalSenderNotificationJob, type: :job do
 
   context "when the current time is later than 11 pm mexico's time" do
     before do
-      ENV['DISABLED_OFFICE_HOURS_SMS_CHECKER'] = 'true'
+      ENV['ENABLED_OFFICE_HOURS_SMS_CHECKER_CONTROL'] = 'true'
       current_time = Time.parse('2020-05-25 23:01:47 -0500')
       travel_to current_time
     end
 
     after do
-      ENV['DISABLED_OFFICE_HOURS_SMS_CHECKER'] = nil
+      ENV['ENABLED_OFFICE_HOURS_SMS_CHECKER_CONTROL'] = nil
       travel_back
     end
 
@@ -101,13 +101,13 @@ RSpec.describe SmsHubIntervalSenderNotificationJob, type: :job do
 
   context "when the current time is earlier than 6 am mexico's time" do
     before do
-      ENV['DISABLED_OFFICE_HOURS_SMS_CHECKER'] = 'true'
+      ENV['ENABLED_OFFICE_HOURS_SMS_CHECKER_CONTROL'] = 'true'
       current_time = Time.parse('2020-05-25 05:59:47 -0500')
       travel_to current_time
     end
 
     after do
-      ENV['DISABLED_OFFICE_HOURS_SMS_CHECKER'] = nil
+      ENV['ENABLED_OFFICE_HOURS_SMS_CHECKER_CONTROL'] = nil
       travel_back
     end
 
