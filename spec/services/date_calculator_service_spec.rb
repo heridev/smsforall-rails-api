@@ -27,13 +27,13 @@ RSpec.describe DateCalculatorService do
     it 'returns the previous half hour to the next day' do
       time = Time.local(2020, 7, 1, 23, 59, 15)
       result = described_class.new(time).get_previous_half_hour
-      expect(result).to eq '2020-07-01 23:30:00 -0500'.to_datetime
+      expect(result).to eq '2020-07-01 23:30:00 +0000'.to_datetime
     end
 
     it 'returns the previous half hour at noon' do
-      time = Time.local(2020, 7, 1, 12, 14, 59)
-      result = described_class.new(time.to_datetime).get_previous_half_hour
-      expect(result).to eq '2020-07-01 12:00:00 -0500'.to_datetime
+      time = Time.parse('2020-07-01 12:14:59 +0000')
+      result = described_class.new(time).get_previous_half_hour
+      expect(result.to_datetime).to eq '2020-07-01 12:00:00 +0000'.to_datetime
     end
   end
 end
