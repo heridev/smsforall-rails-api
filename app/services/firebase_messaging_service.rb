@@ -15,6 +15,7 @@ class FirebaseMessagingService
     @device_token_firebase = params[:device_token_firebase]
     @sms_content = take_only_160_characters_from(params[:sms_content])
     @sms_type = params[:sms_type] || 'transactional'
+    @firebase_response = {}
   end
 
   def take_only_160_characters_from(message_content)

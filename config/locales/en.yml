@@ -12,9 +12,11 @@ en:
       sms_notification_update_status_not_found: 'The sms notification does not exist or was already updated'
       invalid_firebase_token: 'The firebase token is invalid'
       succcess_update: 'The sms notification was updated successfully'
+      succcess_received_message: 'The sms notification was created successfully'
   mobile_hub:
     content:
       welcome_msg: "Hello %{user_name}, bienvenido a smsparatodos.com"
+      sms_interval_checker_msg: "SMS check sent at %{current_time} from %{device_short_name} with id %{hub_id}"
     statuses:
       pending_activation: "Pending activation"
       activated: "Activated"
