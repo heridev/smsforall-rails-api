@@ -27,6 +27,7 @@ rails s -p 3030
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
+export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
 bundle exec sidekiq -q urgent_delivery,2 -q standard_delivery,1
 ```
 
@@ -44,7 +45,7 @@ export SIDEKIQ_ADMIN_PASSWORD='pass'
 
 then you access the url
 ```
-localhost:3000/panel/sidekiq
+localhost:3030/panel/sidekiq
 ```
 
 ### Connecting Android, app.smsparatodos in local
