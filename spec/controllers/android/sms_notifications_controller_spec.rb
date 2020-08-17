@@ -5,16 +5,56 @@ require 'rails_helper'
 RSpec.describe Android::SmsNotificationsController, type: :controller do
   let(:user) { create(:user, mobile_number: '3121231818') }
   let(:other_user) { create(:user, mobile_number: '3121231718') }
+  let(:sms_mobile_hub) do
+    create(
+      :sms_mobile_hub,
+      :activated,
+      device_number: '3121232030',
+      user: user
+    )
+  end
+
+  describe '#receive' do
+    context 'when the sms content and number are not valid' do
+      it 'does not create a sms notification' do
+        params = {
+          'firebase_token': sms_mobile_hub.firebase_token
+        }
+
+        process :receive, method: :post, params: params
+        expect(response.status).to eq 422
+        error_keys = response_body[:data][:errors].keys
+        expect(error_keys).to eq  [:sms_content, :sms_number]
+      end
+    end
+
+    context 'when the firebase token hub is not valid' do
+      it 'does not create a sms notification' do
+        params = {
+          'sms_number': '+523121231517',
+          'sms_content': 'Muchas gracias por la confirmación',
+          'firebase_token': 'xxx'
+        }
+        process :receive, method: :post, params: params
+        expect(response.status).to eq 404
+      end
+    end
+
+    context 'when the firebase token hub is valid' do
+      it 'creates a new sms notification' do
+        params = {
+          'sms_number': '+523121231517',
+          'sms_content': 'Muchas gracias por la confirmación',
+          'firebase_token': sms_mobile_hub.firebase_token
+        }
+        process :receive, method: :post, params: params
+        expect(response.status).to eq 200
+        expect(response_body[:data][:message]).to match(/created successfully/)
+      end
+    end
+  end
 
   describe '#update_status' do
-    let(:sms_mobile_hub) do
-      create(
-        :sms_mobile_hub,
-        :activated,
-        device_number: '3121232030',
-        user: user
-      )
-    end
     let!(:individual_sms_notification) do
       create(
         :sms_notification,

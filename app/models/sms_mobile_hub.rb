@@ -28,6 +28,10 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  def short_device_name
+    device_name[0..20]
+  end
+
   # TODO: once we migrate the app in Android we
   # can deprecate the serarch by firebase token
   # and rename this method
