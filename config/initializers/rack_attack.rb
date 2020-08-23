@@ -76,12 +76,12 @@ class Rack::Attack
   # Throttle all requests (120rpm/IP)
   #
   default_request_per_minute = '6'
-  ALLOWED_IP_WHITELIST_RACK_ATTACK = ENV.fetch(
-    'ALLOWED_IP_WHITELIST_RACK_ATTACK',
+  DEFAULT_REQUESTS_PER_MINUTE = ENV.fetch(
+    'DEFAULT_REQUESTS_PER_MINUTE',
     default_request_per_minute
   ).to_i
 
-  throttle('req/ip', limit: ALLOWED_IP_WHITELIST_RACK_ATTACK, period: 1.second, &:remote_ip)
+  throttle('req/ip', limit: DEFAULT_REQUESTS_PER_MINUTE, period: 1.second, &:remote_ip)
 
   # Do not throttle for allowed IPs
   safelist('allow from localhost', &:allowed_ip?)
