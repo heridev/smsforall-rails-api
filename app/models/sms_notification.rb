@@ -25,6 +25,7 @@ class SmsNotification < ApplicationRecord
 
   validates_presence_of :sms_content,
                         :sms_number,
+                        :user_id,
                         :status,
                         :sms_type,
                         :assigned_to_mobile_hub_id
@@ -65,7 +66,7 @@ class SmsNotification < ApplicationRecord
   end
 
   def mark_sent_to_firebase_as_success!(sms_mobile_hub_id)
-    update_attributes(
+    update(
       sent_to_firebase_at: Time.zone.now,
       assigned_to_mobile_hub_id: sms_mobile_hub_id,
       status: STATUSES[:sent_to_firebase]
@@ -88,7 +89,7 @@ class SmsNotification < ApplicationRecord
   end
 
   def mark_sent_to_firebase_as_failure!(sms_mobile_hub_id)
-    update_attributes(
+    update(
       status: STATUSES[:failed_sent_to_firebase],
       assigned_to_mobile_hub_id: sms_mobile_hub_id,
       failed_sent_to_firebase_at: Time.zone.now
@@ -104,7 +105,7 @@ class SmsNotification < ApplicationRecord
   end
 
   def mark_as_delivered!(sms_mobile_hub_id)
-    update_attributes(
+    update(
       status: STATUSES[:delivered],
       processed_by_sms_mobile_hub_id: sms_mobile_hub_id,
       delivered_at: Time.zone.now

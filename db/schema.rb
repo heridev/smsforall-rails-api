@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_19_223424) do
+ActiveRecord::Schema.define(version: 2020_08_19_131154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2020_07_19_223424) do
     t.datetime "activated_at"
     t.string "country_international_code", default: ""
     t.text "mobile_hub_token"
+    t.boolean "is_master", default: false
   end
 
   create_table "sms_notifications", force: :cascade do |t|
@@ -52,6 +53,16 @@ ActiveRecord::Schema.define(version: 2020_07_19_223424) do
     t.datetime "status_updated_by_hub_at"
   end
 
+  create_table "third_party_applications", force: :cascade do |t|
+    t.text "api_authorization_token"
+    t.text "api_authorization_client"
+    t.string "name"
+    t.integer "user_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "name"
@@ -61,10 +72,12 @@ ActiveRecord::Schema.define(version: 2020_07_19_223424) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "country_international_code", default: ""
-    t.boolean "activation_in_progress", default: true
     t.string "mobile_number", default: ""
-    t.string "main_api_token_salt"
-    t.string "secondary_api_token_salt"
+    t.string "registration_pin_code", default: ""
+    t.string "status", default: "pending_confirmation"
+    t.datetime "signup_completed_at"
+    t.datetime "registration_pin_code_sent_at"
+    t.datetime "account_blocked_at"
   end
 
 end

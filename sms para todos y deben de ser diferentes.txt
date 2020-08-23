@@ -542,8 +542,75 @@ Capturas de pantalla Longitud mínima: 320 píxeles, Longitud máxima: 3840 píx
 ====================================================================================================
 
 
+### Sending emails - sendgrid reuse same account
+
+production sendgrid only to send email
+
+New api key
+```
+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
+```
 
 
+ActionMailer::Base.smtp_settings = {
+  :user_name => 'pacientesweb',
+  :password => 'your_sendgrid_api_key',
+  :domain => 'yourdomain.com',
+  :address => 'smtp.sendgrid.net',
+  :port => 587,
+  :authentication => :plain,
+  :enable_starttls_auto => true
+}
+
+### Deployment preparation for current changes for API
+1. - We need to mark the tablet caset as is_master: true
+```
+SmsMobileHub.find_by(id: xxx).update_column(is_master: true)
+```
+
+2. Generate registration_pin_code for existent users (test it first in development)
+```
+User.all.each do |user|
+  UserPreparatorService.new(user)
+end
+```
+
+3.
+
+db/migrate/20200818233019_add_registration_pin_code_to_user.rb
+
+remove some columns for migration
+main_api_token_salt
+secondary_api_token_salt
+
+
+src/app/main/mobile_hubs
+
+
+ allow_any_instance_of(OpenTok::OpenTok).to receive(:generate_token).and_return("test_token")
+
+
+status: 'activation_in_progress'
+status: 'activated'
+
+rails g migration AddNewFieldsToUsers registration_pin_code:string signup_completed_at:datetime
+
+
+    add_column :users, :registration_pin_code, :string, default: ''
+    add_column :users, :status, :string, default: 'pending_confirmation'
+    add_column :users, :signup_completed_at, :datetime
+    add_column :users, :registration_pin_code_sent_at, :datetime
+    add_column :users, :account_blocked_at, :datetime
+
+
+
+
+spec/controllers/v1/sms_mobile_hubs_controller_spec.rb
+
+
+
+
+Para hacer un buen video sobre sms para todos, que será bueno buscar? o alguien que lo haga, 
 
 
 

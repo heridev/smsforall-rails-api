@@ -15,7 +15,8 @@ en:
       succcess_received_message: 'The sms notification was created successfully'
   mobile_hub:
     content:
-      welcome_msg: "Hello %{user_name}, bienvenido a smsparatodos.com"
+      welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"
+      welcome_msg_with_activation_pin: "Hola %{user_name}, tu pin de activación es: %{pin_code}"
       sms_interval_checker_msg: "SMS check sent at %{current_time} from %{device_short_name} with id %{hub_id}"
     statuses:
       pending_activation: "Pending activation"
