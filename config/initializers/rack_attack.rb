@@ -61,15 +61,15 @@ class Rack::Attack
   # Allows 240 requests in ~8 minutes
   #        480 requests in ~1 hour
   #        960 requests in ~8 hours (~2,880 requests/day)
-  (3..5).each do |level|
-    throttle(
-      "req/ip/#{level}",
-      limit: (30 * (2**level)),
-      period: (0.9 * (8**level)).to_i.seconds
-    ) do |req|
-      req.remote_ip if req.path == '/'
-    end
-  end
+  # (3..5).each do |level|
+  #   throttle(
+  #     "req/ip/#{level}",
+  #     limit: (30 * (2**level)),
+  #     period: (0.9 * (8**level)).to_i.seconds
+  #   ) do |req|
+  #     req.remote_ip if req.path == '/'
+  #   end
+  # end
 
   # if none of the previous rules apply let's add
   # a default one
