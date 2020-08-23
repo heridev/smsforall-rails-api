@@ -34,9 +34,7 @@ class MobileHubValidatorService
   end
 
   def first_ten_characters_from_name
-    user_name = mobile_hub.user.name || ''
-    user_name_splitted = user_name.split(' ')
-    user_name_splitted.first[0.10]
+    mobile_hub.user.first_ten_chars_from_name
   end
 
   def send_sms_activation_notification!

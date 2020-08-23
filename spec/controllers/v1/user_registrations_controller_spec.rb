@@ -9,6 +9,9 @@ RSpec.describe V1::UserRegistrationsController, type: :controller do
         :name,
         :country_international_code,
         :mobile_number,
+        :status,
+        :pending_confirmation?,
+        :find_international_number,
         :api_authorization_token,
         :api_authorization_client
       ]
