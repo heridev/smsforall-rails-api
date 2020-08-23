@@ -21,7 +21,7 @@ class AuthorizeApiRequestService
       @api_user ||= ThirdPartyApplication.find_by(
         id: decoded_auth_token[:id],
         api_authorization_client: authorization_client_header
-      )
+      )&.user
     end
 
     if @secured_api_version == 'V1'

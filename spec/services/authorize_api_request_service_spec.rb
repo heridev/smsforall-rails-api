@@ -52,6 +52,14 @@ RSpec.describe AuthorizeApiRequestService do
     end
 
     context 'when using the V2 version' do
+      let(:secondary_user) do
+        user = create(:user, mobile_number: '3121561517')
+        UserPreparatorService.new(user)
+        user
+      end
+      let!(:third_party_applications) do
+        create_list(:third_party_application, 10, user: secondary_user)
+      end
       let(:valid_user) do
         user = create(:user)
         UserPreparatorService.new(user)
@@ -74,11 +82,10 @@ RSpec.describe AuthorizeApiRequestService do
       end
 
       context 'when the authorization headers are valid' do
-        it 'finds the right third party application keys' do
-          api_keys_record = described_class.new(headers, 'V2').validate_user_token
-          expect(api_keys_record.name).to eq 'Mis llaves de acceso #1'
-          expect(api_keys_record.name).to eq user_api_keys.name
-          expect(api_keys_record.user_id).to eq valid_user.id
+        it 'finds the right USER associated to the third party application keys' do
+          user = described_class.new(headers, 'V2').validate_user_token
+          expect(user.name).to eq valid_user.name
+          expect(user.id).to eq valid_user.id
         end
       end
 
@@ -91,13 +98,12 @@ RSpec.describe AuthorizeApiRequestService do
 
       context 'when the authorization-Token does not specify the Bearer work' do
         it 'finds the right third party application' do
-          api_keys_record = described_class.new(
+          user = described_class.new(
             different_headers_format,
             'V2'
           ).validate_user_token
-          expect(api_keys_record.name).to eq 'Mis llaves de acceso #1'
-          expect(api_keys_record.name).to eq user_api_keys.name
-          expect(api_keys_record.user_id).to eq valid_user.id
+          expect(user.name).to eq valid_user.name
+          expect(user.id).to eq valid_user.id
         end
       end
     end
