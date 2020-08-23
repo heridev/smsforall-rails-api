@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :user_sessions, only: %i[create] do
         collection do
           get :user_details_by_token
+          post :activate_account
         end
       end
 

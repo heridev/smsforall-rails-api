@@ -15,11 +15,15 @@ rails db:migrate
 
 3. Export some variables:
 ```
+export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
 ```
 4. Run the server in one tab:
 ```
+export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+export REDIS_URL="redis://localhost:6379/1"
 rails s -p 3030
 ```
 

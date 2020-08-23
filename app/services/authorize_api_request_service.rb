@@ -18,9 +18,9 @@ class AuthorizeApiRequestService
     return unless decoded_auth_token
 
     if @secured_api_version == 'V2'
-      @api_user ||= User.find_by(
-        id: decoded_auth_token[:user_id],
-        main_api_token_salt: authorization_client_header
+      @api_user ||= ThirdPartyApplication.find_by(
+        id: decoded_auth_token[:id],
+        api_authorization_client: authorization_client_header
       )
     end
 
