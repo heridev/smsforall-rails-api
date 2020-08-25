@@ -21,6 +21,19 @@ module V1
       end
     end
 
+    def activate_account
+      pin_code = params[:user_pin_number]
+      if @current_api_user.valid_pin_number_confirmation?(pin_code)
+        @current_api_user.confirm_account!(pin_code)
+        json_msg = {
+          message: 'La cuenta fue activada correctamente'
+        }
+        render_json_message(json_msg)
+      else
+        render_with_error('El código es inválido o el usuario ya fue activado')
+      end
+    end
+
     def user_details_by_token
       render_serialized(@current_api_user, ::V1::UserWithCredentialsSerializer)
     end

@@ -7,7 +7,9 @@ RSpec.describe User, type: :model do
     {
       email: 'p@elh.mx',
       password: 'password1',
-      name: 'Heriberto Perez'
+      name: 'Heriberto Perez',
+      mobile_number: '3121231517',
+      country_international_code: '52'
     }
   end
 
@@ -53,10 +55,40 @@ RSpec.describe User, type: :model do
   end
 
   describe '.persist_values' do
+    before do
+      user = create(:user, mobile_number: '3121899980')
+      create(:sms_mobile_hub, is_master: true, user: user)
+    end
+
+    let(:user) { User.persist_values(valid_params) }
+
     context 'when the params are valid' do
       it 'creates a new user with valid tokens' do
         user = User.persist_values(valid_params)
         expect(user.valid?).to be_truthy
+      end
+
+      it 'enqueues a new job to prepare the account' do
+        User.persist_values(valid_params)
+        job = find_enqueued_job_by(ServiceEnqueuerJob)
+        expect(job[:args].size).to eq 3
+        expect(job[:queue]).to eq 'urgent_delivery'
+      end
+
+      it 'generates the api keys' do
+        perform_enqueued_jobs { user }
+        expect(user.third_party_applications.size).to eq 1
+      end
+
+      it 'generates the sms notifications' do
+        perform_enqueued_jobs { user }
+        expect(user.sms_notifications.size).to eq 1
+      end
+
+      it 'generates the registration pin code' do
+        perform_enqueued_jobs { user }
+        expect(user.reload.registration_pin_code).to be_present
+        expect(user.registration_pin_code.size).to eq 6
       end
     end
 

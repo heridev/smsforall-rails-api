@@ -8,6 +8,13 @@ module CommonHelpers
     end
   end
 
+  def find_performed_job_by(class_name)
+    enqueued_jobs = ActiveJob::Base.queue_adapter.performed_jobs
+    enqueued_jobs.detect do |job|
+      job[:job] == class_name
+    end
+  end
+
   def inject_user_headers_on_controller(user = nil)
     valid_user = user || create(:user)
     valid_token = JwtTokenService.encode_token(
@@ -24,14 +31,11 @@ module CommonHelpers
 
   def inject_user_headers_on_v2_controller(user = nil)
     valid_user = user || create(:user)
-    valid_token = JwtTokenService.encode_token(
-      { user_id: valid_user.id },
-      valid_user.main_api_token_salt
-    )
+    api_keys = valid_user.third_party_applications.first
 
     headers = {
-      'Authorization-Token' => "Bearer #{valid_token}",
-      'Authorization-Client' => valid_user.main_api_token_salt
+      'Authorization-Token' => "Bearer #{api_keys.api_authorization_token}",
+      'Authorization-Client' => api_keys.api_authorization_client
     }
     request.headers.merge! headers
   end
