@@ -14,11 +14,16 @@ class SmsMobileHub < ApplicationRecord
   STATUSES = {
     default: 'pending_activation',
     activated: 'activated',
-    activation_in_progress: 'activation_in_progress'
+    activation_in_progress: 'activation_in_progress',
+    banned: 'banned'
   }.freeze
 
   scope :active, lambda {
     where(status: STATUSES[:activated])
+  }
+
+  scope :master_hubs, lambda {
+    where(is_master: true)
   }
 
   def self.find_by_code(pass_code)
@@ -28,8 +33,16 @@ class SmsMobileHub < ApplicationRecord
     )
   end
 
+  def self.find_first_master_mobile_hub
+    master_hubs.first
+  end
+
   def short_device_name
     device_name[0..20]
+  end
+
+  def banned?
+    status == STATUSES[:banned]
   end
 
   # TODO: once we migrate the app in Android we
@@ -94,7 +107,7 @@ class SmsMobileHub < ApplicationRecord
 
   def generate_temporal_password
     loop do
-      temp_password = SecureRandom.base64(4)[0...6].gsub(/\W|_/, ('A'..'Z').to_a.sample)
+      temp_password = UtilityService.generate_friendly_code
       unless SmsMobileHub.find_by(temporal_password: temp_password)
         break temp_password
       end

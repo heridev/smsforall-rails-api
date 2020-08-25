@@ -61,20 +61,27 @@ class Rack::Attack
   # Allows 240 requests in ~8 minutes
   #        480 requests in ~1 hour
   #        960 requests in ~8 hours (~2,880 requests/day)
-  (3..5).each do |level|
-    throttle(
-      "req/ip/#{level}",
-      limit: (30 * (2**level)),
-      period: (0.9 * (8**level)).to_i.seconds
-    ) do |req|
-      req.remote_ip if req.path == '/'
-    end
-  end
+  # (3..5).each do |level|
+  #   throttle(
+  #     "req/ip/#{level}",
+  #     limit: (30 * (2**level)),
+  #     period: (0.9 * (8**level)).to_i.seconds
+  #   ) do |req|
+  #     req.remote_ip if req.path == '/'
+  #   end
+  # end
 
-  # if none of the previou rules apply let's add
+  # if none of the previous rules apply let's add
   # a default one
   # Throttle all requests (120rpm/IP)
-  throttle('req/ip', limit: 2, period: 1.second, &:remote_ip)
+  #
+  default_request_per_minute = '6'
+  DEFAULT_REQUESTS_PER_MINUTE = ENV.fetch(
+    'DEFAULT_REQUESTS_PER_MINUTE',
+    default_request_per_minute
+  ).to_i
+
+  throttle('req/ip', limit: DEFAULT_REQUESTS_PER_MINUTE, period: 1.second, &:remote_ip)
 
   # Do not throttle for allowed IPs
   safelist('allow from localhost', &:allowed_ip?)

@@ -10,10 +10,11 @@ RSpec.describe SmsHubsValidationJob, type: :job do
     }
   end
 
+  # We expect 2 jobs as the sms_mobile_hub and user internally spins a new job
   it 'enqueues the job' do
     expect do
       described_class.perform_later(params)
-    end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(1)
+    end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(2)
   end
 
   it 'jobs is added to the default queue' do
