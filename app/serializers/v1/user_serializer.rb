@@ -6,6 +6,9 @@ module V1
     attributes :email,
                :name,
                :country_international_code,
-               :mobile_number
+               :mobile_number,
+               :status,
+               :pending_confirmation?,
+               :find_international_number
   end
 end

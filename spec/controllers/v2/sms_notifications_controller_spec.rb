@@ -3,13 +3,25 @@
 require 'rails_helper'
 
 RSpec.describe V2::SmsNotificationsController, type: :controller do
-  let(:user) { create(:user) }
-  let(:other_user) { create(:user, mobile_number: '3121231718') }
+  let(:user) do
+    user = create(:user)
+    UserPreparatorService.new(user)
+    user
+  end
+  let(:other_user) do
+    user = create(:user, mobile_number: '3121231718')
+    UserPreparatorService.new(user)
+    user
+  end
 
   describe '#create' do
     let(:firebase_token) { 'firebase-token' }
     let(:sms_mobile_hub) do
-      create(:sms_mobile_hub, firebase_token: firebase_token)
+      create(
+        :sms_mobile_hub,
+        firebase_token: firebase_token,
+        user: other_user
+      )
     end
     let(:expected_keys) do
       %i[
