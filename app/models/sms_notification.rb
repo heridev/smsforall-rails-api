@@ -15,7 +15,8 @@ class SmsNotification < ApplicationRecord
   SMS_TYPES = {
     default: 'standard_delivery',
     urgent_delivery: 'urgent_delivery',
-    device_validation: 'device_validation'
+    device_validation: 'device_validation',
+    schedule_checker: 'schedule_checker'
   }.freeze
 
   KIND_OF_NOTIFICATION = {
