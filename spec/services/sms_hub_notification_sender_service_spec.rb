@@ -29,6 +29,7 @@ RSpec.describe SmsHubNotificationSenderService do
           expect(job[:queue]).to eq 'standard_delivery'
           sms_notification = SmsNotification.find(job[:args].first)
           expect(sms_notification.status).to eq SmsNotification::STATUSES[:pending]
+          expect(sms_notification.sms_type).to eq SmsNotification::SMS_TYPES[:schedule_checker]
           expect(sms_notification.sms_number).to eq sms_mobile_hub.find_international_number
         end
       end

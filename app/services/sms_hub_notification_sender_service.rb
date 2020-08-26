@@ -23,7 +23,7 @@ class SmsHubNotificationSenderService
       sms_number: find_sms_mobile_hub_number,
       user_id: @mobile_hub.user_id,
       assigned_to_mobile_hub_id: @mobile_hub.id,
-      sms_type: SmsNotification::SMS_TYPES[:default]
+      sms_type: SmsNotification::SMS_TYPES[:schedule_checker]
     }
 
     sms_notification = SmsNotification.create(sms_confirmation_params)
