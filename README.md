@@ -209,20 +209,14 @@ If you want to format a date
 I18n.localize current_date, format: :history_details
 ```
 
-
 ## When using POSTMAN for creating new users
 using raw
 ```
 { "user": { "name": "heriberto perez", "email": "p@elh.mx", "password": "123qwe123" } }
-```
-
 "token_auth": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.ArJ1yK_VcBsITp45C9RhAEBFcbvhHqb2GbkXl-uKrKU"
-
 ENV['RAILS_MASTER_KEY']
-
 Rails.application.credentials[:secret_key_base]
 
-```
 sms_content = I18n.t(
   'mobile_hub.content.welcome_msg',
   user_name: 'heriberto'
@@ -241,3 +235,28 @@ sms_content = ""
 SmsNotificationSenderService
 ```
 
+### Recurrent jobs - cron jobs
+We are using the gem:
+```
+sidekiq-scheduler
+```
+
+That mimics the cron utility so we can enqueued scheduled jobs.
+
+If you want to add a new cron schedule job open the file
+```
+config/sidekiq.yml
+```
+
+and most of the configuration regarding this gem it is included in the 
+```
+config/initializers/sidekiq.rb
+```
+
+
+with:
+```
+SidekiqScheduler::Scheduler.instance.rufus_scheduler_options = {
+  max_work_threads: max_work_threads
+}
+```

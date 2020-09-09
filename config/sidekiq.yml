@@ -2,7 +2,7 @@
   sms_hub_interval_sender_notification_checker:
     # this is the one we need to put
     # every: '5m'
-    every: '20m'
+    every: '60m'
     # every: '30s'
     queue: standard_delivery
     class: SmsHubIntervalSenderNotificationJob
