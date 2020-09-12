@@ -1,20 +1,62 @@
+# frozen_string_literal: true
+
 # locahost
+require 'rails'
+require_relative 'app/services/http_requester_service.rb'
 headers = {
-  'Authorization-Token': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxM30.1KX29F-3h6gJYsnntAQH08NWlEAD91utxoMh8J_sfaw',
-  'Authorization-Client': '$2a$12$ZL6.AGqVM7QWZa80Olm/m.',
+  'Authorization-Token': 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NX0.zfjjmOGaDaIlEHsizuJ15_tSeaTxjNMWkwFaAXcTH7o',
+  'Authorization-Client': '$2a$12$/qtvnY0kBQYD/u5Fz8vVN.',
   'Content-Type': 'application/json'
 }
 
 # production
 # headers = {
-#   'Authorization-Token': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.S7-mMxhL76vwmDEHiBoC25b6OKWCGFfROZvUeaUHFoo',
-#   'Authorization-Client': '$2a$12$Spip/ZntEXFlgcjlB3Y4Ge',
+#   'Authorization-Token': 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.O_9fM8kp377Le53w8JIiK13uOcknR_TlNuMA7_3xFTI',
+#   'Authorization-Client': '$2a$12$3njEmKnVmyyts4aMJSHIjO',
 #   'Content-Type': 'application/json'
 # }
 
 tablecast_number = '+523121698456'
 xiaomi_rosa_number = '+523121231639'
 personal_number = '+523121231517'
+
+30.times do |number|
+  # sleep 60
+
+  phone_number = personal_number
+  # phone_number = number.even? ? personal_number : xiaomi_rosa_number
+  # phone_number = number.even? ? tablecast_number : xiaomi_rosa_number
+  # phone_number = number.even? ? '312123151' : tablecast_number
+  # phone_number = number.even? ? '312123151' : personal_number
+
+  # sleep 10
+  values = %i[juan pepe chuy heriberto andrea pako fabian roberto irvin chuy mary maria juanit alberto roberto luis eduardo eddie kevin cone alex rafa]
+  current_time = Time.now.in_time_zone('America/Mexico_City').strftime('%a, %b %e %I:%M:%S %P')
+  body = {
+    'sms_number': phone_number,
+    # 'sms_number': xiaomi_rosa_number,
+    # 'sms_number': personal_number,
+    # invalid number
+    # 'sms_number': '+5231212315',
+    'sms_content': "Ya casi termino #{values.sample} ##{number} el dia #{current_time}",
+    'sms_customer_reference_id': "#{number} - #{Time.now.to_i}",
+    # Locahost
+    'mobile_hub_id': '31b819ef-37bd-4ecc-bae4-bc2dd52dfb58',
+    # tablecast localhost
+    # Production
+    # 'mobile_hub_id': '71981a3f-a14a-4104-9031-b421baea29db',
+    # my personal cel localhost
+    # 'mobile_hub_id': 'ed02d4f6-6c56-46b6-9f01-1628db8e9aa3',
+    'sms_type': 'standard_delivery'
+  }
+
+  # localhost
+  response = HttpRequesterService.make('https://smsparatodosapi.ngrok.io/v2/sms/create', 'Post', headers, body)
+  # production
+  # response = HttpRequesterService.make('https://api.smsparatodos.com/v2/sms/create', 'Post', headers, body)
+  puts response.code
+  puts response.read_body
+end
 
 # contacts = [
 #   {
@@ -134,40 +176,3 @@ personal_number = '+523121231517'
 #     puts response.read_body
 #   end
 # end
-
-300.times do |number|
-  sleep 60
-
-  phone_number = personal_number
-  # phone_number = number.even? ? personal_number : xiaomi_rosa_number
-  # phone_number = number.even? ? tablecast_number : xiaomi_rosa_number
-  # phone_number = number.even? ? '312123151' : tablecast_number
-  # phone_number = number.even? ? '312123151' : personal_number
-
-  # sleep 10
-  values = %i(juan pepe chuy heriberto andrea pako fabian roberto irvin chuy mary maria juanit alberto roberto luis eduardo eddie kevin cone alex rafa)
-  current_time = Time.now.in_time_zone('America/Mexico_City').strftime("%a, %b %e %I:%M:%S %P")
-  body = {
-    'sms_number': phone_number,
-    # 'sms_number': xiaomi_rosa_number,
-    # 'sms_number': personal_number,
-    # invalid number
-    # 'sms_number': '+5231212315',
-    'sms_content': "Hello #{values.sample} ##{number} el dia #{current_time}",
-    'sms_customer_reference_id': "#{number} - #{Time.now.to_i}",
-    # locahost
-    # 'mobile_hub_id': '31b819ef-37bd-4ecc-bae4-bc2dd52dfb58',
-    # tablecast localhost
-    'mobile_hub_id': '096f3cc8-9e76-4de7-9a64-23fbadc27862',
-    # my personal cel localhost
-    # 'mobile_hub_id': 'ed02d4f6-6c56-46b6-9f01-1628db8e9aa3',
-    'sms_type': 'standard_delivery'
-  }
-
-  # localhost
-  response = HttpRequesterService.make('https://smsparatodosapi.ngrok.io/v2/sms/create', 'Post', headers, body)
-  # production
-  # response = HttpRequesterService.make('https://api.smsparatodos.com/v2/sms/create', 'Post', headers, body)
-  puts response.code
-  puts response.read_body
-end

@@ -45,11 +45,9 @@ class SmsMobileHub < ApplicationRecord
     status == STATUSES[:banned]
   end
 
-  # TODO: once we migrate the app in Android we
-  # can deprecate the serarch by firebase token
-  # and rename this method
-  # once we migrate from firebase into
-  # pusher.com
+  # TODO: once we migrate everything into
+  # /android namespace we can remove the usage
+  # of mobile_hub_token as it is not been used
   def self.find_by_firebase_token(token)
     where(
       'firebase_token = ? OR mobile_hub_token = ?',

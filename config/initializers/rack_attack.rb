@@ -74,7 +74,6 @@ class Rack::Attack
   # if none of the previous rules apply let's add
   # a default one
   # Throttle all requests (120rpm/IP)
-  #
   default_request_per_minute = '6'
   DEFAULT_REQUESTS_PER_MINUTE = ENV.fetch(
     'DEFAULT_REQUESTS_PER_MINUTE',
