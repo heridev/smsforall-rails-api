@@ -17,7 +17,7 @@ en:
     content:
       welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"
       welcome_msg_with_activation_pin: "Hola %{user_name}, tu pin de activación es: %{pin_code}"
-      sms_interval_checker_msg: "SMS check sent at %{current_time} from %{device_short_name} with id %{hub_id}"
+      sms_interval_checker_msg: "Verificación automática enviada el día %{current_time} desde %{device_short_name}"
     statuses:
       pending_activation: "Pending activation"
       activated: "Activated"

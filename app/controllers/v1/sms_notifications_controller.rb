@@ -35,10 +35,9 @@ module V1
     def create
       new_params = sms_notification_params.merge(
         user_id: @current_api_user.id,
-        kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
-        assigned_to_mobile_hub_id: @find_mobile_hub.id
+        hub_id: @find_mobile_hub.id
       )
-      sms_notification = SmsNotification.create(new_params)
+      sms_notification = SmsNotification.create_record(new_params)
 
       if sms_notification.valid?
         sms_notification.reload
