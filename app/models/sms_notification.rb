@@ -66,6 +66,29 @@ class SmsNotification < ApplicationRecord
     create(cleaned_params)
   end
 
+  def self.create_record(controller_params)
+    user_id = controller_params[:user_id]
+    hub_id = controller_params[:hub_id]
+    sms_content = controller_params[:sms_content]
+    sms_type = controller_params[:sms_type] || SMS_TYPES[:default]
+    sms_number = controller_params[:sms_number]
+
+    valid_sms_content = SmsContentCleanerService.new(
+      sms_content
+    ).clean_content!
+
+    cleaned_params = {
+      user_id: user_id,
+      assigned_to_mobile_hub_id: hub_id,
+      sms_number: sms_number,
+      sms_content: valid_sms_content,
+      kind_of_notification: KIND_OF_NOTIFICATION[:out],
+      sms_type: sms_type,
+      status: STATUSES[:default]
+    }
+    create(cleaned_params)
+  end
+
   def mark_sent_to_firebase_as_success!(sms_mobile_hub_id)
     update(
       sent_to_firebase_at: Time.zone.now,

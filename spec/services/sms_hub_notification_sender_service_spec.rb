@@ -60,8 +60,8 @@ RSpec.describe SmsHubNotificationSenderService do
         expect(job[:args].size).to eq 2
         expect(job[:queue]).to eq 'standard_delivery'
         sms_notification = SmsNotification.find(job[:args].first)
-        expect(sms_notification.sms_content).to match(/SMS check sent at/)
-        expect(sms_notification.sms_content).to match(/from Mi nueva tablet with/)
+        expect(sms_notification.sms_content).to match(/Verificación automática/)
+        expect(sms_notification.sms_content).to match(/desde Mi nueva tablet/)
         expect(sms_notification.status).to eq SmsNotification::STATUSES[:pending]
         expect(sms_notification.sms_number).to eq default_phone_number
       end

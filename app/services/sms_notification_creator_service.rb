@@ -67,9 +67,9 @@ class SmsNotificationCreatorService
   end
 
   def valid_sms_content_message
-    ValueConverterService.new(
+    SmsContentCleanerService.new(
       notification_params[:sms_content]
-    ).take_only_160_characters_from
+    ).clean_content!
   end
 
   def valid_sms_type
