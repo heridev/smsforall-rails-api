@@ -294,6 +294,27 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
         }
       end
 
+      context 'when the sms content has a size of 400 characters' do
+        let(:sms_content) do
+          'uno ' * 100
+        end
+
+        it 'saves the right sms_content size' do
+          sms_notification_params[:sms_notification][:sms_content] = sms_content
+          process :create, method: :post, params: sms_notification_params
+          expect(response.status).to eq 200
+          attributes = response_body[:data][:attributes]
+          keys = attributes.keys
+          expect(keys).to include(:sms_content)
+          expect(keys).to include(:sms_number)
+          expect(keys).to include(:status)
+           expect(keys).to include(:processed_by_sms_mobile_hub)
+          expect(keys).to include(:sms_type)
+          expect(
+            attributes[:sms_content].size).to eq 400
+        end
+      end
+
       context 'when the sms mobile uuid is valid' do
         it 'creates a new sms notification' do
           process :create, method: :post, params: sms_notification_params
