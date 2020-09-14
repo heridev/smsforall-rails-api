@@ -7,7 +7,42 @@ RSpec.describe FirebaseMessagingService do
 
   describe '#initialize' do
     describe 'characters limits' do
-      context 'when the characters lenght is longer than 160 characters' do
+      context 'when the SMS_CONTENT_LIMIT is not set' do
+        let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
+        let(:sms_notification) do
+          sms_content = 'x' * 300
+          create(
+            :sms_notification,
+            sms_content: sms_content,
+            user: user,
+            assigned_to_mobile_hub: sms_mobile_hub
+          )
+        end
+        let(:params) do
+          {
+            sms_content: sms_notification.sms_content,
+            sms_number: sms_mobile_hub.device_number,
+            sms_type: sms_notification.sms_type,
+            sms_notification_id: sms_notification.unique_id,
+            device_token_firebase: sms_mobile_hub.firebase_token
+          }
+        end
+        it 'does not limit the original message' do
+          service = described_class.new(params)
+          content = service.sms_content
+          expect(content.size).to eq 300
+        end
+      end
+
+      context 'when the SMS_CONTENT_LIMIT is set' do
+        before do
+          ENV['SMS_CONTENT_LIMIT'] = '160'
+        end
+
+        after do
+          ENV['SMS_CONTENT_LIMIT'] = nil
+        end
+
         let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
         let(:sms_notification) do
           sms_content = 'x' * 180
