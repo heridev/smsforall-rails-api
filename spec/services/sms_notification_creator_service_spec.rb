@@ -37,7 +37,7 @@ RSpec.describe SmsNotificationCreatorService do
         service = described_class.new(params)
         result = service.perform_creation!
         expect(service.valid_creation?).to be_truthy
-        expect(result[:sms_content].size).to eq 160
+        expect(result[:sms_content].size).to eq 1000
         expect(result.keys).to eq expected_keys
       end
     end

@@ -13,13 +13,15 @@ class FirebaseMessagingService
     @sms_number = params[:sms_number]
     @sms_notification_id = params[:sms_notification_id]
     @device_token_firebase = params[:device_token_firebase]
-    @sms_content = take_only_160_characters_from(params[:sms_content])
+    @sms_content = find_valid_message_content(params[:sms_content])
     @sms_type = params[:sms_type] || 'transactional'
     @firebase_response = {}
   end
 
-  def take_only_160_characters_from(message_content)
-    ValueConverterService.new(message_content).take_only_160_characters_from
+  def find_valid_message_content(message_content)
+    SmsContentCleanerService.new(
+      message_content
+    ).clean_content!
   end
 
   def valid_info?

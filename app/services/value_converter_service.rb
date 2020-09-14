@@ -19,14 +19,6 @@ class ValueConverterService
     )
   end
 
-  def take_only_160_characters_from
-    if @number.present?
-      @number[0..159]
-    else
-      ''
-    end
-  end
-
   def take_only_n_characters_from(number_characters)
     number_characters =-1
     if @number.present?

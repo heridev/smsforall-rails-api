@@ -1,7 +1,4 @@
-# require 'uri'
 require 'net/http'
-# require 'json'
-# require 'active_support/all'
 
 class HttpRequesterService
   class << self
