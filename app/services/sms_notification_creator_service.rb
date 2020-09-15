@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 class SmsNotificationCreatorService
-  attr_reader :notification_params
+  attr_reader :user_id,
+              :sms_content,
+              :sms_type,
+              :sms_number,
+              :mobile_hub_id,
+              :sms_customer_reference_id
 
   # {
   #   mobile_hub_id: sms_mobile_hub.reload.uuid,
@@ -11,12 +16,17 @@ class SmsNotificationCreatorService
   #   sms_customer_reference_id: sms_customer_reference_id # opcional - un valor de referencia de hasta 128 caracteres, con el cual puedes consultar despues el estado actual de dicho mensaje de texto
   # }
   def initialize(notification_params)
-    @notification_params = notification_params
+    @sms_type = notification_params[:sms_type]
+    @sms_content = notification_params[:sms_content]
+    @user_id = notification_params[:user_id]
+    @sms_number = notification_params[:sms_number]
+    @mobile_hub_id = notification_params[:mobile_hub_id]
+    @sms_customer_reference_id = notification_params[:sms_customer_reference_id].to_s
     @success_creation = true
   end
 
   def perform_creation!
-    hub_uuid = notification_params[:mobile_hub_id]
+    hub_uuid = mobile_hub_id
     calculator_service = HubCalculatorUsageService.new(hub_uuid)
     current_usage = calculator_service.update_and_return_usage_counter_within_minute
 
@@ -46,7 +56,7 @@ class SmsNotificationCreatorService
     {
       kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
       assigned_to_mobile_hub_id: find_mobile_hub.try(:id),
-      user_id: notification_params[:user_id],
+      user_id: user_id,
       sms_number: valid_sms_number,
       sms_type: valid_sms_type,
       sms_content: valid_sms_content_message,
@@ -56,24 +66,24 @@ class SmsNotificationCreatorService
 
   def valid_sms_number
     ValueConverterService.new(
-      notification_params[:sms_number]
+      sms_number
     ).take_only_n_characters_from(128)
   end
 
   def valid_sms_customer_reference
     ValueConverterService.new(
-      notification_params[:sms_customer_reference_id]
+      sms_customer_reference_id
     ).take_only_n_characters_from(128)
   end
 
   def valid_sms_content_message
     SmsContentCleanerService.new(
-      notification_params[:sms_content]
+      sms_content
     ).clean_content!
   end
 
   def valid_sms_type
-    sms_type = notification_params[:sms_type]
+    sms_type = sms_type
     return SmsNotification::SMS_TYPES[:default] if sms_type.blank?
 
     sms_type
@@ -81,7 +91,7 @@ class SmsNotificationCreatorService
 
   def find_mobile_hub
     @find_mobile_hub ||= SmsMobileHub.find_by(
-      uuid: notification_params[:mobile_hub_id]
+      uuid: mobile_hub_id
     )
   end
 
@@ -107,7 +117,7 @@ class SmsNotificationCreatorService
     {
       sms_customer_reference_id: sms_notification.sms_customer_reference_id,
       sms_content: sms_notification.sms_content,
-      mobile_hub_id: notification_params[:mobile_hub_id],
+      mobile_hub_id: mobile_hub_id,
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
       status: 'failed',
@@ -120,7 +130,7 @@ class SmsNotificationCreatorService
     {
       sms_customer_reference_id: sms_notification.sms_customer_reference_id,
       sms_content: sms_notification.sms_content,
-      mobile_hub_id: notification_params[:mobile_hub_id],
+      mobile_hub_id: mobile_hub_id,
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
       status: 'enqueued',
@@ -131,27 +141,27 @@ class SmsNotificationCreatorService
 
   def daily_limit_reached_error
     {
-      sms_customer_reference_id: notification_params[:sms_customer_reference_id],
-      sms_content: notification_params[:sms_content],
-      mobile_hub_id: notification_params[:mobile_hub_id],
+      sms_customer_reference_id: sms_customer_reference_id,
+      sms_content: sms_content,
+      mobile_hub_id: mobile_hub_id,
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
       status: 'failed',
       error_message: I18n.t('api.v2.sms_notifications.failed.daily_limit_reached'),
-      sms_number: notification_params[:sms_number]
+      sms_number: sms_number
     }
   end
 
   def limit_by_minute_reached_error
     {
-      sms_customer_reference_id: notification_params[:sms_customer_reference_id],
-      sms_content: notification_params[:sms_content],
-      mobile_hub_id: notification_params[:mobile_hub_id],
+      sms_customer_reference_id: sms_customer_reference_id,
+      sms_content: sms_content,
+      sms_number: sms_number,
+      mobile_hub_id: mobile_hub_id,
       api_version: 'V2',
       date_created: Time.zone.now.utc.iso8601,
       status: 'failed',
-      error_message: I18n.t('api.v2.sms_notifications.failed.limit_by_minute_reached'),
-      sms_number: notification_params[:sms_number]
+      error_message: I18n.t('api.v2.sms_notifications.failed.limit_by_minute_reached')
     }
   end
 
