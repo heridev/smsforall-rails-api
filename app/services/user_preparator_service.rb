@@ -40,11 +40,7 @@ class UserPreparatorService
   end
 
   def create_api_keys!
-    hash_values = {
-      user_id: user.id,
-      name: 'Mis llaves de acceso #1'
-    }
-
-    ThirdPartyApplication.create(hash_values)
+    api_keys_name = 'Mis llaves de acceso #1'
+    user.create_api_keys(api_keys_name)
   end
 end
