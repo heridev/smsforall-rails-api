@@ -27,12 +27,12 @@ RSpec.describe V2::SmsNotificationsController, type: :controller do
       %i[
         sms_customer_reference_id
         sms_content
+        sms_number
         mobile_hub_id
         api_version
         date_created
         status
         error_message
-        sms_number
       ]
     end
 
