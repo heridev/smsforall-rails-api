@@ -83,10 +83,9 @@ class SmsNotificationCreatorService
   end
 
   def valid_sms_type
-    sms_type = sms_type
-    return SmsNotification::SMS_TYPES[:default] if sms_type.blank?
+    return sms_type if sms_type.present?
 
-    sms_type
+    SmsNotification::SMS_TYPES[:default]
   end
 
   def find_mobile_hub
