@@ -20,6 +20,7 @@ gem 'redis', '~> 4.1.4'
 gem 'pusher', '~> 1.3.3'
 gem 'rack-attack', '~> 6.2.2'
 gem 'sidekiq-scheduler', '~> 3.0.1'
+gem 'rollbar', '~> 3.0.0'
 
 group :development, :test do
   gem 'rubocop', '~> 0.82.0', require: false
