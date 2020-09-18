@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SmsNotification < ApplicationRecord
-  MAXIMUM_NUMBER_OF_INTENTS_TO_DELIVER = 2
+  MAXIMUM_NUMBER_OF_INTENTS_TO_DELIVER = 3
 
   STATUSES = {
     default: 'queued',
