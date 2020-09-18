@@ -23,6 +23,54 @@ RSpec.describe SmsNotification, type: :model do
     }
   end
 
+  describe '#update_status' do
+    let!(:sms_notification) do
+      described_class.create_record(sms_notification_params)
+    end
+
+    let(:failing_params) do
+      {
+        additional_update_info: 'generic failure',
+        status: 'undelivered'
+      }
+    end
+
+    let(:success_delivered) do
+      {
+        additional_update_info: '',
+        status: 'delivered'
+      }
+    end
+
+    context 'when the sms notification fails to be delivered' do
+      it 'enqueues the sms notification again' do
+        expect do
+          sms_notification.update_status(failing_params)
+        end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(1)
+      end
+    end
+
+    context 'when the sms fails to be delivered but already tried it twice' do
+      before do
+        sms_notification.update(number_of_intents_to_be_delivered: 2)
+      end
+
+      it 'does not enqueue the sms notification again' do
+        expect do
+          sms_notification.update_status(failing_params)
+        end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(0)
+      end
+    end
+
+    context 'when the sms notification was delivered successfully' do
+      it 'does not enqueue the sms notification again' do
+        expect do
+          sms_notification.update_status(success_delivered)
+        end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(0)
+      end
+    end
+  end
+
   describe '.create_record' do
     context 'when the params are valid' do
       it 'creates the record' do
