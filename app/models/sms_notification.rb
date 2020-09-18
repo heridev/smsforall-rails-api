@@ -100,6 +100,12 @@ class SmsNotification < ApplicationRecord
     )
   end
 
+  def increase_number_of_intents_to_be_delivered!
+    update(
+      number_of_intents_to_be_delivered: number_of_intents_to_be_delivered + 1,
+    )
+  end
+
   def update_status(params = {})
     now = Time.zone.now
 
@@ -107,7 +113,7 @@ class SmsNotification < ApplicationRecord
       params[:delivered_at] = now
     else
       params[:failed_delivery_at] = now
-      enqueue_to_be_processed_again!
+      # enqueue_to_be_processed_again!
     end
 
     params[:status_updated_by_hub_at] = now
