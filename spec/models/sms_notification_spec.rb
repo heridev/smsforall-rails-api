@@ -59,6 +59,7 @@ RSpec.describe SmsNotification, type: :model do
         expect do
           sms_notification.update_status(failing_params)
         end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(0)
+        expect(sms_notification.number_of_intents_to_be_delivered).to eq 2
       end
     end
 
@@ -67,6 +68,8 @@ RSpec.describe SmsNotification, type: :model do
         expect do
           sms_notification.update_status(success_delivered)
         end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(0)
+        # because the upddate on this field is made when sent to firebaseMessagingService
+        expect(sms_notification.number_of_intents_to_be_delivered).to eq 0
       end
     end
   end
