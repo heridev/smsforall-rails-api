@@ -52,14 +52,14 @@ RSpec.describe SmsNotification, type: :model do
 
     context 'when the sms fails to be delivered but already tried it twice' do
       before do
-        sms_notification.update(number_of_intents_to_be_delivered: 2)
+        sms_notification.update(number_of_intents_to_be_delivered: 3)
       end
 
       it 'does not enqueue the sms notification again' do
         expect do
           sms_notification.update_status(failing_params)
         end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(0)
-        expect(sms_notification.number_of_intents_to_be_delivered).to eq 2
+        expect(sms_notification.number_of_intents_to_be_delivered).to eq 3
       end
     end
 
