@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SmsNotification < ApplicationRecord
+  MAXIMUM_NUMBER_OF_INTENTS_TO_DELIVER = 3
+
   STATUSES = {
     default: 'queued',
     pending: 'pending',
@@ -97,6 +99,12 @@ class SmsNotification < ApplicationRecord
     )
   end
 
+  def increase_number_of_intents_to_be_delivered!
+    update(
+      number_of_intents_to_be_delivered: number_of_intents_to_be_delivered + 1,
+    )
+  end
+
   def update_status(params = {})
     now = Time.zone.now
 
@@ -104,12 +112,21 @@ class SmsNotification < ApplicationRecord
       params[:delivered_at] = now
     else
       params[:failed_delivery_at] = now
+      enqueue_to_be_processed_again!
     end
 
     params[:status_updated_by_hub_at] = now
     update(
       params
     )
+  end
+
+  def enqueue_to_be_processed_again!
+    if number_of_intents_to_be_delivered >= MAXIMUM_NUMBER_OF_INTENTS_TO_DELIVER
+      return
+    end
+
+    start_delivery_process!
   end
 
   def mark_sent_to_firebase_as_failure!(sms_mobile_hub_id)
