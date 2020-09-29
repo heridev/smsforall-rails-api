@@ -6,12 +6,17 @@ class SmsContentCleanerService
   end
 
   def clean_content!
-    take_text_based_on_sms_content_limit
+    content = take_text_based_on_sms_content_limit
+    remove_accents_from(content)
   end
 
   private
 
-  SMS_CONTENT_LIMIT = 1000
+  def remove_accents_from(message)
+    I18n.transliterate(message)
+  end
+
+  SMS_CONTENT_LIMIT = 500
 
   def sms_content_limit
     ENV.fetch(
