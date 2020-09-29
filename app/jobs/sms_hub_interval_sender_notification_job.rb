@@ -27,7 +27,7 @@ class SmsHubIntervalSenderNotificationJob < ApplicationJob
     )
 
     disabled_checker_functionality = ENV.fetch(
-      'AUTOMATIC_SMS_CHECKER_ENABLED',
+      'AUTOMATIC_SMS_CHECKER_DISABLED',
       false
     )
 
