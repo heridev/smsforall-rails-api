@@ -24,6 +24,7 @@ class SmsNotificationSenderService
 
     if firebase_service.valid_response?
       sms_notification.mark_sent_to_firebase_as_success!(mobile_hub.id)
+      sms_notification.increase_number_of_intents_to_be_delivered!
     else
       sms_notification.mark_sent_to_firebase_as_failure!(mobile_hub.id)
     end

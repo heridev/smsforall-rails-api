@@ -75,6 +75,15 @@ class User < ApplicationRecord
     @default_api_keys ||= third_party_applications.first
   end
 
+  def create_api_keys(name)
+    hash_values = {
+      user_id: id,
+      name: name
+    }
+
+    ThirdPartyApplication.create(hash_values)
+  end
+
   class << self
     def persist_values(params)
       password_selected = params[:password]
