@@ -26,6 +26,12 @@ class SmsHubIntervalSenderNotificationJob < ApplicationJob
       false
     )
 
+    disabled_checker_functionality = ENV.fetch(
+      'AUTOMATIC_SMS_CHECKER_ENABLED',
+      false
+    )
+
+    return if disabled_checker_functionality
     return if invalid_time && disabled_control
 
     SmsMobileHub.active.pluck(:id).each do |hub_id|
