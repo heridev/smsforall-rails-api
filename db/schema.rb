@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_131154) do
+ActiveRecord::Schema.define(version: 2020_09_18_223719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_131154) do
     t.string "sms_customer_reference_id", default: "", null: false
     t.string "additional_update_info"
     t.datetime "status_updated_by_hub_at"
+    t.integer "number_of_intents_to_be_delivered", default: 0
   end
 
   create_table "third_party_applications", force: :cascade do |t|

@@ -37,7 +37,45 @@ RSpec.describe SmsNotificationCreatorService do
         service = described_class.new(params)
         result = service.perform_creation!
         expect(service.valid_creation?).to be_truthy
-        expect(result[:sms_content].size).to eq 1000
+        expect(result[:sms_content].size).to eq 500
+        expect(result.keys).to eq expected_keys
+      end
+    end
+
+    context 'when the sms_customer_reference_id is NOT a string' do
+      it 'responds with valid and creates a new sms notification' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: '',
+          user_id: user.id,
+          sms_type: 'standard_delivery',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: 1
+        }
+        service = described_class.new(params)
+        result = service.perform_creation!
+        error_msg = "There are some validation errors: sms_number - can't be blank"
+        expect(result[:error_message]).to eq error_msg
+        expect(service.valid_creation?).to be_falsey
+      end
+    end
+
+    context 'when the sms_customer_reference_id is a long reference' do
+      let(:long_reference) { 'long' * 100 }
+      it 'responds with valid and creates a new sms notification' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: sms_number,
+          user_id: user.id,
+          sms_type: '',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: long_reference
+        }
+        service = described_class.new(params)
+        result = service.perform_creation!
+        expect(result[:status]).to eq 'enqueued'
+        expect(result[:api_version]).to eq 'V2'
+        expect(service.valid_creation?).to be_truthy
         expect(result.keys).to eq expected_keys
       end
     end

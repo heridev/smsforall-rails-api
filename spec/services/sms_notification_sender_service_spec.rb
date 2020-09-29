@@ -30,7 +30,7 @@ RSpec.describe SmsNotificationSenderService do
         }
       end
 
-      it 'marks the sms notification as sent to firebase' do
+      before do
         allow_any_instance_of(FCM).to receive(
           :send
         ).and_return(valid_firebase_response)
@@ -41,11 +41,21 @@ RSpec.describe SmsNotificationSenderService do
         )
         service.deliver_notification!
         sms_notification_two.reload
+      end
+
+      it 'marks the sms notification as sent to firebase' do
         expect(sms_notification_two.status).to eq 'sent_to_firebase'
         expect(sms_notification_two.sent_to_firebase_at).to be_present
         expect(
           sms_notification_two.assigned_to_mobile_hub_id
         ).to eq sms_mobile_hub_two.id
+      end
+
+      it 'increases the number of intents to be delivered' do
+        expect(
+          sms_notification_two.number_of_intents_to_be_delivered
+        ).to eq 1
+        expect(sms_notification_two.status).to eq 'sent_to_firebase'
       end
     end
 
