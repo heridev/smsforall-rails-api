@@ -53,6 +53,29 @@ RSpec.describe SmsHubIntervalSenderNotificationJob, type: :job do
     end
   end
 
+  context 'when the checker is disabled temporarily' do
+    before do
+      current_time = Time.parse('2020-05-25 06:01:47 -0500')
+      travel_to current_time
+      ENV['AUTOMATIC_SMS_CHECKER_DISABLED'] = 'true'
+    end
+
+    after do
+      travel_back
+      ENV['AUTOMATIC_SMS_CHECKER_DISABLED'] = nil
+    end
+
+    it 'does not enqueue any jobs' do
+      perform_enqueued_jobs do
+        described_class.perform_later
+      end
+
+      expect(
+        ActiveJob::Base.queue_adapter.performed_jobs.size
+      ).to eq 1
+    end
+  end
+
   context "when the current time is late than 6 am mexico's time" do
     before do
       current_time = Time.parse('2020-05-25 06:01:47 -0500')
