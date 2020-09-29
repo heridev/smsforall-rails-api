@@ -10,7 +10,7 @@ class FirebaseMessagingService
 
   def initialize(params = {})
     params = params.with_indifferent_access
-    @sms_number = params[:sms_number]
+    @sms_number = clean_characters_from(params[:sms_number])
     @sms_notification_id = params[:sms_notification_id]
     @device_token_firebase = params[:device_token_firebase]
     @sms_content = find_valid_message_content(params[:sms_content])
@@ -61,6 +61,11 @@ class FirebaseMessagingService
       success: 0,
       failure: 1
     }
+  end
+
+  # Removes any text characters such as spaces and letters
+  def clean_characters_from(mobile_number)
+    mobile_number.gsub(/\D+/, '')
   end
 
   def valid_response?
