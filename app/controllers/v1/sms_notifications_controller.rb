@@ -52,26 +52,6 @@ module V1
       end
     end
 
-    # def create
-    #   new_params = sms_notification_params.merge(
-    #     user_id: @current_api_user.id,
-    #     hub_id: @find_mobile_hub.id
-    #   )
-    #   sms_notification = SmsNotification.create_record(new_params)
-    #
-    #   if sms_notification.valid?
-    #     sms_notification.reload
-    #     sms_notification.start_delivery_process!
-    #
-    #     render_serialized(
-    #       sms_notification,
-    #       ::V1::SmsNotificationSerializer
-    #     )
-    #   else
-    #     render_error_object(sms_notification.errors.messages)
-    #   end
-    # end
-
     def update_status
       cleaned_params = {
         status: params[:status],
