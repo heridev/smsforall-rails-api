@@ -66,7 +66,7 @@ config.hosts << 'smsparatodosapi.ngrok.io'
 
 4. Run your app.smsparatodos yarn project and specify to use the right API backend url in this case:
 ```
-export REACT_APP_API_URL=https://smsparatodosapi.ngrok.io
+export REACT_APP_API_URL=http://ce7849464e42.ngrok.io/
 // and
 yarn start
 ```
