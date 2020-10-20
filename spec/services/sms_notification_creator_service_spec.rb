@@ -19,7 +19,7 @@ RSpec.describe SmsNotificationCreatorService do
         api_version
         date_created
         status
-				error_message
+        error_message
         sms_number
       ]
     end
@@ -147,6 +147,101 @@ RSpec.describe SmsNotificationCreatorService do
         result = service.perform_creation!
         expect(result[:status]).to eq 'failed'
         expect(result[:error_message]).to match('The number of requests per minute was reached')
+      end
+    end
+  end
+
+  describe '#valid_sms_number' do
+    let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
+    let(:normal_sms_content) { 'x ' * 80 }
+    let(:sms_number) { '+523121231517' }
+    let(:sms_number_usa) { '+13121231517' }
+    let(:long_sms_content) { 'superlongtext' * 300 }
+    let(:sms_customer_reference_id) { '748474' }
+    let(:expected_keys) do
+      %i[
+        sms_customer_reference_id
+        sms_content
+        mobile_hub_id
+        api_version
+        date_created
+        status
+        error_message
+        sms_number
+      ]
+    end
+
+    context 'when the sms mobile hub is in mexico and the number is in usa' do
+      let(:usa_sms_number) { '+13121231517' }
+
+      before do
+        sms_mobile_hub.update_column(:country_international_code, '52')
+      end
+
+      it 'returns the original number' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: usa_sms_number,
+          user_id: user.id,
+          sms_type: 'standard_delivery',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: sms_customer_reference_id
+        }
+        service = described_class.new(params)
+        great_sms_number = service.format_valid_sms_number
+        expect(great_sms_number).to eq usa_sms_number
+      end
+    end
+
+    context 'when the sms mobile hub does not have a valid country code' do
+      before do
+        sms_mobile_hub.update_column(:country_international_code, nil)
+      end
+
+      it 'returns the original number' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: sms_number,
+          user_id: user.id,
+          sms_type: 'standard_delivery',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: sms_customer_reference_id
+        }
+        service = described_class.new(params)
+        great_sms_number = service.format_valid_sms_number
+        expect(great_sms_number).to eq sms_number
+      end
+    end
+
+    context 'when a local number including the international code' do
+      it 'removes the international code from the sms_number' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: sms_number,
+          user_id: user.id,
+          sms_type: 'standard_delivery',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: sms_customer_reference_id
+        }
+        service = described_class.new(params)
+        great_sms_number = service.format_valid_sms_number
+        expect(great_sms_number).to eq '3121231517'
+      end
+    end
+
+    context 'when an internation phone number' do
+      it 'removes the international code from the sms_number' do
+        params = {
+          mobile_hub_id: sms_mobile_hub.reload.uuid,
+          sms_number: sms_number_usa,
+          user_id: user.id,
+          sms_type: 'standard_delivery',
+          sms_content: long_sms_content,
+          sms_customer_reference_id: sms_customer_reference_id
+        }
+        service = described_class.new(params)
+        great_sms_number = service.format_valid_sms_number
+        expect(great_sms_number).to eq '+13121231517'
       end
     end
   end
