@@ -33,22 +33,22 @@ module V1
     end
 
     def create
-      new_params = sms_notification_params.merge(
+      creation_params = sms_notification_params.merge(
         user_id: @current_api_user.id,
-        hub_id: @find_mobile_hub.id
+        mobile_hub_id: params[:hub_uuid]
       )
-      sms_notification = SmsNotification.create_record(new_params)
+      sms_creator = SmsNotificationCreatorService.new(
+        creation_params
+      )
+      sms_creator.perform_creation!
 
-      if sms_notification.valid?
-        sms_notification.reload
-        sms_notification.start_delivery_process!
-
+      if sms_creator.valid_creation?
         render_serialized(
-          sms_notification,
+          sms_creator.sms_notification,
           ::V1::SmsNotificationSerializer
         )
       else
-        render_error_object(sms_notification.errors.messages)
+        render_error_object(sms_creator.sms_notification.errors.messages)
       end
     end
 

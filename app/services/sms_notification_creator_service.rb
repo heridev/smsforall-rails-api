@@ -1,8 +1,9 @@
-# frozen_string_literal: true
+#. frozen_string_literaf: true
 
 class SmsNotificationCreatorService
   attr_reader :user_id,
               :sms_content,
+              :sms_notification,
               :sms_type,
               :sms_number,
               :mobile_hub_id,
@@ -40,15 +41,15 @@ class SmsNotificationCreatorService
       return daily_limit_reached_error
     end
 
-    sms_notification = SmsNotification.create(cleaned_and_safe_params)
+    @sms_notification = SmsNotification.create(cleaned_and_safe_params)
 
     if sms_notification.valid?
       @success_creation = true
       sms_notification.start_delivery_process!
-      valid_creation_response(sms_notification)
+      valid_creation_response
     else
       @success_creation = false
-      invalid_creation_response(sms_notification)
+      invalid_creation_response
     end
   end
 
@@ -57,17 +58,34 @@ class SmsNotificationCreatorService
       kind_of_notification: SmsNotification::KIND_OF_NOTIFICATION[:out],
       assigned_to_mobile_hub_id: find_mobile_hub.try(:id),
       user_id: user_id,
-      sms_number: valid_sms_number,
+      sms_number: format_valid_sms_number,
       sms_type: valid_sms_type,
       sms_content: valid_sms_content_message,
       sms_customer_reference_id: valid_sms_customer_reference
     }
   end
 
-  def valid_sms_number
-    ValueConverterService.new(
+  def format_valid_sms_number
+    valid_number = ValueConverterService.new(
       sms_number
-    ).take_only_n_characters_from(128)
+    ).take_only_n_characters_from(15)
+    code_country = find_mobile_hub&.country_international_code
+    return valid_number if code_country.blank?
+
+    splitted_by_code_country = valid_number.split("+#{code_country}")
+
+    # Output:
+    #  ["", "3121231517"]
+    #  or when no match
+    #  ["+13121231517"]
+    # we take only the right number as we are sending a local
+    # number not international one and in Mexico now you get an error
+    # so just fix it
+    if splitted_by_code_country.size == 2
+      splitted_by_code_country[1]
+    else
+      splitted_by_code_country[0]
+    end
   end
 
   def valid_sms_customer_reference
@@ -112,7 +130,7 @@ class SmsNotificationCreatorService
     "#{field_name} - #{first_error}"
   end
 
-  def invalid_creation_response(sms_notification)
+  def invalid_creation_response
     {
       sms_customer_reference_id: sms_notification.sms_customer_reference_id,
       sms_content: sms_notification.sms_content,
@@ -125,7 +143,7 @@ class SmsNotificationCreatorService
     }
   end
 
-  def valid_creation_response(sms_notification)
+  def valid_creation_response
     {
       sms_customer_reference_id: sms_notification.sms_customer_reference_id,
       sms_content: sms_notification.sms_content,
