@@ -21,7 +21,6 @@ module V2
 
     def sms_notification_params
       params.permit(
-        :mobile_hub_id,
         :sms_customer_reference_id,
         :mobile_hub_id,
         :sms_number,
