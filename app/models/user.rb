@@ -61,6 +61,8 @@ class User < ApplicationRecord
   end
 
   def find_international_number
+    return mobile_number if country_international_code.blank?
+
     "+#{country_international_code}#{mobile_number}"
   end
 
