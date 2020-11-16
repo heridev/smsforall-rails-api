@@ -4,19 +4,16 @@ class SmsAccountActivatorService
   class << self
     def send_notification(arguments = {})
       sms_params = format_notification_params(arguments)
-      sms_notification = SmsNotification.create(sms_params)
-      return unless sms_notification.persisted?
-
-      UrgentSmsNotificationSenderJob.perform_later(
-        sms_notification.id,
-        find_master_hub&.id
+      sms_creator = SmsNotificationCreatorService.new(
+        sms_params
       )
+      sms_creator.perform_creation!
     end
 
     private
 
     def find_master_hub
-      @find_master_hub ||= SmsMobileHub.find_first_master_mobile_hub
+      SmsMobileHub.find_first_master_mobile_hub
     end
 
     def format_notification_params(arguments = {})
@@ -38,6 +35,7 @@ class SmsAccountActivatorService
         sms_number: user_phone_number,
         user_id: user_id,
         assigned_to_mobile_hub_id: mobile_hub_id,
+        mobile_hub_id: find_master_hub&.uuid,
         sms_type: SmsNotification::SMS_TYPES[:urgent_delivery]
       }
     end

@@ -47,15 +47,13 @@ class MobileHubValidatorService
       sms_number: mobile_hub.find_international_number,
       user_id: mobile_hub.user_id,
       assigned_to_mobile_hub_id: mobile_hub.id,
+      mobile_hub_id: mobile_hub.uuid,
       sms_type: SmsNotification::SMS_TYPES[:device_validation]
     }
 
-    sms_notification = SmsNotification.create(sms_confirmation_params)
-    return unless sms_notification.persisted?
-
-    SmsNotificationSenderJob.perform_later(
-      sms_notification.id,
-      mobile_hub.id
+    sms_creator = SmsNotificationCreatorService.new(
+      sms_confirmation_params
     )
+    sms_creator.perform_creation!
   end
 end
