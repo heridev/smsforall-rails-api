@@ -13,6 +13,8 @@ en:
       invalid_firebase_token: 'The firebase token is invalid'
       succcess_update: 'The sms notification was updated successfully'
       succcess_received_message: 'The sms notification was created successfully'
+      sms_public_message_success_enqueued: 'We will be sending your message shortly'
+      sms_public_message_invalid_enqueued: 'The information provided is invalid'
   mobile_hub:
     content:
       welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"
