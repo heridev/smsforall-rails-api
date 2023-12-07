@@ -4,7 +4,7 @@ Smsparatodos.com api
 ### Setup this project for development
 1. clone the repository
 ```
-git clone git@bitbucket.org:heridev/smsparatodos_api.git
+git clone git@github.org:heridev/smsforall-rails-api.git
 ```
 
 2. Create your database
@@ -41,13 +41,13 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 rails console
 ```
 
-If you want to access the sidekiq panel remember to run the env variables as follow:
+If you want to access the Sidekiq panel remember to run the env variables as follows:
 ```
 export SIDEKIQ_ADMIN_USER='sidekiq'
 export SIDEKIQ_ADMIN_PASSWORD='pass'
 ```
 
-then you access the url
+then you access the URL
 ```
 localhost:3030/panel/sidekiq
 ```
@@ -152,6 +152,7 @@ Checking production or development data in environment variables
 ```
 # To see what kind of credentials we have in use at this moment
 Rails.application.credentials[:type]
+```
 
 It seems like these two credentials are different
 ```
