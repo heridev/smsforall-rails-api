@@ -52,7 +52,7 @@ then you access the URL
 localhost:3030/panel/sidekiq
 ```
 
-### Connecting Android, app.smsparatodos in local
+### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
 1. First of all you will need to make sure that you have the following in your `config/environments/development.rb`
 ```
 config.hosts << 'smsparatodosapi.ngrok.io'
