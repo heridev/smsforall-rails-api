@@ -64,14 +64,14 @@ config.hosts << 'smsparatodosapi.ngrok.io'
 ./ngrok http -subdomain=smsparatodosapi 3000
 ```
 
-4. Run your app.smsparatodos yarn project and specify to use the right API backend url in this case:
+4. Run your [React app frontend]() yarn project and specify to use the right API backend url in this case:
 ```
 export REACT_APP_API_URL=http://ce7849464e42.ngrok.io/
 // and
 yarn start
 ```
 
-5. In your Android project before generating the version and install it, make sure you have the right URL, for that
+5. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that
 a. Open the file `grade.properties` 
 b. replace the value
 ```
@@ -81,14 +81,14 @@ with
 ```
 https://smsparatodosapi.ngrok.io
 ```
-c. Select the build variantes as `debug
-d. Run the app and install it in your device again.
+c. Select the build variants as `debug
+d. Run the app and install it on your device again.
 
 ### Test suite
 As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-bundle exe rspec spec
+bundle exec rspec spec
 ```
 
 ### Managing encrypted env credentials
@@ -150,10 +150,10 @@ mv config/master_development.key config/master.key
 
 Checking production or development data in environment variables
 ```
-# In order to see what kind of credentials we have in use in this moment
+# To see what kind of credentials we have in use at this moment
 Rails.application.credentials[:type]
 
-It seems like this two credentials are different
+It seems like these two credentials are different
 ```
 Rails.application.credentials[:secret_key_base]
 # and
@@ -183,8 +183,8 @@ For generating serializers:
 rails g serializer Movie name year
 ```
 
-## FCM and google cloud messaging in firebase
-There are some plain examples about using the service in the following document
+## FCM and Google Cloud messaging in Firebase
+There are some plain examples of using the service in the following document
 ```
 working_with_firebase_cloud_messaging.md
 ```
@@ -196,7 +196,7 @@ If you want to show a value based on a dynamic scope and value
 I18n.t('dynamic_configuration', scope: 'page_size_configuration')
 ```
 
-In the previous example, the locales in spanish look like this:
+In the previous example, the locales in Spanish look like this:
 ```
 es:
   page_size_configuration:
@@ -213,7 +213,7 @@ I18n.localize current_date, format: :history_details
 using raw
 ```
 { "user": { "name": "heriberto perez", "email": "p@elh.mx", "password": "123qwe123" } }
-"token_auth": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.ArJ1yK_VcBsITp45C9RhAEBFcbvhHqb2GbkXl-uKrKU"
+"token_auth": "eyJhbGciOiJIUzI1xxxxx2lkIjozfQ.ArJ1yK_VcBsITxxxxxbvhHqb2GbkXl-uKrKU"
 ENV['RAILS_MASTER_KEY']
 Rails.application.credentials[:secret_key_base]
 
@@ -229,7 +229,7 @@ sms_confirmation_params = {
 
 sms_notification = SmsNotification.create(sms_confirmation_params)
 
-device_number = '3121698456'
+device_number = '312169xxxxx'
 sms_content = ""
 
 SmsNotificationSenderService
@@ -248,7 +248,7 @@ If you want to add a new cron schedule job open the file
 config/sidekiq.yml
 ```
 
-and most of the configuration regarding this gem it is included in the 
+and most of the configuration regarding this gem is included in the 
 ```
 config/initializers/sidekiq.rb
 ```
