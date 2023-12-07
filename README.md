@@ -152,6 +152,7 @@ Checking production or development data in environment variables
 ```
 # In order to see what kind of credentials we have in use in this moment
 Rails.application.credentials[:type]
+```
 
 It seems like this two credentials are different
 ```
