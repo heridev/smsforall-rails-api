@@ -4,7 +4,7 @@ Smsparatodos.com api
 ### Setup this project for development
 1. clone the repository
 ```
-git clone git@github.org:heridev/smsforall-rails-api.git
+git clone git@github.com:heridev/smsforall-rails-api.git
 ```
 
 2. Create your database
