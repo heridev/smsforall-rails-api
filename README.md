@@ -64,7 +64,7 @@ config.hosts << 'smsparatodosapi.ngrok.io'
 ./ngrok http -subdomain=smsparatodosapi 3000
 ```
 
-4. Run your [React app frontend]() yarn project and specify to use the right API backend url in this case:
+4. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend url in this case:
 ```
 export REACT_APP_API_URL=http://ce7849464e42.ngrok.io/
 // and
