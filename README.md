@@ -1,4 +1,4 @@
-Smsparatodos.com api
+Rails Backend API for https://api.smsforall.org
 ====================
 
 ### Setup this project for development
