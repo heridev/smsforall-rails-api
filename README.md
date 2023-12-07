@@ -1,10 +1,10 @@
-Smsparatodos.com api
+Smsforall.org / smsparatodos.com api
 ====================
 
 ### Setup this project for development
 1. clone the repository
 ```
-git clone git@bitbucket.org:heridev/smsparatodos_api.git
+git clone git@github.com:heridev/smsparatodos_api.git
 ```
 
 2. Create your database
