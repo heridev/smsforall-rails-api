@@ -38,6 +38,7 @@ bundle exec sidekiq -q urgent_delivery,2 -q standard_delivery,1
 If you want to run the console remember to set first the ENV variable
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+export REDIS_URL="redis://localhost:6379/1"
 rails console
 ```
 
