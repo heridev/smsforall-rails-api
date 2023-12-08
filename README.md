@@ -254,7 +254,6 @@ and most of the configuration regarding this gem is included in the
 config/initializers/sidekiq.rb
 ```
 
-
 with:
 ```
 SidekiqScheduler::Scheduler.instance.rufus_scheduler_options = {
