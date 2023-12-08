@@ -12,7 +12,7 @@ git clone git@github.com:heridev/smsforall-rails-api.git
 rails db:create
 rails db:migrate
 ```
-4. Run the server in one tab, by copying, editing and pasting in a new terminal.
+4. Run the server in one tab, by copying, editing, and pasting in a new terminal.
 ```
 # your phone number in the form of symbol `+` international code + 10 digits of your phone
 # for instance, for México is 52
@@ -29,7 +29,8 @@ At this point, you should see this:
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
-export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
+# Same as the previous value you entered
+export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
 bundle exec sidekiq -q urgent_delivery,2 -q standard_delivery,1
 ```
 
@@ -40,12 +41,13 @@ rails console
 ```
 
 If you want to access the Sidekiq panel remember to run the env variables as follows:
+NOTE: Remember to stop and start your server again.
 ```
 export SIDEKIQ_ADMIN_USER='sidekiq'
 export SIDEKIQ_ADMIN_PASSWORD='pass'
 ```
 
-then you access the URL
+Then you access the URL
 ```
 localhost:3030/panel/sidekiq
 ```
