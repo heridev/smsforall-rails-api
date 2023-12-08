@@ -38,7 +38,7 @@ class HubCalculatorUsageService
     ReadCache.redis.set(
       key_name,
       total_usage,
-      calculate_expiration_time_within_minute
+      ex: EVERY_MINUTE_EXPIRATION_TIME_IN_SECONDS
     )
     total_usage
   end
@@ -71,7 +71,7 @@ class HubCalculatorUsageService
     ReadCache.redis.set(
       key_name,
       total_usage,
-      calculate_expiration_time_within_today
+      ex: DAILY_EXPIRATION_TIME_IN_SECONDS
     )
     total_usage
   end
@@ -91,7 +91,7 @@ class HubCalculatorUsageService
     )
     total_usage += 1
     cache_key_name = find_cache_key_name_for(selected_date)
-    ReadCache.redis.set(cache_key_name, total_usage, set_expiration_options)
+    ReadCache.redis.set(cache_key_name, total_usage, ex: EXPIRATION_TIME_IN_SECONDS)
     total_usage
   end
 
@@ -117,25 +117,5 @@ class HubCalculatorUsageService
     prev_half_hour = date_calculator.get_previous_half_hour
     next_half_hour = date_calculator.get_next_half_hour
     "#{prev_half_hour.to_i}_#{next_half_hour.to_i}_#{@hub_uuid}"
-  end
-
-  private
-
-  def calculate_expiration_time_within_minute
-    {
-      ex: EVERY_MINUTE_EXPIRATION_TIME_IN_SECONDS
-    }
-  end
-
-  def calculate_expiration_time_within_today
-    {
-      ex: DAILY_EXPIRATION_TIME_IN_SECONDS
-    }
-  end
-
-  def set_expiration_options
-    {
-      ex: EXPIRATION_TIME_IN_SECONDS
-    }
   end
 end
