@@ -19,9 +19,11 @@ export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
 ```
-4. Run the server in one tab:
+4. Run the server in one tab, by copying, editing and pasting in a new terminal.
 ```
-export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
+# your phone number in the form of symbol `+` international code + 10 digits of your phone
+# for instance, for México is 52
+export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
 rails s -p 3030
