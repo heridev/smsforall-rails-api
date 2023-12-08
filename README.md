@@ -12,13 +12,6 @@ git clone git@github.com:heridev/smsforall-rails-api.git
 rails db:create
 rails db:migrate
 ```
-
-3. Export some variables:
-```
-export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+523121698456"
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-export REDIS_URL="redis://localhost:6379/1"
-```
 4. Run the server in one tab, by copying, editing and pasting in a new terminal.
 ```
 # your phone number in the form of symbol `+` international code + 10 digits of your phone
@@ -28,8 +21,11 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
 rails s -p 3030
 ```
+At this point, you should see this:
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/3f920b9b-66bf-4b0b-814b-4524e8c3af98)
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/09acb82d-8cb0-4cba-9b49-5143800254bf)
 
-5. Run sidekiq in a separate tab
+5. Run Sidekiq in a separate tab
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 export REDIS_URL="redis://localhost:6379/1"
