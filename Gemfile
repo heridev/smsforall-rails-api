@@ -7,7 +7,6 @@ ruby '3.2.2'
 gem 'awesome_print'
 gem 'bcrypt', require: 'bcrypt'
 gem 'bootsnap', require: false
-# gem 'fast_jsonapi', git: 'https://github.com/fast-jsonapi/fast_jsonapi'
 gem 'fcm'
 gem 'jsonapi-serializer'
 gem 'jwt'

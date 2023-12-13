@@ -1,7 +1,7 @@
 Rails Backend API for https://api.smsforall.org
 ====================
 
-### Setup this project for development
+### How to run the project in development?
 1. clone the repository
 ```
 git clone git@github.com:heridev/smsforall-rails-api.git
@@ -12,7 +12,7 @@ git clone git@github.com:heridev/smsforall-rails-api.git
 rails db:create
 rails db:migrate
 ```
-4. Run the server in one tab, by copying, editing, and pasting in a new terminal.
+4. Run the server by copying, editing the default master receiver, and pasting in a new terminal.
 ```
 # your phone number in the form of symbol `+` international code + 10 digits of your phone
 # for instance, for México is 52
@@ -25,15 +25,7 @@ At this point, you should see this:
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/3f920b9b-66bf-4b0b-814b-4524e8c3af98)
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/09acb82d-8cb0-4cba-9b49-5143800254bf)
 
-5. Run Sidekiq in a separate tab
-```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-export REDIS_URL="redis://localhost:6379/1"
-# Same as the previous value you entered
-export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
-bundle exec sidekiq -q urgent_delivery,2 -q standard_delivery,1
-```
-
+### Rails console
 If you want to run the console remember to set first the ENV variable
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
@@ -41,6 +33,7 @@ export REDIS_URL="redis://localhost:6379/1"
 rails console
 ```
 
+### Visualize the Sidekiq panel and background jobs
 If you want to access the Sidekiq panel remember to run the env variables as follows:
 NOTE: Remember to stop and start your server again.
 ```

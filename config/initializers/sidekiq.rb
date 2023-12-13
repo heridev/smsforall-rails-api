@@ -4,7 +4,7 @@ require 'active_support/security_utils'
 require 'sidekiq'
 require 'sidekiq/web'
 
-if Rails.env.production? || Rails.env.staging?
+unless Rails.env.test?
 
   max_work_threads = Integer(ENV['MAX_WORK_THREADS_RUFUS'] || 1)
   SidekiqScheduler::Scheduler.instance.rufus_scheduler_options = {
@@ -25,8 +25,6 @@ if Rails.env.production? || Rails.env.staging?
   end
 
   Sidekiq.configure_server do |config|
-    # in case you do not what value to use just look into the
-    # plan you're using https://cl.ly/1p1v0O1q2V2X
     # 10 for free tier and 50 connections for micro as an example
     # minium of 30 or you will get the error
     # Your Redis connection pool is too small for Sidekiq to work,
@@ -37,6 +35,7 @@ if Rails.env.production? || Rails.env.staging?
       size: redis_server_connection_number,
       ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
     }
+    config.queues = %w[urgent_delivery,2 standard_delivery,1]
 
     # Number of concurrent workers pulling jobs and processing them
     # every one will use a database connection(postgresql) and a redis
@@ -45,7 +44,7 @@ if Rails.env.production? || Rails.env.staging?
     # NOTE: when increasing this value take into account the database connection and
     # puma threads in the config/puma.rb file
     sidekiq_concurrency = Integer(ENV['SIDEKIQ_CONCURRENCY_WORKERS'] || 5)
-    config.options[:concurrency] = sidekiq_concurrency
+    config.concurrency = sidekiq_concurrency
   end
 end
 

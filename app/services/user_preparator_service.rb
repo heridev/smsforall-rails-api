@@ -2,7 +2,6 @@ class UserPreparatorService
   attr_reader :user
 
   def initialize(user_id)
-    user_id = user_id
     @user = User.find_by(id: user_id)
     execute_callbacks!
   end
@@ -11,6 +10,7 @@ class UserPreparatorService
     return unless user
 
     update_registration_pin_code!
+    print_user_pin_code_for_development
     send_activation_account!
     create_api_keys!
   end
@@ -40,7 +40,17 @@ class UserPreparatorService
   end
 
   def create_api_keys!
-    api_keys_name = 'Mis llaves de acceso #1'
+    api_keys_name = 'My API keys #1'
     user.create_api_keys(api_keys_name)
+  end
+
+  private
+
+  def print_user_pin_code_for_development
+    return unless Rails.env.development?
+
+    Rails.logger.info '=' * 100
+    Rails.logger.info "Pin code to use in the Android App is #{user.reload.registration_pin_code}"
+    Rails.logger.info '=' * 100
   end
 end
