@@ -82,7 +82,7 @@ BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
 
 with 
 ```
-https://quick-dodo-freely.ngrok-free.app/
+https://quick-xxxx-xxxx.ngrok-free.app
 ```
 - c). Select the build variants as `prodDebug`
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/900f6aa3-ee56-49c6-87da-be2b2f3abd46)
