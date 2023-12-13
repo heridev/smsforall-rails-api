@@ -34,6 +34,11 @@ module SmsparatodosApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # needed for the CSRF protection when using Sidekiq::Web
+    config.session_store :cookie_store, key: 'smsforall_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+
     config.i18n.default_locale = :en
 
     config.active_job.queue_adapter = :sidekiq
