@@ -54,36 +54,46 @@ localhost:3030/panel/sidekiq
 ```
 
 ### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
-1. First of all you will need to make sure that you have the following in your `config/environments/development.rb`
+Eventually, if you want to modify the different pieces in the system(Android, React App and API), you will need to connect all the pieces locally for development and for that you might need to expose your local API so the Android client and React Client Application are able to connect with the API, so in order to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server, if you want to begin using Ngrok.
+
+1. You need to register a free account in the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
+
+2. Request your static domain that would look like this:
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/6da6948c-ff82-4014-a541-e62551cc74ee)
+
+3. Add your static domain to the following configuration file `config/environments/development.rb`
 ```
-config.hosts << 'smsparatodosapi.ngrok.io'
+config.hosts << 'quick-xxxx-xxxxx.ngrok-free.app'
 ```
 
-2. Run your server following the previous section
-3. Run ngrok with the right subdomain
+4. Run your server following the previous section in this README.md file
+5. Run ngrok with the right subdomain(make sure your ngrok executable was downloaded successfully from [https://ngrok.com/download](https://ngrok.com/download))
 ```
-./ngrok http -subdomain=smsparatodosapi 3000
+ngrok http --domain=quick-xxxx-xxxx.ngrok-free.app 3030
 ```
 
-4. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend url in this case:
+6. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend url in this case:
 ```
-export REACT_APP_API_URL=http://ce7849464e42.ngrok.io/
+export REACT_APP_API_URL=https://quick-xxx-xxxxxx.ngrok-free.app
 // and
 yarn start
 ```
 
-5. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that
+7. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that:
+
 a. Open the file `grade.properties` 
 b. replace the value
 ```
 BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
 ```
+
 with 
 ```
-https://smsparatodosapi.ngrok.io
+https://quick-dodo-freely.ngrok-free.app/
 ```
-c. Select the build variants as `debug
-d. Run the app and install it on your device again.
+c. Select the build variants as `debug`
+d. Run the app and install it on your device
+e. Begin with the coding and experimentation!
 
 ### Test suite
 As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
