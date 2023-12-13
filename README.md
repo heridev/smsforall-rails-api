@@ -74,8 +74,8 @@ yarn start
 
 7. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that:
 
-a. Open the file `grade.properties` 
-b. replace the value
+- a). Open the file `grade.properties` 
+- b). replace the value
 ```
 BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
 ```
@@ -84,9 +84,11 @@ with
 ```
 https://quick-dodo-freely.ngrok-free.app/
 ```
-c. Select the build variants as `debug`
-d. Run the app and install it on your device
-e. Begin with the coding and experimentation!
+- c). Select the build variants as `prodDebug`
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/900f6aa3-ee56-49c6-87da-be2b2f3abd46)
+
+- d). Run the app and install it on your device
+- e). Begin with the coding and experimentation!
 
 ### Test suite
 As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
