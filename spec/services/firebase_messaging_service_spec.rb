@@ -160,7 +160,7 @@ RSpec.describe FirebaseMessagingService do
 
       it 'returns a valid response and is accesible' do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(valid_firebase_response)
         service = described_class.new(params)
         service.send_to_google!
@@ -188,7 +188,7 @@ RSpec.describe FirebaseMessagingService do
 
       it 'returns an invalid response' do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(invalid_firebase_response)
         service = described_class.new(params)
         service.send_to_google!

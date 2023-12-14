@@ -31,25 +31,30 @@ class FirebaseMessagingService
       sms_type.present?
   end
 
-  def send_to_google!
-    return unless valid_info?
-
-    devise_ids = [
-      device_token_firebase
-    ]
-    options = {
-      priority: 10,
-      android: {
-        priority: 'high'
-      },
-      data: {
+  def format_message_content
+    {
+      'token': device_token_firebase,
+      'data': {
         sms_number: sms_number,
         sms_content: sms_content,
         sms_type: sms_type,
         sms_notification_id: sms_notification_id
+      },
+      android: {
+        priority: 'high'
+      },
+      webpush: {
+        headers: {
+          Urgency: 'high'
+        }
       }
     }
-    response = fcm_service.send(devise_ids, options)
+  end
+
+  def send_to_google!
+    return unless valid_info?
+
+    response = fcm_service.send_v1(format_message_content)
     if response[:status_code] == SUCCESS_STATUS_CODE
       return @firebase_response = JSON.parse(
         response[:body],
@@ -75,11 +80,16 @@ class FirebaseMessagingService
   private
 
   def fcm_service
-    @fcm_service ||= begin
-                       FCM.new(
-                         Rails.application.credentials[:fcm_server_key],
-                         timeout: ENV['FCM_SERVICE_TIMEOUT'] || 3
-                       )
-                     end
+    @fcm_service ||= FCM.new(
+      nil,
+      find_google_firebase_credentials_io,
+      ENV['FIREBASE_PROJECT_ID']
+    )
+  end
+
+  def find_google_firebase_credentials_io
+    firebase_credentials_array = Rails.application.credentials[:google_firebase]
+    credentials_as_hash = firebase_credentials_array.inject(:update)
+    StringIO.new(credentials_as_hash.to_json)
   end
 end

@@ -4,41 +4,40 @@
 es:
   sms_notification:
     statuses:
-      pending: 'queued' # we can remove this one once we cleaned-up the database
-      queued: 'encolado'
-      delivered: 'entregado'
-      undelivered: 'No entregado'
-      received: 'recibido'
-      failed_sent_to_firebase: 'falló al ser procesado'
-      sent_to_firebase: 'enviando'
+      pending: "queued" # we can remove this one once we cleaned-up the database
+      queued: "encolado"
+      delivered: "entregado"
+      undelivered: "No entregado"
+      received: "recibido"
+      failed_sent_to_firebase: "falló al ser procesado"
+      sent_to_firebase: "enviando"
     controllers:
-      sms_notification_update_status_not_found: 'La notificación no existe o ya fué actualizada anteriormente'
-      sms_public_message_success_enqueued: 'En breve enviaremos el mensaje'
-      sms_public_message_invalid_enqueued: 'La información proporcionada es inválida'
+      sms_notification_update_status_not_found: "La notificación no existe o ya fué actualizada anteriormente"
+      sms_public_message_success_enqueued: "En breve enviaremos el mensaje"
+      sms_public_message_invalid_enqueued: "La información proporcionada es inválida"
   mobile_hub:
     content:
-      welcome_msg: "Hola %{user_name}, bienvenido a smsparatodos.com"
+      welcome_msg: "Hola %{user_name}, bienvenido a smsforall.org"
     statuses:
       pending_activation: "Activación pendiente"
       activated: "Activado"
       activation_in_progress: "Activación en progreso"
-      pending_activation: "Activación pendiente"
     controllers:
-      successful_hub_validation: 'En breve recibirás un sms confirmando el estado del dispositivo'
-      successful_hub_activation: 'El dispositivo se activó correctamente, disfruta de smsparatodos.com'
-      successful_hub_deletion: 'El dispositivo se eliminó correctamente'
-      failure_hub_deletion: 'Ocurrió un error al momento de eliminar el dispositivo, intenta nuevamente..'
-      failure_hub_validation: 'El codigo es inválido o el dispositivo ya fue activado anteriormente..'
-      failure_hub_activation: 'Ocurrió un error al momento de activar el dispositivo, intenta nuevamente..'
-      hub_not_found: 'El dispositivo no existe'
+      successful_hub_validation: "En breve recibirás un sms confirmando el estado del dispositivo"
+      successful_hub_activation: "El dispositivo se activó correctamente, disfruta de smsparatodos.com"
+      successful_hub_deletion: "El dispositivo se eliminó correctamente"
+      failure_hub_deletion: "Ocurrió un error al momento de eliminar el dispositivo, intenta nuevamente.."
+      failure_hub_validation: "El codigo es inválido o el dispositivo ya fue activado anteriormente.."
+      failure_hub_activation: "Ocurrió un error al momento de activar el dispositivo, intenta nuevamente.."
+      hub_not_found: "El dispositivo no existe"
   api:
     v2:
       sms_notifications:
         failed:
-          there_are_errors: 'Existen algunos errores de validación:'
-          limit_by_minute_reached: 'El limite de peticiones por minuto a sido alcanzado, intenta nuevamente en el siguiente minuto...'
-          daily_limit_reached: 'El limite de peticiones por día a sido alcanzado, intenta nuevamente en el siguiente día hábil...'
-          invalid_mobile_hub_id: 'El valor mobile_hub_id es inválido'
+          there_are_errors: "Existen algunos errores de validación:"
+          limit_by_minute_reached: "El limite de peticiones por minuto a sido alcanzado, intenta nuevamente en el siguiente minuto..."
+          daily_limit_reached: "El limite de peticiones por día a sido alcanzado, intenta nuevamente en el siguiente día hábil..."
+          invalid_mobile_hub_id: "El valor mobile_hub_id es inválido"
 
   activerecord:
     models:
@@ -53,30 +52,46 @@ es:
         sms_notification:
           attributes:
             user:
-              required: 'La notificación debe estar asociada a un usuario'
+              required: "La notificación debe estar asociada a un usuario"
             # assigned_to_mobile_hub_id:
             #   blank:
         user:
           attributes:
             email:
-              blank: 'No puede estar vacio...'
-              not_found: 'No existe en nuestra base de datos...'
-              invalid: 'El formato es incorrecto...'
-              taken: 'Ya existe en nuestra base de datos, elige otro...'
+              blank: "No puede estar vacio..."
+              not_found: "No existe en nuestra base de datos..."
+              invalid: "El formato es incorrecto..."
+              taken: "Ya existe en nuestra base de datos, elige otro..."
             password:
-              blank: 'No puede estar vacio...'
-              too_short: 'Demasiado corto...'
-              confirmation: 'La confirmacion del password debe ser igual al password...'
+              blank: "No puede estar vacio..."
+              too_short: "Demasiado corto..."
+              confirmation: "La confirmacion del password debe ser igual al password..."
 
   date:
-    abbr_day_names: [ dom, lun, mar, mié, jue, vie, sáb]
-    abbr_month_names: [ ~, ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic ]
-    day_names: [ domingo, lunes, martes, miércoles, jueves, viernes, sábado ]
-    month_names: [ ~, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre ]
+    abbr_day_names: [dom, lun, mar, mié, jue, vie, sáb]
+    abbr_month_names:
+      [~, ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic]
+    day_names: [domingo, lunes, martes, miércoles, jueves, viernes, sábado]
+    month_names:
+      [
+        ~,
+        enero,
+        febrero,
+        marzo,
+        abril,
+        mayo,
+        junio,
+        julio,
+        agosto,
+        septiembre,
+        octubre,
+        noviembre,
+        diciembre,
+      ]
     formats:
-      default:  '%d/%m/%Y'
-      long:  '%A, %d de %B de %Y'
-      short: '%d de %b'
+      default: "%d/%m/%Y"
+      long: "%A, %d de %B de %Y"
+      short: "%d de %b"
       fecha_emision: "%d/%B/%Y"
   datetime:
     distance_in_words:
@@ -104,16 +119,16 @@ es:
         other: más de %{count} años
       x_days:
         one: 1 día
-        other: ! '%{count} días'
+        other: ! "%{count} días"
       x_minutes:
         one: 1 minuto
-        other: ! '%{count} minutos'
+        other: ! "%{count} minutos"
       x_months:
         one: 1 mes
-        other: ! '%{count} meses'
+        other: ! "%{count} meses"
       x_seconds:
         one: 1 segundo
-        other: ! '%{count} segundos'
+        other: ! "%{count} segundos"
     prompts:
       day: Día
       hour: Hora
@@ -122,7 +137,7 @@ es:
       second: Segundos
       year: Año
   errors: &errors
-    format: ! '%{attribute} %{message}'
+    format: ! "%{attribute} %{message}"
     messages:
       accepted: debe ser aceptado
       blank: no puede estar en blanco
@@ -140,7 +155,7 @@ es:
       not_a_number: no es un número
       not_an_integer: debe ser un entero
       odd: debe ser un número non
-      record_invalid: ! 'La validación falló: %{errors}'
+      record_invalid: ! "La validación falló: %{errors}"
       taken: ya ha sido tomado
       too_long:
         one: es demasiado largo (máximo 1 caracter)
@@ -152,10 +167,10 @@ es:
         one: longitud errónea (debe ser de 1 caracter)
         other: longitud errónea (debe ser de %{count} caracteres)
       template:
-        body: ! 'Revise que los siguientes campos sean válidos:'
+        body: ! "Revise que los siguientes campos sean válidos:"
         header:
-          one: ! '%{model} no pudo guardarse debido a 1 error'
-          other: ! '%{model} no pudo guardarse debido a %{count} errores'
+          one: ! "%{model} no pudo guardarse debido a 1 error"
+          other: ! "%{model} no pudo guardarse debido a %{count} errores"
       not_saved:
         one: "Ha habido 1 error:"
         other: "Han habido %{count} errores:"
@@ -163,36 +178,36 @@ es:
   number:
     currency:
       format:
-        delimiter: ! ','
-        format: ! '%u%n'
+        delimiter: ! ","
+        format: ! "%u%n"
         precision: 2
         separator: .
         significant: false
         strip_insignificant_zeros: false
         unit: $
     format:
-      delimiter: ! ','
+      delimiter: ! ","
       precision: 2
       separator: .
       significant: false
       strip_insignificant_zeros: false
     human:
       decimal_units:
-        format: ! '%n %u'
+        format: ! "%n %u"
         units:
           billion: mil millones
           million: millón
           quadrillion: mil billones
           thousand: mil
           trillion: billón
-          unit: ''
+          unit: ""
       format:
-        delimiter: ! ','
+        delimiter: ! ","
         precision: 3
         significant: true
         strip_insignificant_zeros: true
       storage_units:
-        format: ! '%n %u'
+        format: ! "%n %u"
         units:
           byte:
             one: Byte
@@ -203,24 +218,24 @@ es:
           tb: TB
     percentage:
       format:
-        delimiter: ! ','
+        delimiter: ! ","
     precision:
       format:
-        delimiter: ! ','
+        delimiter: ! ","
   support:
     array:
-      last_word_connector: ! ' y '
-      two_words_connector: ! ' y '
-      words_connector: ! ', '
+      last_word_connector: ! " y "
+      two_words_connector: ! " y "
+      words_connector: ! ", "
   time:
     am: am
     formats:
-      default: ! '%a, %d de %b de %Y a las %H:%M:%S %Z'
-      long: ! '%A, %d de %B de %Y a las %I:%M %p'
-      short: ! '%d de %b a las %H:%M hrs'
-      date_and_hour_details: ! '%d de %b de %Y, %H:%M hrs'
-      only_date: ! '%a, %d de %b de %Y'
-      only_hour: ! '%I:%M %p'
-      database_date_format: ! '%Y-%m-%d'
-      google_format: ! '%Y%m%dT%H%M%S'
+      default: ! "%a, %d de %b de %Y a las %H:%M:%S %Z"
+      long: ! "%A, %d de %B de %Y a las %I:%M %p"
+      short: ! "%d de %b a las %H:%M hrs"
+      date_and_hour_details: ! "%d de %b de %Y, %H:%M hrs"
+      only_date: ! "%a, %d de %b de %Y"
+      only_hour: ! "%I:%M %p"
+      database_date_format: ! "%Y-%m-%d"
+      google_format: ! "%Y%m%dT%H%M%S"
     pm: pm

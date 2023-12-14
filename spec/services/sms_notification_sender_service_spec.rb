@@ -32,7 +32,7 @@ RSpec.describe SmsNotificationSenderService do
 
       before do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(valid_firebase_response)
 
         service = described_class.new(
@@ -76,7 +76,7 @@ RSpec.describe SmsNotificationSenderService do
 
       it 'marks the sms notification as failed' do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(invalid_firebase_response)
 
         service = described_class.new(
