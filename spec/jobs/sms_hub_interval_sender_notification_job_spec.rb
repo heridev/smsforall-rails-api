@@ -41,7 +41,6 @@ RSpec.describe SmsHubIntervalSenderNotificationJob, type: :job do
     before do
       current_time = Time.parse('2020-05-25 22:59:47 -0500')
       travel_to current_time
-      # stub_google_fcm_request
     end
 
     after do

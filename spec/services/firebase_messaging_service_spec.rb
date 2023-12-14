@@ -6,8 +6,6 @@ RSpec.describe FirebaseMessagingService do
   let(:user) { create(:user, mobile_number: '3121899980') }
   let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
 
-  # include_examples 'fcm stub request'
-
   describe '#initialize' do
     describe 'characters limits' do
       context 'when the SMS_CONTENT_LIMIT is not set' do
