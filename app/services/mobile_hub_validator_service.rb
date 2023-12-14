@@ -51,7 +51,7 @@ class MobileHubValidatorService
       sms_type: SmsNotification::SMS_TYPES[:device_validation]
     }
 
-    sms_creator = SmsNotificationCreatorService.new(
+  sms_creator = SmsNotificationCreatorService.new(
       sms_confirmation_params
     )
     sms_creator.perform_creation!

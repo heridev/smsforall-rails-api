@@ -29,7 +29,7 @@ class SmsNotificationCreatorService
   def perform_creation!
     hub_uuid = mobile_hub_id
     calculator_service = HubCalculatorUsageService.new(hub_uuid)
-    current_usage = calculator_service.update_and_return_usage_counter_within_minute
+    calculator_service.update_and_return_usage_counter_within_minute
 
     if calculator_service.limit_by_minute_reached?
       @success_creation = false
@@ -186,4 +186,3 @@ class SmsNotificationCreatorService
     @success_creation
   end
 end
-
