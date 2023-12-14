@@ -29,7 +29,7 @@ RSpec.describe SmsHubNotificationSenderJob, type: :job do
 
   it 'updates and marks the mobile hub as activation in progress' do
     allow_any_instance_of(FCM).to receive(
-      :send
+      :send_v1
     ).and_return(valid_firebase_response)
 
     perform_enqueued_jobs do

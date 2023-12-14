@@ -10,6 +10,22 @@ RSpec.describe SmsHubsValidationJob, type: :job do
     }
   end
 
+  let(:valid_firebase_response) do
+    {
+      status_code: 200,
+      body: {
+        multicast_id: 8_573_675_465_357_843_813,
+        success: 1,
+        failure: 0,
+        canonical_ids: 0
+      }.to_json
+    }
+  end
+
+  before do
+    allow_any_instance_of(FCM).to receive(:send_v1).and_return(valid_firebase_response)
+  end
+
   # We expect 2 jobs as the sms_mobile_hub and user internally spins a new job
   it 'enqueues the job' do
     expect do

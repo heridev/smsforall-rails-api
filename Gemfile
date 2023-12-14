@@ -26,6 +26,7 @@ gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rubocop', require: false
 end
 

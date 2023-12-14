@@ -85,6 +85,7 @@ RSpec.describe HubCalculatorUsageService do
       end
 
       before do
+        sms_mobile_hub.reload
         selected_dates.each do |selected_date|
           service = described_class.new(sms_mobile_hub.uuid)
           service.update_and_return_usage_counter_within_half_hour(

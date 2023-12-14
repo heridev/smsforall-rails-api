@@ -11,13 +11,22 @@ RSpec.describe SmsHubNotificationSenderService do
       create(:sms_notification, sms_number: '+523121708994', user: user)
     end
     let(:sms_mobile_hub) do
-      create(:sms_mobile_hub, :activated, device_number: '31211231718', user: user)
+      create(:sms_mobile_hub, :activated, device_number: '3121123178', user: user)
     end
     let(:sms_mobile_hub_two) do
       create(:sms_mobile_hub, :activated, device_number: '3121708994', user: user)
     end
 
     context 'when the DEFAULT_MASTER_RECEIVER_PHONE_NUMBER is NOT set' do
+      before do
+        @backup_value = ENV['DEFAULT_MASTER_RECEIVER_PHONE_NUMBER']
+        ENV['DEFAULT_MASTER_RECEIVER_PHONE_NUMBER'] = nil
+      end
+
+      after do
+        ENV['DEFAULT_MASTER_RECEIVER_PHONE_NUMBER'] = @backup_value
+      end
+
       context 'when the mobile hub is valid' do
         it 'creates and enqueues a new sms notification' do
           service = described_class.new(

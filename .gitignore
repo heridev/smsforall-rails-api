@@ -31,3 +31,6 @@
 
 # Redis
 dump.rdb
+
+#dotenv-rails
+.env

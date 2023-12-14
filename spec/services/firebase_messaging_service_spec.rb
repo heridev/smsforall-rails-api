@@ -6,6 +6,8 @@ RSpec.describe FirebaseMessagingService do
   let(:user) { create(:user, mobile_number: '3121899980') }
   let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated, user: user) }
 
+  # include_examples 'fcm stub request'
+
   describe '#initialize' do
     describe 'characters limits' do
       context 'when the SMS_CONTENT_LIMIT is not set' do
@@ -160,7 +162,7 @@ RSpec.describe FirebaseMessagingService do
 
       it 'returns a valid response and is accesible' do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(valid_firebase_response)
         service = described_class.new(params)
         service.send_to_google!
@@ -188,7 +190,7 @@ RSpec.describe FirebaseMessagingService do
 
       it 'returns an invalid response' do
         allow_any_instance_of(FCM).to receive(
-          :send
+          :send_v1
         ).and_return(invalid_firebase_response)
         service = described_class.new(params)
         service.send_to_google!

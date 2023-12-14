@@ -12,13 +12,30 @@ git clone git@github.com:heridev/smsforall-rails-api.git
 rails db:create
 rails db:migrate
 ```
-4. Run the server by copying, editing the default master receiver, and pasting in a new terminal.
+3. Customize your env variables.
+We are using the dotenv rails gem for easy management in development.
+You need to rename the file `.env-development` into `.env` if you are using the terminal you can run
 ```
-# your phone number in the form of symbol `+` international code + 10 digits of your phone
-# for instance, for México is 52
-export DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-export REDIS_URL="redis://localhost:6379/1"
+mv .env-development .env
+``` 
+
+And that file would look like this:
+```
+DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
+RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+REDIS_URL="redis://localhost:6379/1"
+SIDEKIQ_ADMIN_USER='sidekiq'
+SIDEKIQ_ADMIN_PASSWORD='pass'
+...
+```
+Make any customizations as needed, especially the `DEFAULT_MASTER_RECEIVER_PHONE_NUMBER` in the form of symbol `+` international code + 10 digits of your phone, for instance, for México is 52.
+
+4. Make sure your Redis server is running in the default port:
+```
+redis://localhost:6379/1
+```
+5. Run the server
+```
 rails s -p 3030
 ```
 At this point, you should see this:
@@ -26,24 +43,109 @@ At this point, you should see this:
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/09acb82d-8cb0-4cba-9b49-5143800254bf)
 
 ### Rails console
-If you want to run the console remember to set first the ENV variable
+If you want to run the console
 ```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-export REDIS_URL="redis://localhost:6379/1"
 rails console
 ```
 
 ### Visualize the Sidekiq panel and background jobs
-If you want to access the Sidekiq panel remember to run the env variables as follows:
-NOTE: Remember to stop and start your server again.
-```
-export SIDEKIQ_ADMIN_USER='sidekiq'
-export SIDEKIQ_ADMIN_PASSWORD='pass'
-```
-
-Then you access the URL
+If you want to access the Sidekiq panel, then you access the URL:
 ```
 localhost:3030/panel/sidekiq
+```
+
+### Test suite
+As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+bundle exec rspec spec
+```
+
+## FCM and Google Cloud messaging in Firebase
+Firebase Cloud Messaging (FCM) is a cross-platform messaging solution that lets you reliably send messages at no cost. Using FCM, you can notify a client app that new email or other data is available to sync.
+
+FCM is a important aspect in the Architecture of smsforall.org, and it is the way that we can keep a live communication with all our devices even if they get disconnected for long period.
+
+In order to keep configure properly the project, you might need to generate your own credentials using the latest FCM V1 
+https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
+
+All of this is handled already by the Android Native Application and by the Ruby gem `fcm` already implemented.
+
+All you need to do is create a project in the Google Cloud Console and then generate a service account credentials that you will download in the form of a ``.json`` file and that you will use to include all those values into your encrypted values for either development and production.
+
+In general this is how it would look the process:
+
+1. You visit the Firebase console in a link like this
+https://console.firebase.google.com/u/0/
+2. Create a new project in the `Add project` option and enter a name for both, production and development/staging environments.
+3. Select the Google Analytics account(default) and click on the `create project` button.
+4. After that you would be redirected to project that would look like this
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/9b03bfbb-28dc-4892-ae30-90944cf448c0)
+5. As you see in the image, there is an Android option that you might need to click and create a connection for your Android Application
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/dfb2703c-8895-4d4a-a67e-0d28d1be9416)
+6. Download your Google credentials.json(and you will need to place this file in the Android Application app folder with the following name, eg: app/google-services.json)
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/45f806bc-6214-4f9c-87e7-f5e608c79a87)
+NOTE: Once you are ready with your credentials you can continue reading on how to generate your APK so you can install it on your device by following the rest of the instructions in the [Android application repository](https://github.com/heridev/sms-mobile-hub)
+
+### The next part of the configuration is about the SDK and about the backend server that we can use to begin sending messages to your Android phone.
+
+7. Then you would see some instructions on how to use it in your Android Application(it's already setup in the Android Application), so you can click `Next`
+8. Click on `continue to console`
+9. Next thing is to be able to send messages to your devises using one of the SDK, in this case we are using Ruby and the `fcm` gem, so let's continue with the rest of the configuration by clicking on the Cloud messaging option or direclty in this URL(remember to include the right name of your project in the URL)
+https://console.firebase.google.com/u/0/project/here-is-the-name-of-your-project/messaging/onboarding
+10. Let's follow this tutorial as of December 2023 on how to generate your SDK credentials to interact with your mobile
+https://docs.google.com/document/d/1OxKC7t2ND_4gCAJnGGmlKazMLcr3mtCrGeUUNckrRuw/edit#heading=h.mze0256cepto
+11. If you followed all the steps correctly, at this point you might have a `.json` file downloaded in your machine, and the next thing to do is to encrypt those values and make them available to your Rails API by following the instructions mentioned in the following section about encrypted env credentials:
+
+### Managing encrypted env credentials
+
+```
+Rails.application.secrets.secret_key_base
+```
+
+## Edit production and development environment credentials
+
+### How to edit development values
+1. Export the env variable:
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+```
+2. Open the file with your editor:
+```
+EDITOR=nvim rails credentials:edit
+```
+
+### Steps to update production secret environment values
+
+0. Set the ENV value key(take this value from the right production server):
+```
+export RAILS_MASTER_KEY=xxxxx
+```
+
+1. First, you need to rename the current development credentials in order to allow the edition of production files
+and adding new values
+```
+mv config/credentials.yml.enc config/credentials_development.yml.enc 
+```
+
+2. Renaming production credentials so we can edit the production data:
+```
+mv config/credentials_production.yml.enc config/credentials.yml.enc
+```
+
+3. And you should be able to edit that information:
+```
+EDITOR=nvim rails credentials:edit
+```
+
+4. After you are done with the credentials edition move back the production key
+```
+mv config/credentials.yml.enc config/credentials_production.yml.enc 
+```
+
+5. And the development move it back to its original name:
+```
+mv config/credentials_development.yml.enc config/credentials.yml.enc 
 ```
 
 ### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
@@ -90,68 +192,6 @@ https://quick-xxxx-xxxx.ngrok-free.app
 - d). Run the app and install it on your device
 - e). Begin with the coding and experimentation!
 
-### Test suite
-As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
-```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-bundle exec rspec spec
-```
-
-### Managing encrypted env credentials
-
-```
-Rails.application.secrets.secret_key_base
-```
-
-## Edit production and development environment credentials
-
-### How to edit development values
-1. Export the env variable:
-```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-```
-2. Open the file with your editor:
-```
-EDITOR=nvim rails credentials:edit
-```
-
-### Steps to update production secret environment values
-
-0. Set the ENV value key(take this value from the right production server):
-```
-export RAILS_MASTER_KEY=xxxxx
-```
-
-1. First, you need to rename the current development credentials in order to allow the edition of production files
-and adding new values
-```
-mv config/credentials.yml.enc config/credentials_development.yml.enc 
-mv config/master.key config/master_development.key 
-```
-
-2. Renaming production credentials so we can edit the production data:
-```
-mv config/credentials_production.yml.enc config/credentials.yml.enc
-mv config/master_production.key config/master.key
-```
-
-3. And you should be able to edit that information:
-```
-EDITOR=nvim rails credentials:edit
-```
-
-4. After you are done with the credentials edition move back the production key
-```
-mv config/credentials.yml.enc config/credentials_production.yml.enc 
-mv config/master.key config/master_production.key 
-```
-
-5. And the development move them back to its original names:
-```
-mv config/credentials_development.yml.enc config/credentials.yml.enc 
-mv config/master_development.key config/master.key 
-```
-
 ## Other commands when working with encrypted credentials
 
 Checking production or development data in environment variables
@@ -188,12 +228,6 @@ bin/rails generate job sms_hubs_validation
 For generating serializers:
 ```
 rails g serializer Movie name year
-```
-
-## FCM and Google Cloud messaging in Firebase
-There are some plain examples of using the service in the following document
-```
-working_with_firebase_cloud_messaging.md
 ```
 
 ## Using translations

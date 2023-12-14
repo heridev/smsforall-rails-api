@@ -20,10 +20,28 @@ RSpec.describe SmsHubIntervalSenderNotificationJob, type: :job do
     )
   end
 
+  let(:valid_firebase_response) do
+    {
+      status_code: 200,
+      body: {
+        multicast_id: 8_573_675_465_357_843_813,
+        success: 1,
+        failure: 0,
+        canonical_ids: 0
+      }.to_json
+    }
+  end
+
+  before do
+    allow_any_instance_of(FCM).to receive(:send_v1).and_return(valid_firebase_response)
+  end
+
   context "when the current time is early than 11 pm mexico's time" do
+
     before do
       current_time = Time.parse('2020-05-25 22:59:47 -0500')
       travel_to current_time
+      # stub_google_fcm_request
     end
 
     after do
