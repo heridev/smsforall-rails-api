@@ -55,7 +55,7 @@ localhost:3030/panel/sidekiq
 ```
 
 ### Test suite
-As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follow
+As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follows
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 bundle exec rspec spec
@@ -64,22 +64,22 @@ bundle exec rspec spec
 ## FCM and Google Cloud messaging in Firebase
 Firebase Cloud Messaging (FCM) is a cross-platform messaging solution that lets you reliably send messages at no cost. Using FCM, you can notify a client app that new email or other data is available to sync.
 
-FCM is a important aspect in the Architecture of smsforall.org, and it is the way that we can keep a live communication with all our devices even if they get disconnected for long period.
+FCM is an important aspect in the Architecture of smsforall.org, and it is the way that we can keep live communication with all our devices even if they get disconnected for long period.
 
-In order to keep configure properly the project, you might need to generate your own credentials using the latest FCM V1 
+To keep configure properly the project, you might need to generate your credentials using the latest FCM V1 
 https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
 
-All of this is handled already by the Android Native Application and by the Ruby gem `fcm` already implemented.
+All of this is handled already by the Android Native Application and the Ruby gem `fcm` has already been implemented.
 
-All you need to do is create a project in the Google Cloud Console and then generate a service account credentials that you will download in the form of a ``.json`` file and that you will use to include all those values into your encrypted values for either development and production.
+All you need to do is create a project in the Google Cloud Console and then generate service account credentials that you will download in the form of a ``.json`` file and that you will use to include all those values into your encrypted values for either development or production.
 
-In general this is how it would look the process:
+In general, this is how they would look:
 
-1. You visit the Firebase console in a link like this
+1. You visit the Firebase console at a link like this
 https://console.firebase.google.com/u/0/
 2. Create a new project in the `Add project` option and enter a name for both, production and development/staging environments.
 3. Select the Google Analytics account(default) and click on the `create project` button.
-4. After that you would be redirected to project that would look like this
+4. After that you would be redirected to a project that would look like this
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/9b03bfbb-28dc-4892-ae30-90944cf448c0)
 5. As you see in the image, there is an Android option that you might need to click and create a connection for your Android Application
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/dfb2703c-8895-4d4a-a67e-0d28d1be9416)
@@ -87,15 +87,80 @@ https://console.firebase.google.com/u/0/
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/45f806bc-6214-4f9c-87e7-f5e608c79a87)
 NOTE: Once you are ready with your credentials you can continue reading on how to generate your APK so you can install it on your device by following the rest of the instructions in the [Android application repository](https://github.com/heridev/sms-mobile-hub)
 
-### The next part of the configuration is about the SDK and about the backend server that we can use to begin sending messages to your Android phone.
+### The next part of the configuration is about the SDK and the backend server we can use to send messages to your Android phone.
 
-7. Then you would see some instructions on how to use it in your Android Application(it's already setup in the Android Application), so you can click `Next`
+7. Then you will see some instructions on how to use it in your Android Application(it's already set in the Android Application), so you can click `Next`
 8. Click on `continue to console`
-9. Next thing is to be able to send messages to your devises using one of the SDK, in this case we are using Ruby and the `fcm` gem, so let's continue with the rest of the configuration by clicking on the Cloud messaging option or direclty in this URL(remember to include the right name of your project in the URL)
+9. The next thing is to be able to send messages to your devices using one of the SDKs available, in this case, we are using Ruby and the `fcm` gem, so let's continue with the rest of the configuration by clicking on the Cloud messaging option or directly in this URL(remember to include the right name of your project in the URL)
 https://console.firebase.google.com/u/0/project/here-is-the-name-of-your-project/messaging/onboarding
 10. Let's follow this tutorial as of December 2023 on how to generate your SDK credentials to interact with your mobile
 https://docs.google.com/document/d/1OxKC7t2ND_4gCAJnGGmlKazMLcr3mtCrGeUUNckrRuw/edit#heading=h.mze0256cepto
 11. If you followed all the steps correctly, at this point you might have a `.json` file downloaded in your machine, and the next thing to do is to encrypt those values and make them available to your Rails API by following the instructions mentioned in the following section about encrypted env credentials:
+
+## How to generate your encrypted credentials for production?
+
+Let's say you already tested everything locally and you want to deploy that into staging/production, how do you securely store your final credentials?
+
+1. You can rename the current development encrypted values, by renaming the current file:
+```
+mv config/credentials.yml.enc config/credentials_development.yml.enc 
+```
+2. Generate a Rails Master Key that you can store safely, for this, you can use the Rails secret task
+```
+smsforall-rails-api heridev$ bundle exec rails secret | cut -c-32
+34c3f8ce3e13ba493809841b535f5dc0
+```
+3. Store that in a secure place
+4. Export it to begin with the encryption process
+```
+export RAILS_MASTER_KEY=34c3f8ce3e13ba493809841b535f5dc0
+```
+5. Run the edition of your credentials
+```
+EDITOR=nvim rails credentials:edit
+```
+Once you do that, by default you will see a template like this:
+```
+# aws:
+#   access_key_id: 123
+#   secret_access_key: 345
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: 8fd0183188c3466561d8xxxxxxxxx
+```
+keep only the `secret_key_base` value and include the following template for the Firebase Credentials that you will need to provide later on
+```
+type: 'production'
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: 8fd0183188c3466561d8xxxxxxxxx
+google_firebase:
+  - type: "service_account"
+  - project_id: ""
+  - private_key_id: ""
+  - private_key: "-----BEGIN RSA PRIVATE KEY-----.....PRIVATE KEY-----\n"
+  - client_email: "service-account-xxx@sms-xxxxxxx.iam.gserviceaccount.com"
+  - client_id: "xxxxxxxx"
+  - auth_uri: "https://accounts.google.com/o/oauth2/auth"
+  - token_uri: "https://oauth2.googleapis.com/token"
+  - auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+  - client_x509_cert_url: "xxxxx"
+  - universe_domain: "googleapis.com"
+```
+
+and exit the editor in my case vim with the following keystrokes esc :x
+
+The previous step was to create your Firebase application and the service account `credentials.json` file(FCM V1 endpoint) so you should be able to provide those values based on that `.json` file
+
+NOTE: once you are done with the final credentials, remember to rename this file from:
+```
+config/credentials.yml.enc
+```
+to
+```
+config/credentials_production.yml.enc
+```
+
+Include it in your next commit, so it can be used once you deploy your application to your preferred hosting provider(e.g. Heroku)
 
 ### Managing encrypted env credentials
 
@@ -151,7 +216,7 @@ mv config/credentials_development.yml.enc config/credentials.yml.enc
 ### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
 Eventually, if you want to modify the different pieces in the system(Android, React App and API), you will need to connect all the pieces locally for development and for that you might need to expose your local API so the Android client and React Client Application are able to connect with the API, so in order to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server, if you want to begin using Ngrok.
 
-1. You need to register a free account in the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
+1. You need to register a free account on the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
 
 2. Request your static domain that would look like this:
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/6da6948c-ff82-4014-a541-e62551cc74ee)
