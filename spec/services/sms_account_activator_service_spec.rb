@@ -46,7 +46,7 @@ RSpec.describe SmsAccountActivatorService do
 
         result = described_class.send_notification(argument_params)
         expect(result[:status]).to eq 'enqueued'
-        expect(result[:sms_content]).to match('tu pin de activacion es')
+        expect(result[:sms_content]).to match('your activation token')
         expect(result[:sms_number]).to match('3121899980')
         sms_mobile_hub_master
       end
