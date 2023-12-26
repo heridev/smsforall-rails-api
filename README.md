@@ -64,7 +64,7 @@ bundle exec rspec spec
 ## FCM and Google Cloud messaging in Firebase
 Firebase Cloud Messaging (FCM) is a cross-platform messaging solution that lets you reliably send messages at no cost. Using FCM, you can notify a client app that new email or other data is available to sync.
 
-FCM is an important aspect in the Architecture of smsforall.org, and it is the way that we can keep live communication with all our devices even if they get disconnected for long period.
+FCM is an important aspect in the Architecture of smsforall.org, and it is the way that we can keep live communication with all our devices even if they get disconnected for a long period.
 
 To keep configure properly the project, you might need to generate your credentials using the latest FCM V1 
 https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
@@ -97,8 +97,18 @@ https://console.firebase.google.com/u/0/project/here-is-the-name-of-your-project
 https://docs.google.com/document/d/1OxKC7t2ND_4gCAJnGGmlKazMLcr3mtCrGeUUNckrRuw/edit#heading=h.mze0256cepto
 11. If you followed all the steps correctly, at this point you might have a `.json` file downloaded in your machine, and the next thing to do is to encrypt those values and make them available to your Rails API by following the instructions mentioned in the following section about encrypted env credentials:
 
-## How to generate your encrypted credentials for production?
+### Configure the FCM messaging in your development machine
+1. Export the env variable:
+```
+export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
+```
+2. Open the file with your editor:
+```
+EDITOR=nvim rails credentials:edit
+```
+You will need to open the `.json` with your credentials in an editor or you can display them in the terminal, as you will need to copy manually from there some values and include them in the encrypted credentials that your `EDITOR` just opened in the previous step 
 
+## How do you generate your encrypted credentials for the production environment?
 Let's say you already tested everything locally and you want to deploy that into staging/production, how do you securely store your final credentials?
 
 1. You can rename the current development encrypted values, by renaming the current file:
@@ -160,24 +170,12 @@ to
 config/credentials_production.yml.enc
 ```
 
-Include it in your next commit, so it can be used once you deploy your application to your preferred hosting provider(e.g. Heroku)
+Please include it in your next commit, so it can be used once you deploy your application to your preferred hosting provider(e.g. Heroku)
 
 ### Managing encrypted env credentials
 
 ```
 Rails.application.secrets.secret_key_base
-```
-
-## Edit production and development environment credentials
-
-### How to edit development values
-1. Export the env variable:
-```
-export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
-```
-2. Open the file with your editor:
-```
-EDITOR=nvim rails credentials:edit
 ```
 
 ### Steps to update production secret environment values
@@ -187,7 +185,7 @@ EDITOR=nvim rails credentials:edit
 export RAILS_MASTER_KEY=xxxxx
 ```
 
-1. First, you need to rename the current development credentials in order to allow the edition of production files
+1. First, you need to rename the current development credentials to allow the edition of production files
 and adding new values
 ```
 mv config/credentials.yml.enc config/credentials_development.yml.enc 
@@ -214,7 +212,7 @@ mv config/credentials_development.yml.enc config/credentials.yml.enc
 ```
 
 ### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
-Eventually, if you want to modify the different pieces in the system(Android, React App and API), you will need to connect all the pieces locally for development and for that you might need to expose your local API so the Android client and React Client Application are able to connect with the API, so in order to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server, if you want to begin using Ngrok.
+Eventually, if you want to modify the different pieces in the system(Android, React App, and API), you will need to connect all the pieces locally for development, and for that you might need to expose your local API so the Android client and React Client Application can connect with the API, so to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server if you want to begin using Ngrok.
 
 1. You need to register a free account on the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
 
@@ -232,7 +230,7 @@ config.hosts << 'quick-xxxx-xxxxx.ngrok-free.app'
 ngrok http --domain=quick-xxxx-xxxx.ngrok-free.app 3030
 ```
 
-6. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend url in this case:
+6. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend URL in this case:
 ```
 export REACT_APP_API_URL=https://quick-xxx-xxxxxx.ngrok-free.app
 // and
