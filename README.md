@@ -16,7 +16,7 @@ rails db:migrate
 We are using the dotenv rails gem for easy management in development.
 You need to rename the file `.env-development` into `.env` if you are using the terminal you can run
 ```
-mv .env-development .env
+mv .env .env-development
 ``` 
 
 And that file would look like this:
