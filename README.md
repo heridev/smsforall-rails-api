@@ -84,7 +84,9 @@ https://console.firebase.google.com/u/0/
 4. After that you would be redirected to a project that would look like this
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/9b03bfbb-28dc-4892-ae30-90944cf448c0)
 5. As you see in the image, there is an Android option that you might need to click and create a connection for your Android Application
-![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/dfb2703c-8895-4d4a-a67e-0d28d1be9416)
+NOTE: It is mandatory to use the package name `com.smsforall.smsforall` otherwise you will have problems with the Android APK generation.
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/cfa37f86-4831-47b3-bece-41ce0f808d2d)
+
 6. Download your Google credentials.json(and you will need to place this file in the Android Application app folder with the following name, eg: app/google-services.json)
 ![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/45f806bc-6214-4f9c-87e7-f5e608c79a87)
 NOTE: Once you are ready with your credentials you can continue reading on how to generate your APK so you can install it on your device by following the rest of the instructions in the [Android application repository](https://github.com/heridev/sms-mobile-hub)
