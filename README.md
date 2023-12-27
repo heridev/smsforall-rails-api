@@ -21,14 +21,15 @@ cp .env-development .env
 
 And that file would look like this:
 ```
-DEFAULT_MASTER_RECEIVER_PHONE_NUMBER="+52312169xxxx"
+....
 RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 REDIS_URL="redis://localhost:6379/1"
 SIDEKIQ_ADMIN_USER='sidekiq'
 SIDEKIQ_ADMIN_PASSWORD='pass'
+FIREBASE_PROJECT_ID='google-firebase-project-xxxx-xxxx-production'
 ...
 ```
-Make any customizations as needed, especially the `DEFAULT_MASTER_RECEIVER_PHONE_NUMBER` in the form of symbol `+` international code + 10 digits of your phone, for instance, for México is 52.
+> NOTE: The most important thing here, is to make sure you add the right `FIREBASE_PROJECT_ID` and we would generate that project in the next sections
 
 4. Make sure your Redis server is running in the default port:
 ```
@@ -110,7 +111,60 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 ```
 EDITOR=nvim rails credentials:edit
 ```
-You will need to open the `.json` with your credentials in an editor or you can display them in the terminal, as you will need to copy manually from there some values and include them in the encrypted credentials that your `EDITOR` just opened in the previous step 
+You need to open the `.json` with your credentials in an editor or you can display them in the terminal, as you need to copy manually those values and include them in the encrypted credentials that your `EDITOR` just opened in the previous step.
+
+And remember to update the `FIREBASE_PROJECT_ID` in the `.env` file as well
+```
+....
+FIREBASE_PROJECT_ID='google-firebase-project-xxxx-xxxx-production'
+...
+```
+
+> NOTE: This is crucial for the functionality or you won't be able to activate your mobile hubs(devices)
+
+### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
+Eventually, if you want to modify the different pieces in the system(Android, React App, and API), you will need to connect all the pieces locally for development, and for that you might need to expose your local API so the Android client and React Client Application can connect with the API, so to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server if you want to begin using Ngrok.
+
+1. You need to register a free account on the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
+
+2. Request your static domain that would look like this:
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/6da6948c-ff82-4014-a541-e62551cc74ee)
+
+3. Add your static domain to the following configuration file `config/environments/development.rb`
+```
+config.hosts << 'quick-xxxx-xxxxx.ngrok-free.app'
+```
+
+4. Run your server following the previous section in this README.md file
+5. Run ngrok with the right subdomain(make sure your ngrok executable was downloaded successfully from [https://ngrok.com/download](https://ngrok.com/download))
+```
+ngrok http --domain=quick-xxxx-xxxx.ngrok-free.app 3030
+```
+
+6. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend URL in this case:
+```
+export REACT_APP_API_URL=https://quick-xxx-xxxxxx.ngrok-free.app
+// and
+yarn start
+```
+
+7. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that:
+
+- a). Open the file `grade.properties` 
+- b). replace the value
+```
+BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
+```
+
+with 
+```
+https://quick-xxxx-xxxx.ngrok-free.app
+```
+- c). Select the build variants as `prodDebug`
+![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/900f6aa3-ee56-49c6-87da-be2b2f3abd46)
+
+- d). Run the app and install it on your device
+- e). Begin with the coding and experimentation!
 
 ## How do you generate your encrypted credentials for the production environment?
 Let's say you already tested everything locally and you want to deploy that into staging/production, how do you securely store your final credentials?
@@ -214,50 +268,6 @@ mv config/credentials.yml.enc config/credentials_production.yml.enc
 ```
 mv config/credentials_development.yml.enc config/credentials.yml.enc 
 ```
-
-### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
-Eventually, if you want to modify the different pieces in the system(Android, React App, and API), you will need to connect all the pieces locally for development, and for that you might need to expose your local API so the Android client and React Client Application can connect with the API, so to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server if you want to begin using Ngrok.
-
-1. You need to register a free account on the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
-
-2. Request your static domain that would look like this:
-![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/6da6948c-ff82-4014-a541-e62551cc74ee)
-
-3. Add your static domain to the following configuration file `config/environments/development.rb`
-```
-config.hosts << 'quick-xxxx-xxxxx.ngrok-free.app'
-```
-
-4. Run your server following the previous section in this README.md file
-5. Run ngrok with the right subdomain(make sure your ngrok executable was downloaded successfully from [https://ngrok.com/download](https://ngrok.com/download))
-```
-ngrok http --domain=quick-xxxx-xxxx.ngrok-free.app 3030
-```
-
-6. Run your [React app frontend](https://github.com/heridev/smsforall-react-app) yarn project and specify to use the right API backend URL in this case:
-```
-export REACT_APP_API_URL=https://quick-xxx-xxxxxx.ngrok-free.app
-// and
-yarn start
-```
-
-7. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that:
-
-- a). Open the file `grade.properties` 
-- b). replace the value
-```
-BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
-```
-
-with 
-```
-https://quick-xxxx-xxxx.ngrok-free.app
-```
-- c). Select the build variants as `prodDebug`
-![image](https://github.com/heridev/smsforall-rails-api/assets/1863670/900f6aa3-ee56-49c6-87da-be2b2f3abd46)
-
-- d). Run the app and install it on your device
-- e). Begin with the coding and experimentation!
 
 ## Other commands when working with encrypted credentials
 
