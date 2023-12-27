@@ -54,8 +54,10 @@ If you want to access the Sidekiq panel, then you access the URL:
 localhost:3030/panel/sidekiq
 ```
 
-### Test suite
-As of now on July 1st, 2020, we only have Rspec tests in place, if you want to run them, just do it as follows
+### Unit Tests using Rspec
+As of December 2023, we only have Rspec tests in place, if you want to run them all, run the following command:
+
+> NOTE: this will be automated in a Github action soon
 ```
 export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 bundle exec rspec spec
