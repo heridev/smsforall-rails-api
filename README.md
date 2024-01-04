@@ -111,7 +111,7 @@ export RAILS_MASTER_KEY=bb5ffbd20b7fb60b4f05932fb2189277
 ```
 EDITOR=nvim rails credentials:edit
 ```
-You need to open the `.json` with your credentials in an editor or you can display them in the terminal, as you need to copy manually those values and include them in the encrypted credentials that your `EDITOR` just opened in the previous step.
+You need to open the `.json` with your credentials in an editor or display them in the terminal, as you need to copy those values manually and include them in the encrypted credentials that your `EDITOR` just opened in the previous step.
 
 And remember to update the `FIREBASE_PROJECT_ID` in the `.env` file as well
 ```
@@ -123,7 +123,7 @@ FIREBASE_PROJECT_ID='google-firebase-project-xxxx-xxxx-production'
 > NOTE: This is crucial for the functionality or you won't be able to activate your mobile hubs(devices)
 
 ### Connecting [Android](https://github.com/heridev/sms-mobile-hub), app.smsforall.org in local
-Eventually, if you want to modify the different pieces in the system(Android, React App, and API), you will need to connect all the pieces locally for development, and for that you might need to expose your local API so the Android client and React Client Application can connect with the API, so to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server if you want to begin using Ngrok.
+Eventually, if you want to modify the different pieces in the system(Android, React App, and API), you will need to connect all the pieces locally for development, and for that, you might need to expose your local API so the Android client and React Client Application can connect with the API, so to achieve that, the simplest approach is to use `Ngrok` with the free plan that allows you to claim a static subdomain that won't change all the time, so you don't need to keep updating the allowed hosts all the time for your Rails API server if you want to begin using Ngrok.
 
 1. You need to register a free account on the official website [ngrok](https://ngrok.com/) or directly in the [signup page](https://dashboard.ngrok.com/signup)
 
@@ -150,7 +150,7 @@ yarn start
 
 7. In your [Android project](https://github.com/heridev/sms-mobile-hub) before generating the version and installing it, make sure you have the right URL, for that:
 
-- a). Open the file `grade.properties` 
+- a). Open the file `gradle.properties` 
 - b). replace the value
 ```
 BASE_URL_PRODUCTION="https://api.smsparatodos.com/"
@@ -167,7 +167,7 @@ https://quick-xxxx-xxxx.ngrok-free.app
 - e). Begin with the coding and experimentation!
 
 ## How do you generate your encrypted credentials for the production environment?
-Let's say you already tested everything locally and you want to deploy that into staging/production, how do you securely store your final credentials?
+Let's say you already tested everything locally and want to deploy that into staging/production, how do you securely store your final credentials?
 
 1. You can rename the current development encrypted values, by renaming the current file:
 ```
