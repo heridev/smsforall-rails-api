@@ -6,11 +6,11 @@ RSpec.describe SmsMobileHub, type: :model do
     describe '.uniqueness#device_number' do
       context 'when the device number is already registered' do
         before do
-          create(:sms_mobile_hub, device_number: '+523121231517', user: user)
+          create(:sms_mobile_hub, device_number: '+523121231111', user: user)
         end
 
         it 'triggers an error in the email validation' do
-          result = build(:sms_mobile_hub, device_number: '+523121231517')
+          result = build(:sms_mobile_hub, device_number: '+523121231111')
           expect(result.valid?).to be_falsey
           expect(result.errors.messages.keys).to include :device_number
         end
@@ -18,7 +18,7 @@ RSpec.describe SmsMobileHub, type: :model do
 
       context 'when the device number does not exist' do
         it 'does not trigger an email validation error' do
-          result = build(:sms_mobile_hub, device_number: '+523121231517')
+          result = build(:sms_mobile_hub, device_number: '+523121231111')
           expect(result.valid?).to be_truthy
         end
       end
@@ -36,4 +36,3 @@ RSpec.describe SmsMobileHub, type: :model do
     end
   end
 end
-

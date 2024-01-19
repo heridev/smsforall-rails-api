@@ -11,7 +11,7 @@ class SmsNotificationCreatorService
 
   # {
   #   mobile_hub_id: sms_mobile_hub.reload.uuid,
-  #   sms_number: '+523121231517',
+  #   sms_number: '+523121231111',
   #   sms_type: 'standard_delivery', # o urgent_delivery
   #   user_id: 1,
   #   sms_customer_reference_id: sms_customer_reference_id # opcional - un valor de referencia de hasta 128 caracteres, con el cual puedes consultar despues el estado actual de dicho mensaje de texto
@@ -75,9 +75,9 @@ class SmsNotificationCreatorService
     splitted_by_code_country = valid_number.split("+#{code_country}")
 
     # Output:
-    #  ["", "3121231517"]
+    #  ["", "3121231111"]
     #  or when no match
-    #  ["+13121231517"]
+    #  ["+13121231111"]
     # we take only the right number as we are sending a local
     # number not international one and in Mexico now you get an error
     # so just fix it

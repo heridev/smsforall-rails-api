@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :sms_notification do
     sms_content { 'Welcome to smsparatodos.com' }
-    sms_number { '+523121231517' }
+    sms_number { '+523121231111' }
     status { SmsNotification::STATUSES[:default] }
     sms_type { 'standard_delivery' }
     association :user, factory: :user
@@ -21,4 +21,3 @@ FactoryBot.define do
     end
   end
 end
-

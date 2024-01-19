@@ -7,7 +7,7 @@ FactoryBot.define do
       user_email = "#{random_handler}@example.com"
       user_params = {
         email: user_email,
-        mobile_number: '3121231517',
+        mobile_number: '3121231111',
         password: 'password1',
         name: 'Heriberto Perez'
       }

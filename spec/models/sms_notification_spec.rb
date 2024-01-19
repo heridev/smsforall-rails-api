@@ -18,7 +18,7 @@ RSpec.describe SmsNotification, type: :model do
       hub_id: sms_mobile_hub.id,
       user_id: user.id,
       sms_content: message,
-      sms_number: '+523121231517',
+      sms_number: '+523121231111',
       sms_type: 'standard_delivery'
     }
   end
@@ -102,4 +102,3 @@ RSpec.describe SmsNotification, type: :model do
     end
   end
 end
-

@@ -48,7 +48,7 @@ RSpec.describe FirebaseMessagingService do
         let(:params) do
           {
             sms_content: sms_notification.sms_content,
-            sms_number: '312 123 15 17 movi',
+            sms_number: '3121231111',
             sms_type: sms_notification.sms_type,
             sms_notification_id: sms_notification.unique_id,
             device_token_firebase: sms_mobile_hub.firebase_token
@@ -59,7 +59,7 @@ RSpec.describe FirebaseMessagingService do
           service = described_class.new(params)
           sms_number = service.sms_number
           expect(sms_number.size).to eq 10
-          expect(sms_number).to eq '3121231517'
+          expect(sms_number).to eq '3121231111'
         end
       end
 
