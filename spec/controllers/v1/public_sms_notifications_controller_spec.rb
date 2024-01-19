@@ -21,7 +21,7 @@ RSpec.describe V1::PublicSmsNotificationsController, type: :controller do
         {
           sms_notification: {
             sms_content: 'some content without sms_number',
-            sms_number: '+523121231517'
+            sms_number: '+523121231111'
           }
         }
       end

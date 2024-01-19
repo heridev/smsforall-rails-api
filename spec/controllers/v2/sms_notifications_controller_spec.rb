@@ -50,7 +50,7 @@ RSpec.describe V2::SmsNotificationsController, type: :controller do
       let(:sms_notification_params) do
         {
           mobile_hub_id: sms_mobile_hub.reload.uuid,
-          sms_number: '+523121231517',
+          sms_number: '+523121231111',
           sms_type: 'standard_delivery', # o urgent_delivery
           sms_content: sms_content,
           sms_customer_reference_id: sms_customer_reference_id # opcional - un valor de referencia de hasta 128 caracteres, con el cual puedes consultar despues el estado actual de dicho mensaje de texto

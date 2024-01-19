@@ -56,7 +56,7 @@ RSpec.describe SmsHubNotificationSenderService do
     end
 
     context 'when the DEFAULT_MASTER_RECEIVER_PHONE_NUMBER is set' do
-      let(:default_phone_number) { '+523121231517' }
+      let(:default_phone_number) { '+523121231111' }
       before { ENV['DEFAULT_MASTER_RECEIVER_PHONE_NUMBER'] = default_phone_number }
       after { ENV['DEFAULT_MASTER_RECEIVER_PHONE_NUMBER'] = nil }
 

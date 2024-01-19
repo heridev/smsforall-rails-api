@@ -8,7 +8,7 @@ RSpec.describe SmsNotificationCreatorService do
   describe '#perform_creation!' do
     let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
     let(:normal_sms_content) { 'x ' * 80 }
-    let(:sms_number) { '+523121231517' }
+    let(:sms_number) { '+523121231111' }
     let(:long_sms_content) { 'superlongtext' * 300 }
     let(:sms_customer_reference_id) { '748474' }
     let(:expected_keys) do
@@ -154,8 +154,8 @@ RSpec.describe SmsNotificationCreatorService do
   describe '#valid_sms_number' do
     let(:sms_mobile_hub) { create(:sms_mobile_hub, :activated) }
     let(:normal_sms_content) { 'x ' * 80 }
-    let(:sms_number) { '+523121231517' }
-    let(:sms_number_usa) { '+13121231517' }
+    let(:sms_number) { '+523121231111' }
+    let(:sms_number_usa) { '+13121231111' }
     let(:long_sms_content) { 'superlongtext' * 300 }
     let(:sms_customer_reference_id) { '748474' }
     let(:expected_keys) do
@@ -172,7 +172,7 @@ RSpec.describe SmsNotificationCreatorService do
     end
 
     context 'when the sms mobile hub is in mexico and the number is in usa' do
-      let(:usa_sms_number) { '+13121231517' }
+      let(:usa_sms_number) { '+13121231111' }
 
       before do
         sms_mobile_hub.update_column(:country_international_code, '52')
@@ -225,7 +225,7 @@ RSpec.describe SmsNotificationCreatorService do
         }
         service = described_class.new(params)
         great_sms_number = service.format_valid_sms_number
-        expect(great_sms_number).to eq '3121231517'
+        expect(great_sms_number).to eq '3121231111'
       end
     end
 
@@ -241,7 +241,7 @@ RSpec.describe SmsNotificationCreatorService do
         }
         service = described_class.new(params)
         great_sms_number = service.format_valid_sms_number
-        expect(great_sms_number).to eq '+13121231517'
+        expect(great_sms_number).to eq '+13121231111'
       end
     end
   end

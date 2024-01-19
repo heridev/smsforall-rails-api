@@ -33,7 +33,7 @@ RSpec.describe MobileHubValidatorService do
         )
         expect(sms_notification.sms_type).to eq 'device_validation'
         expect(sms_notification.sms_content).to match('Hi')
-        expect(sms_notification.sms_number).to match('3121231517')
+        expect(sms_notification.sms_number).to match('3121231111')
       end
 
       it 'enqueues a new sms notification sender job' do

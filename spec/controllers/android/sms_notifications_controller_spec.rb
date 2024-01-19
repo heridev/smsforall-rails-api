@@ -31,7 +31,7 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
     context 'when the firebase token hub is not valid' do
       it 'does not create a sms notification' do
         params = {
-          'sms_number': '+523121231517',
+          'sms_number': '+523121231111',
           'sms_content': 'Muchas gracias por la confirmación',
           'firebase_token': 'xxx'
         }
@@ -43,7 +43,7 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
     context 'when the firebase token hub is valid' do
       it 'creates a new sms notification' do
         params = {
-          'sms_number': '+523121231517',
+          'sms_number': '+523121231111',
           'sms_content': 'Muchas gracias por la confirmación',
           'firebase_token': sms_mobile_hub.firebase_token
         }
@@ -144,4 +144,3 @@ RSpec.describe Android::SmsNotificationsController, type: :controller do
     end
   end
 end
-
