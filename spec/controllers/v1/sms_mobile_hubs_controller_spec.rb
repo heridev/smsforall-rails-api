@@ -110,7 +110,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
         {
           sms_mobile_hub: {
             device_name: 'mi tablet',
-            device_number: '3121231517'
+            device_number: '3121231111'
           }
         }
       end
@@ -142,7 +142,7 @@ RSpec.describe V1::SmsMobileHubsController, type: :controller do
       let(:sms_mobile_params) do
         {
           sms_mobile_hub: {
-            device_number: '3121231517'
+            device_number: '3121231111'
           }
         }
       end

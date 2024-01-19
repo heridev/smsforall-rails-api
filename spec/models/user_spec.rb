@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
       email: 'p@elh.mx',
       password: 'password1',
       name: 'Heriberto Perez',
-      mobile_number: '3121231517',
+      mobile_number: '3121231111',
       country_international_code: '52'
     }
   end

@@ -21,7 +21,7 @@ RSpec.describe PublicSmsNotificationSenderService do
   describe '#send_notification' do
     context 'when the sms params are valid' do
       let(:sms_content) { 'Que onda compi, como te va?' }
-      let(:sms_number) { '+523121231517' }
+      let(:sms_number) { '+523121231111' }
 
       it 'responds with the sms notification details' do
         argument_params = {
@@ -52,4 +52,3 @@ RSpec.describe PublicSmsNotificationSenderService do
     end
   end
 end
-

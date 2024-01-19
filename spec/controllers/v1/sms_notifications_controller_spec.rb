@@ -288,7 +288,7 @@ RSpec.describe V1::SmsNotificationsController, type: :controller do
           hub_uuid: sms_mobile_hub.reload.uuid,
           sms_notification: {
             sms_content: message,
-            sms_number: '+523121231517',
+            sms_number: '+523121231111',
             sms_type: 'standard_delivery'
           }
         }
