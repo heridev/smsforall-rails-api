@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   constraints do
     namespace :v1, path: '/v1' do
       resources :user_registrations, only: :create
-      resources :public_sms_notifications, only: :create
       resources :user_sessions, only: %i[create] do
         collection do
           get :user_details_by_token
